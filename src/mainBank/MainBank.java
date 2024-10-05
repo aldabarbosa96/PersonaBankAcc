@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -16,9 +15,12 @@ public class MainBank extends Application {
     private ArrayList<String> historial = new ArrayList<>();
     private DecimalFormat df = new DecimalFormat("0.00");
     private double totalInicial = 0.0;
+    private DataBaseManager dbmanager;
+    private int userId;
 
-    public static void main(String[] args) {
-        launch(args);
+    public MainBank(DataBaseManager dbmanager, int userId) {
+        this.dbmanager = dbmanager;
+        this.userId = userId;
     }
 
     @Override
@@ -51,12 +53,30 @@ public class MainBank extends Application {
 
         ArrayList<String> fechasHoras = new ArrayList<>();
 
-        SaveAndLoad sl = new SaveAndLoad();
-        sl.cargarDatos(historialArea, fechaHoraArea, label2, historial, fechasHoras);
+        ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
 
-        totalInicial = Double.parseDouble(label2.getText().replace("TOTAL:  ", "").replace(",", "."));
+        fechaHoraArea.setText("\n\n");
 
-        ButtonActions buttonActions = new ButtonActions(totalInicial, historial, fechasHoras, label1, label2, historialArea, fechaHoraArea, df);
+        for (String[] transaction : transactions) {
+            historialArea.appendText(transaction[0] + "\n");
+            fechaHoraArea.appendText(transaction[1] + "\n");
+
+
+            String tipo = transaction[0].substring(0, 1);  // "+" o "-"
+            double cantidad = Double.parseDouble(transaction[0].substring(1).trim());
+            if (tipo.equals("+")) {
+                totalInicial += cantidad;
+            } else if (tipo.equals("-")) {
+                totalInicial -= cantidad;
+            }
+
+            historial.add(transaction[0]);
+            fechasHoras.add(transaction[1]);
+        }
+
+        label2.setText("TOTAL:  " + df.format(totalInicial));
+
+        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, label1, label2, historialArea, fechaHoraArea, df, dbmanager, userId);
 
         botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textField));
         botonGasto.setOnAction(e -> buttonActions.registrarGasto(textField));
@@ -65,9 +85,6 @@ public class MainBank extends Application {
         VBox vbox = new VBox(10, label, textField, hboxBotones, label1, hboxHistorial, label2, botonUndo);
         vbox.setPadding(new Insets(20));
 
-        primaryStage.setOnCloseRequest((WindowEvent event) -> {
-            sl.guardarCambios(historial, fechasHoras, label2);
-        });
 
         Scene scene = new Scene(vbox, 340, 550);
         primaryStage.setScene(scene);

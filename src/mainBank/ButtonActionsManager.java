@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class ButtonActions {
+public class ButtonActionsManager {
     private double total;
     private ArrayList<String> historial;
     private ArrayList<String> fechas;
@@ -18,8 +18,10 @@ public class ButtonActions {
     private TextArea historialArea;
     private TextArea fechaHoraArea;
     private DecimalFormat df;
+    private DataBaseManager dbmanager;
+    private int userId;
 
-    public ButtonActions(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df) {
+    public ButtonActionsManager(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df, DataBaseManager dbmanager, int userId) {
         this.total = totalInicial;
         this.historial = historial;
         this.fechas = fechas;
@@ -28,6 +30,8 @@ public class ButtonActions {
         this.historialArea = historialArea;
         this.fechaHoraArea = fechaHoraArea;
         this.df = df;
+        this.dbmanager = dbmanager;
+        this.userId = userId;
     }
 
     public void registrarIngreso(TextField textField) {
@@ -53,11 +57,16 @@ public class ButtonActions {
             fechas.add(fechaHora);
             fechaHoraArea.appendText(fechaHora + "\n");
 
+            dbmanager.insertTransaction(userId, "+", cantidad, fechaHora);
+
             textField.clear();
+            textField.requestFocus();
+
         } catch (NumberFormatException e) {
             label1.setText("Por favor, introduce un número válido.");
         }
     }
+
     public void registrarGasto(TextField textField) {
         LocalDateTime actualidad = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd");
@@ -81,11 +90,16 @@ public class ButtonActions {
             fechas.add(fechaHora);
             fechaHoraArea.appendText(fechaHora + "\n");
 
+            dbmanager.insertTransaction(userId, "-", cantidad, fechaHora);
+
             textField.clear();
+            textField.requestFocus();
+            
         } catch (NumberFormatException e) {
             label1.setText("Por favor, introduce un número válido.");
         }
     }
+
 
     public void deshacer() {
         if (!historial.isEmpty() && !fechas.isEmpty()) {
@@ -113,6 +127,8 @@ public class ButtonActions {
             String fechaHoraTexto = fechaHoraArea.getText();
             int ultimaLineaFechaHora = fechaHoraTexto.lastIndexOf("\n", fechaHoraTexto.length() - 2);
             fechaHoraArea.setText(fechaHoraTexto.substring(0, ultimaLineaFechaHora + 1));
+
+            dbmanager.deleteLastTransaction(userId);
         }
     }
 }
