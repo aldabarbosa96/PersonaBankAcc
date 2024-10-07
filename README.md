@@ -71,4 +71,4 @@ Contribuciones
 Si deseas contribuir al proyecto, siéntete libre de hacer un fork del repositorio y enviar tus pull requests.
 
 
-V-1.4.0-alpha
+Alpha version 1.0 en desarrollo.
