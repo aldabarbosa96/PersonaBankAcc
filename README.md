@@ -1,6 +1,7 @@
 PersonalBankAccount
 
-Aplicación de gestión de finanzas personales que permite a los usuarios registrar ingresos y gastos, llevar un historial de transacciones y visualizar el balance total. Incluye funcionalidades de registro e inicio de sesión para múltiples usuarios.
+Prototipo de aplicación de gestión de finanzas personales que permite a los usuarios registrar ingresos y gastos, llevar un historial de transacciones y visualizar el balance total. Incluye funcionalidades de registro e inicio de sesión para múltiples usuarios.
+
 Características
 
     Registro e inicio de sesión de usuarios: Cada usuario puede crear una cuenta y tener su propio historial de transacciones.
