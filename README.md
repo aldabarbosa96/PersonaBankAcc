@@ -25,8 +25,11 @@ Instalación
     git clone https://github.com/tu_usuario/PersonalBankAccount.git
 
     Importar el proyecto
-        Importa el proyecto en tu IDE preferido (Eclipse, IntelliJ IDEA, NetBeans, etc.) como un proyecto Java.
-        Configura el SDK de Java y asegúrate de que el proyecto reconoce las librerías de JavaFX si utilizas JDK 11 o superior.
+        Importa el proyecto en tu IDE preferido como un proyecto Java.
+        Configura el SDK de Java y asegúrate de que el proyecto reconoce las librerías de JavaFX si utilizas JDK 11 o superior
+        (deberás añadir los módulos javafx.controls,javafx.fxml a las opciones de la MV de java: en IntelliJ -> run -> edit 
+        configurations -> new configuration (+ application) -> modify options -> add VM options -> especificas los módulos a 
+        añadir y la ruta).
 
     Configurar las dependencias
         JavaFX: Si utilizas JDK 11 o superior, descarga las librerías de JavaFX desde Gluon y agrégalas al proyecto.
