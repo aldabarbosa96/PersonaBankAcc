@@ -2,8 +2,7 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-# Ignorar la base de datos
-src/mainBank/database/PersonalBank.db
+/target
 
 
 ### Eclipse ###
