@@ -26,13 +26,11 @@ public class DataBaseManager {
      */
     public void dbconnect() {
         try {
-            //ruta donde se creará la DB
             String userHome = System.getProperty("user.home");
             String dbPath = userHome + File.separator + "PersonalBank.db";//
 
             String url = "jdbc:sqlite:" + dbPath;
             System.out.println("Conectando a la base de datos en: " + dbPath);
-            //establece la conexión
             connection = DriverManager.getConnection(url);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,7 +71,6 @@ public class DataBaseManager {
                 "FOREIGN KEY (user_id) REFERENCES users(id)" +
                 ");";
 
-        //ejecutamos sentecia SQL
         try (Statement statement = connection.createStatement()) {
             statement.execute(sql);
             statement.execute(sqlTransactions);
@@ -91,7 +88,7 @@ public class DataBaseManager {
      * @param password Contraseña.
      * @return true si se inserta correctamente, false si el usuario ya existe o hay un error.
      */
-    public boolean insertUser(String username, String password) { //añadimos usuario a la DB
+    public boolean insertUser(String username, String password) {
         String sqlCheck = "SELECT * FROM users WHERE username = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
@@ -127,7 +124,6 @@ public class DataBaseManager {
      * @return ID del usuario si las credenciales son correctas, -1 en caso contrario.
      */
     public int verifyUser(String username, String password) {
-        //consulta SQL para verificar credenciales
         String sql = "SELECT id FROM users WHERE username = ? AND password = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -135,7 +131,7 @@ public class DataBaseManager {
             preparedStatement.setString(2, password);
             ResultSet rs = preparedStatement.executeQuery();
 
-            if (rs.next()) { //credenciales correctas si hay resultado
+            if (rs.next()) {
                 return rs.getInt("id");
             } else {
                 return -1;
@@ -157,7 +153,6 @@ public class DataBaseManager {
      * @param concept         Concepto de la transacción.
      */
 
-    //añadimos la transacción a la DB
     public void insertTransaction(int userId, String transactionType, double amount, String timestamp, String concept) {
         String formattedAmount = df.format(amount).replace(",", ".");
         String sql = "INSERT INTO transactions(user_id, transaction_type, amount, timestamp, concept) VALUES (?, ?, ?, ?, ?)";
@@ -181,7 +176,6 @@ public class DataBaseManager {
      * @param userId ID del usuario.
      * @return Lista de transacciones en formato [linea formateada, timestamp].
      */
-    //obtenemos la última transacción
     public ArrayList<String[]> getUserTransactions(int userId) {
         String sql = "SELECT transaction_type, amount, timestamp, concept FROM transactions WHERE user_id = ?";
         ArrayList<String[]> transactions = new ArrayList<>();
@@ -197,7 +191,7 @@ public class DataBaseManager {
                 String timestamp = rs.getString("timestamp");
                 String concept = rs.getString("concept");
 
-                // Truncar el concepto si es demasiado largo
+                //truncamos el concepto si es demasiado largo
                 if (concept.length() > 25) {
                     concept = concept.substring(0, 25);
                 }
@@ -219,7 +213,6 @@ public class DataBaseManager {
      *
      * @param userId ID del usuario.
      */
-    //elimina la última transacción realizada
     public void deleteLastTransaction(int userId) {
         String sql = "DELETE FROM transactions WHERE id = (SELECT MAX(id) FROM transactions WHERE user_id = ?)";
 

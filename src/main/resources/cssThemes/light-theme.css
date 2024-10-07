@@ -1,0 +1,50 @@
+/* light-theme.css */
+
+.root {
+    -fx-background-color: white;
+}
+
+.button {
+    -fx-background-color: lightgray;
+    -fx-text-fill: black;
+    -fx-border-width: 0;
+}
+.button:hover {
+    -fx-background-color: darkgray;
+    -fx-text-fill: white;
+    -fx-border-width: 0;
+}
+
+.custom-label {
+    -fx-text-fill: black;
+}
+
+.custom-text-area {
+    -fx-control-inner-background: white;
+    -fx-text-fill: black;
+}
+
+.custom-text-field {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-border-color: lightgray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+.custom-text-field:hover {
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+}
+
+.custom-text-field:focused {
+    -fx-border-color: darkgray;
+    -fx-border-width: 1px;
+}
+
+
+
+/* Eliminar barra de desplazamiento horizontal */
+.text-area .scroll-pane {
+    -fx-hbar-policy: never;
+}

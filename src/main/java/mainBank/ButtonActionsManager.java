@@ -1,5 +1,7 @@
 package mainBank;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -24,6 +26,10 @@ public class ButtonActionsManager {
     private DecimalFormat df;
     private DataBaseManager dbmanager;
     private int userId;
+    private boolean isDarkTheme = false;
+    private Scene scene;
+    private String lightTheme;
+    private String darkTheme;
 
     /**
      * Constructor de la clase ButtonActionsManager.
@@ -39,8 +45,11 @@ public class ButtonActionsManager {
      * @param df            Formato decimal para las cantidades.
      * @param dbmanager     Gestor de la DB.
      * @param userId        Identificador del usuario.
+     * @param scene         La escena principal.
+     * @param lightTheme    Ruta al tema claro.
+     * @param darkTheme     Ruta al tema oscuro.
      */
-    public ButtonActionsManager(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, Label label3, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df, DataBaseManager dbmanager, int userId) {
+    public ButtonActionsManager(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, Label label3, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df, DataBaseManager dbmanager, int userId, Scene scene, String lightTheme, String darkTheme) {
         this.total = totalInicial;
         this.historial = historial;
         this.fechas = fechas;
@@ -52,6 +61,9 @@ public class ButtonActionsManager {
         this.df = df;
         this.dbmanager = dbmanager;
         this.userId = userId;
+        this.scene = scene;
+        this.lightTheme = lightTheme;
+        this.darkTheme = darkTheme;
     }
 
     /**
@@ -61,46 +73,38 @@ public class ButtonActionsManager {
      * @param concepto  Campo de texto donde se ingresa el concepto.
      */
     public void registrarIngreso(TextField textField, TextField concepto) {
-        //obtenemos la hora/fecha actual
         LocalDateTime actualidad = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd");
         String fechaHora = actualidad.format(formato);
 
         try {
-            //actualizamos el total
             double cantidad = Double.parseDouble(textField.getText());
             total += cantidad;
 
-            //actualizamos las labels
             label1.setText("Último ingreso:  " + df.format(cantidad));
             label2.setText("TOTAL:  " + df.format(total));
 
             String transaccionConFecha = "+ " + df.format(cantidad);
             String concepto1 = concepto.getText().trim();
 
-            //truncamos el concepto si es demasiado largo
             if (concepto1.length() > 25) {
                 concepto1 = concepto1.substring(0, 25);
             }
 
-            //formateamos la línea para el historial
             String formattedLine = String.format("  %-10s %-25s", transaccionConFecha, concepto1);
             historialArea.appendText(formattedLine + "\n");
 
-            //doble salto de línea al inicio del registro de hora/fecha (para alinear con cantidades)
+            // Doble salto de línea al inicio del registro de hora/fecha (para alinear con cantidades)
             if (fechaHoraArea.getText().isEmpty()) {
                 fechaHoraArea.setText("\n\n");
             }
 
-            //añadimos cada elemento
             historial.add(formattedLine);
             fechas.add(fechaHora);
             fechaHoraArea.appendText(fechaHora + "\n");
 
-            //registramos transacción en la DB
             dbmanager.insertTransaction(userId, "+", cantidad, fechaHora, concepto1);
 
-            //limpiamos los campos y le devolvemos el foco a cantidad
             textField.clear();
             concepto.clear();
             textField.requestFocus();
@@ -117,7 +121,6 @@ public class ButtonActionsManager {
      * @param concepto  Campo de texto donde se ingresa el concepto.
      */
     public void registrarGasto(TextField textField, TextField concepto) {
-        //igual que registrarIngreso() pero restando al total
         LocalDateTime actualidad = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd");
         String fechaHora = actualidad.format(formato);
@@ -163,11 +166,9 @@ public class ButtonActionsManager {
      */
     public void deshacer() {
         if (!historial.isEmpty() && !fechas.isEmpty()) {
-            //elimina última transacción y fecha de las listas
             String lastTransaction = historial.remove(historial.size() - 1);
             fechas.remove(fechas.size() - 1);
 
-            //trim y split de la transacción para obtener tipo y cantidad por separado
             String[] parts = lastTransaction.trim().split("\\s+", 3);
 
             if (parts.length >= 2) {
@@ -176,18 +177,15 @@ public class ButtonActionsManager {
 
                 double valor = Double.parseDouble(cantidadStr.replace(",", "."));
 
-                //revertimos la operación en el total
                 if (tipo.equals("+")) {
                     total -= valor;
                 } else {
                     total += valor;
                 }
 
-                //actualizamos labels
                 label1.setText("Última acción deshecha:  " + lastTransaction);
                 label2.setText("TOTAL:  " + df.format(total));
 
-                //actualizamos áreas de texto eliminando la última línea
                 String historialTexto = historialArea.getText();
                 int ultimaLinea = historialTexto.lastIndexOf("\n", historialTexto.length() - 2);
                 historialArea.setText(historialTexto.substring(0, ultimaLinea + 1));
@@ -196,11 +194,29 @@ public class ButtonActionsManager {
                 int ultimaLineaFechaHora = fechaHoraTexto.lastIndexOf("\n", fechaHoraTexto.length() - 2);
                 fechaHoraArea.setText(fechaHoraTexto.substring(0, ultimaLineaFechaHora + 1));
 
-                //eliminamos la última transacción de la DB
                 dbmanager.deleteLastTransaction(userId);
             } else {
                 System.out.println("Formato de transacción inválido al deshacer: " + lastTransaction);
             }
+        }
+    }
+
+    /**
+     * Cambia el tema de la aplicación entre claro y oscuro.
+     *
+     * @param toggleButton El botón que activa el cambio de tema.
+     */
+    public void cambiarTema(Button toggleButton) {
+        if (isDarkTheme) {
+            scene.getStylesheets().remove(darkTheme);
+            scene.getStylesheets().add(lightTheme);
+            isDarkTheme = false;
+            toggleButton.setText("☽");
+        } else {
+            scene.getStylesheets().remove(lightTheme);
+            scene.getStylesheets().add(darkTheme);
+            isDarkTheme = true;
+            toggleButton.setText("☽");
         }
     }
 }

@@ -15,28 +15,23 @@ public class LogInWindow extends Application {
 
     @Override
     public void start(Stage stage) {
-        //conectamos con la DB y creamos tablas (si no existen)
         dbmanager.dbconnect();
         dbmanager.createTable();
 
-        //creamos campos/etiquetas para usuario y contraseña
         Label usernameLabel = new Label("Username");
         TextField usernameField = new TextField();
 
         Label passwordLabel = new Label("Password");
         PasswordField passwordField = new PasswordField();
 
-        //botones signin y login
         Button loginButton = new Button("Iniciar Sesión");
         Button registerButton = new Button("Registrarse");
         loginButton.setMinWidth(90);
         registerButton.setMinWidth(90);
 
-        //organizamos en una VBOX
         VBox vbox = new VBox(10, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, registerButton);
         vbox.setPadding(new Insets(20));
 
-        //acción botón inicio sesión
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
@@ -44,14 +39,12 @@ public class LogInWindow extends Application {
             int userId = dbmanager.verifyUser(username, password);
             if (userId != -1) {
                 showMessage("Inicio de sesión correcto", "Bienvenid@ " + username);
-                // Iniciar la aplicación principal pasando el userId
                 new MainBank(dbmanager, userId).start(stage);
             } else {
                 showMessage("Error", "Usuario o contraseña incorrectos");
             }
         });
 
-        //acción botón registro
         registerButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
@@ -63,13 +56,11 @@ public class LogInWindow extends Application {
             }
         });
 
-        //instanciamos y configuramos la escena
         Scene scene = new Scene(vbox, 300, 220);
         stage.setScene(scene);
         stage.setTitle("Iniciar sesión");
         stage.show();
 
-        //descontectamos de la DB al cerrar ventana
         stage.setOnCloseRequest(event -> dbmanager.dbdisconnect());
     }
 

@@ -2,9 +2,12 @@ package mainBank;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,6 +25,9 @@ public class MainBank extends Application {
     private double totalInicial = 0.0;
     private DataBaseManager dbmanager;
     private int userId;
+    private Scene scene;
+    private String lightTheme;
+    private String darkTheme;
 
     /**
      * Constructor de la clase MainBank.
@@ -32,7 +38,6 @@ public class MainBank extends Application {
     public MainBank(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
         this.userId = userId;
-        //configuramos el formato decimal para utilizar el punto como separador
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         df = new DecimalFormat("0.00", symbols);
         dbmanager.setDecimalFormat(df);
@@ -40,19 +45,20 @@ public class MainBank extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        //etiquetas campos/mensajes
-        Label labelCantidad = new Label("Introduzca cantidad:");
         Label labelRegistros = new Label("Ingresos/Gastos registrados: ");
         Label labelTotal = new Label("TOTAL: ");
-        Label labelConcepto = new Label("Concepto:");
 
-        //campos de texto para ingresar cantidad/concepto
         TextField textFieldCantidad = new TextField("00.00");
-        textFieldCantidad.setPrefWidth(230);
-        TextField textFieldConcepto = new TextField();
-        textFieldConcepto.setPrefWidth(230);
+        textFieldCantidad.setPromptText("00.00"); //placeholders
+        textFieldCantidad.setPrefWidth(105);
+        textFieldCantidad.setMinHeight(10);
 
-        //formateador max. 16char
+        TextField textFieldConcepto = new TextField();
+        textFieldConcepto.setPromptText("Concepto");
+        textFieldConcepto.setPrefWidth(105);
+        textFieldConcepto.setMinHeight(10);
+
+        //formateador 16 chars
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
             if (newText.length() <= 16) {
@@ -63,60 +69,67 @@ public class MainBank extends Application {
         });
         textFieldConcepto.setTextFormatter(textFormatter);
 
-        //organización horizontal de etiqueta y campo cantidad/concepto
-        HBox hboxCantidad = new HBox(10, labelCantidad, textFieldCantidad);
-        hboxCantidad.setSpacing(10);
-        HBox hboxConcepto = new HBox(10, labelConcepto, textFieldConcepto);
-        hboxConcepto.setSpacing(10);
+        HBox hboxCantidad = new HBox(10, textFieldCantidad);
+        hboxCantidad.setAlignment(Pos.CENTER_LEFT);
 
-        //TextArea para historial transacciones
-        TextArea historialArea = new TextArea();
-        historialArea.setPrefSize(250, 320);
-        historialArea.setText("HISTORIAL\n-----------------------------\n");
-        historialArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12;");
-        historialArea.setEditable(false);
+        Button botonTema = new Button("☽");
+        botonTema.setMinWidth(30);
+        botonTema.setMinHeight(30);
+        botonTema.setFocusTraversable(false); //evita que el botón sea enfocable con Tab
 
-        //TextArea para fecha/hora
-        TextArea fechaHoraArea = new TextArea();
-        fechaHoraArea.setPrefSize(250, 320);
-        fechaHoraArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12;");
-        fechaHoraArea.setEditable(false);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        //CSS para eliminar scrollbar inferior
-        historialArea.getStyleClass().add("no-horizontal-scroll");
-        String css = ".no-horizontal-scroll .scroll-pane {\n" +
-                "    -fx-hbar-policy: never;\n" +
-                "}\n";
-        historialArea.getStylesheets().add("data:text/css," + css);
+        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacer, botonTema);
+        hboxCantidadTema.setAlignment(Pos.CENTER_LEFT);
 
-        //botones ingreso, gasto y undo
+        HBox hboxConcepto = new HBox(10, textFieldConcepto);
+        hboxConcepto.setAlignment(Pos.CENTER_LEFT);
+
         Button botonIngreso = new Button("Registrar ingreso");
         Button botonGasto = new Button("Registrar gasto");
         Button botonUndo = new Button("Deshacer ⎌");
-        botonIngreso.setMinWidth(110);
-        botonGasto.setMinWidth(110);
+        botonIngreso.setMinWidth(105);
+        botonGasto.setMinWidth(105);
         botonUndo.setMinWidth(88);
 
-        //organización botones
         HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
-        hboxBotones.setSpacing(10);
+        hboxBotones.setAlignment(Pos.CENTER_LEFT);
 
-        //organización historial transacciones/fecha/hora
+        TextArea historialArea = new TextArea();
+        historialArea.setPrefSize(250, 320);
+        historialArea.setText("HISTORIAL\n-----------------------------\n");
+        historialArea.setEditable(false);
+
+        TextArea fechaHoraArea = new TextArea();
+        fechaHoraArea.setPrefSize(175, 320);
+        fechaHoraArea.setEditable(false);
+
+        historialArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
+        fechaHoraArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
+
+        labelRegistros.getStyleClass().add("custom-label");
+        labelTotal.getStyleClass().add("custom-label");
+
+        historialArea.getStyleClass().add("custom-text-area");
+        fechaHoraArea.getStyleClass().add("custom-text-area");
+
+        textFieldCantidad.getStyleClass().add("custom-text-field");
+        textFieldConcepto.getStyleClass().add("custom-text-field");
+
         HBox hboxHistorial = new HBox(0, historialArea, fechaHoraArea);
+        hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
-        //obtenemos transacciones en base al userID
         ArrayList<String> fechasHoras = new ArrayList<>();
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
 
         fechaHoraArea.setText("\n\n");
 
-        //procesado transacciones
         for (String[] transaction : transactions) {
             String formattedLine = transaction[0];
             historialArea.appendText(formattedLine + "\n");
             fechaHoraArea.appendText(transaction[1] + "\n");
 
-            //dividimos la línea formateada para extraer tipo y cantidad
             String[] parts = formattedLine.trim().split("\\s+", 3);
 
             if (parts.length >= 2) {
@@ -125,7 +138,6 @@ public class MainBank extends Application {
 
                 double cantidad = Double.parseDouble(cantidadStr.replace(",", "."));
 
-                //actualizamos total inicial según el tipo de transacción
                 if (tipo.equals("+")) {
                     totalInicial += cantidad;
                 } else if (tipo.equals("-")) {
@@ -139,26 +151,28 @@ public class MainBank extends Application {
             fechasHoras.add(transaction[1]);
         }
 
-        // Actualizar el texto del label con el total inicial
         labelTotal.setText("TOTAL:  " + df.format(totalInicial));
 
-        //instanciamos gestor de botones
-        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, labelConcepto, historialArea, fechaHoraArea, df, dbmanager, userId);
+        VBox vbox = new VBox(20, hboxCantidadTema, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, labelTotal, botonUndo);
+        vbox.setPadding(new Insets(20, 20, 20, 20));
 
-        //asignamos funcionalidades a los botones
-        botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
-        botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
-        botonUndo.setOnAction(e -> buttonActions.deshacer());
+        scene = new Scene(vbox, 420, 620);
 
-        //organizamos todos los elementos en un VBox
-        VBox vbox = new VBox(10, labelCantidad, hboxCantidad, labelConcepto, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, labelTotal, botonUndo);
-        vbox.setPadding(new Insets(20));
+        lightTheme = getClass().getResource("/cssThemes/light-theme.css").toExternalForm();
+        darkTheme = getClass().getResource("/cssThemes/dark-theme.css").toExternalForm();
 
-        //instanciamos y configuramos la escena
-        Scene scene = new Scene(vbox, 500, 600);
+        scene.getStylesheets().add(lightTheme);
+
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("PersonalBankAccount");
         primaryStage.show();
+
+        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, null, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
+
+        botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
+        botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
+        botonUndo.setOnAction(e -> buttonActions.deshacer());
+        botonTema.setOnAction(e -> buttonActions.cambiarTema(botonTema));
     }
 }
