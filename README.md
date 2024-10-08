@@ -8,6 +8,7 @@ Características
     Registro de ingresos y gastos: Permite registrar transacciones con cantidad y concepto.
     Historial de transacciones: Muestra un historial detallado con fecha y hora.
     Función de deshacer: Permite eliminar la última transacción registrada.
+    Función de cambiar tema: Permite alternar entre tema claro y oscuro.
     Interfaz gráfica de usuario (GUI): Desarrollada con JavaFX para una experiencia interactiva.
 
 Requisitos
@@ -71,4 +72,4 @@ Contribuciones
 Si deseas contribuir al proyecto, siéntete libre de hacer un fork del repositorio y enviar tus pull requests.
 
 
-V-1.3.0-alpha
+Alpha version 1.0 en desarrollo.
