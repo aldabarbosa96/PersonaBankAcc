@@ -98,7 +98,7 @@ public class MainBank extends Application {
 
         TextArea historialArea = new TextArea();
         historialArea.setPrefSize(250, 320);
-        historialArea.setText("HISTORIAL\n-----------------------------\n");
+        historialArea.setText("         HISTORIAL\n-----------------------------\n");
         historialArea.setEditable(false);
 
         TextArea fechaHoraArea = new TextArea();
