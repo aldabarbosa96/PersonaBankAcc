@@ -15,11 +15,12 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Clase principal de la aplicación Personal Bank Account (PBA).
  */
-public class MainBank extends Application {
+public class MainBankWindow extends Application {
     private ArrayList<String> historial = new ArrayList<>();
     private DecimalFormat df;
     private double totalInicial = 0.0;
@@ -35,7 +36,7 @@ public class MainBank extends Application {
      * @param dbmanager Gestor de la DB.
      * @param userId    Identificador del usuario.
      */
-    public MainBank(DataBaseManager dbmanager, int userId) {
+    public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
         this.userId = userId;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
@@ -49,7 +50,7 @@ public class MainBank extends Application {
         Label labelTotal = new Label("TOTAL: ");
 
         TextField textFieldCantidad = new TextField("00.00");
-        textFieldCantidad.setPromptText("00.00"); //placeholders
+        textFieldCantidad.setPromptText("00.00"); //placeholder
         textFieldCantidad.setPrefWidth(105);
         textFieldCantidad.setMinHeight(10);
 
@@ -58,10 +59,10 @@ public class MainBank extends Application {
         textFieldConcepto.setPrefWidth(105);
         textFieldConcepto.setMinHeight(10);
 
-        //formateador 16 chars
+
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
-            if (newText.length() <= 16) {
+            if (newText.length() <= 16) { //formateador 16 chars
                 return change;
             } else {
                 return null;
@@ -77,20 +78,26 @@ public class MainBank extends Application {
         botonTema.setMinHeight(30);
         botonTema.setFocusTraversable(false); //evita que el botón sea enfocable con Tab
 
+        Button botonDetalles = new Button("Detalles");
+        botonDetalles.setMinHeight(30);
+        botonDetalles.setMinHeight(30);
+        botonDetalles.setFocusTraversable(false);
+
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacer, botonTema);
+        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacer, botonTema, botonDetalles);
         hboxCantidadTema.setAlignment(Pos.CENTER_LEFT);
 
         HBox hboxConcepto = new HBox(10, textFieldConcepto);
         hboxConcepto.setAlignment(Pos.CENTER_LEFT);
 
-        Button botonIngreso = new Button("Registrar ingreso");
-        Button botonGasto = new Button("Registrar gasto");
+        Button botonIngreso = new Button("INGRESO");
+        Button botonGasto = new Button("GASTO");
         Button botonUndo = new Button("Deshacer ⎌");
-        botonIngreso.setMinWidth(105);
-        botonGasto.setMinWidth(105);
+        botonIngreso.setMinWidth(108);
+        botonGasto.setMinWidth(108);
         botonUndo.setMinWidth(88);
 
         HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
@@ -154,12 +161,12 @@ public class MainBank extends Application {
         labelTotal.setText("TOTAL:  " + df.format(totalInicial));
 
         VBox vbox = new VBox(20, hboxCantidadTema, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, labelTotal, botonUndo);
-        vbox.setPadding(new Insets(20, 20, 20, 20));
+        vbox.setPadding(new Insets(20));
 
         scene = new Scene(vbox, 420, 620);
 
-        lightTheme = getClass().getResource("/cssThemes/light-theme.css").toExternalForm();
-        darkTheme = getClass().getResource("/cssThemes/dark-theme.css").toExternalForm();
+        lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
+        darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
 
         scene.getStylesheets().add(lightTheme);
 
@@ -168,11 +175,19 @@ public class MainBank extends Application {
         primaryStage.setTitle("PersonalBankAccount");
         primaryStage.show();
 
-        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, null, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
+        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
+        DetailsWindow detailsWindow = new DetailsWindow(userId, totalInicial);
 
         botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
         botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
         botonUndo.setOnAction(e -> buttonActions.deshacer());
         botonTema.setOnAction(e -> buttonActions.cambiarTema(botonTema));
+        botonDetalles.setOnAction(e -> {
+            try {
+                detailsWindow.start(primaryStage);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 }

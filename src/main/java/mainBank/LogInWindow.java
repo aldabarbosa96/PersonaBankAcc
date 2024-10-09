@@ -38,8 +38,8 @@ public class LogInWindow extends Application {
 
             int userId = dbmanager.verifyUser(username, password);
             if (userId != -1) {
-                showMessage("Inicio de sesión correcto", "Bienvenid@ " + username);
-                new MainBank(dbmanager, userId).start(stage);
+                showMessage("Inicio de sesión correcto", "Bienvenido/a " + username);
+                new MainBankWindow(dbmanager, userId).start(stage);
             } else {
                 showMessage("Error", "Usuario o contraseña incorrectos");
             }

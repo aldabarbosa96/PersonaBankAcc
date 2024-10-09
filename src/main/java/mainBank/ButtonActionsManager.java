@@ -20,7 +20,6 @@ public class ButtonActionsManager {
     private ArrayList<String> fechas;
     private Label label1;
     private Label label2;
-    private Label label3;
     private TextArea historialArea;
     private TextArea fechaHoraArea;
     private DecimalFormat df;
@@ -39,7 +38,6 @@ public class ButtonActionsManager {
      * @param fechas        Lista de fechas y horas de las transacciones.
      * @param label1        Label para mostrar mensajes.
      * @param label2        Label para mostrar el total.
-     * @param label3        Label para mostrar el concepto (no utilizado en este contexto).
      * @param historialArea Área de texto para mostrar el historial.
      * @param fechaHoraArea Área de texto para mostrar fechas y horas.
      * @param df            Formato decimal para las cantidades.
@@ -49,13 +47,12 @@ public class ButtonActionsManager {
      * @param lightTheme    Ruta al tema claro.
      * @param darkTheme     Ruta al tema oscuro.
      */
-    public ButtonActionsManager(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, Label label3, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df, DataBaseManager dbmanager, int userId, Scene scene, String lightTheme, String darkTheme) {
+    public ButtonActionsManager(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df, DataBaseManager dbmanager, int userId, Scene scene, String lightTheme, String darkTheme) {
         this.total = totalInicial;
         this.historial = historial;
         this.fechas = fechas;
         this.label1 = label1;
         this.label2 = label2;
-        this.label3 = label3;
         this.historialArea = historialArea;
         this.fechaHoraArea = fechaHoraArea;
         this.df = df;
@@ -94,7 +91,7 @@ public class ButtonActionsManager {
             String formattedLine = String.format("  %-10s %-25s", transaccionConFecha, concepto1);
             historialArea.appendText(formattedLine + "\n");
 
-            // Doble salto de línea al inicio del registro de hora/fecha (para alinear con cantidades)
+            //doble salto de línea al inicio del registro de hora/fecha (para alinear con cantidades)
             if (fechaHoraArea.getText().isEmpty()) {
                 fechaHoraArea.setText("\n\n");
             }
@@ -219,4 +216,5 @@ public class ButtonActionsManager {
             toggleButton.setText("☽");
         }
     }
+
 }
