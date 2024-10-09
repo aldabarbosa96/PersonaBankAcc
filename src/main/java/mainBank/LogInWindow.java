@@ -41,20 +41,32 @@ public class LogInWindow extends Application {
                 showMessage("Inicio de sesión correcto", "Bienvenido/a " + username);
                 new MainBankWindow(dbmanager, userId).start(stage);
             } else {
-                showMessage("Error", "Usuario o contraseña incorrectos");
+                showError("Error", "Usuario o contraseña incorrectos");
             }
         });
 
         registerButton.setOnAction(e -> {
-            String username = usernameField.getText();
-            String password = passwordField.getText();
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
 
-            if (dbmanager.insertUser(username, password)) {
+            if (username.isEmpty() || password.isEmpty()) {
+                showError("Error de Registro", "El nombre de usuario y la contraseña no pueden estar vacíos.");
+                return;
+            }
+
+            boolean success = dbmanager.insertUser(username, password);
+            if (success) {
                 showMessage("Éxito", "Usuario registrado con éxito");
             } else {
-                showMessage("Error", "Nombre de usuario ya existente");
+                if (!dbmanager.userIsValid(username)) {
+                    showError("Error de Registro", "Nombre de usuario inválido. Solo se permiten letras, números, guiones bajos y puntos.");
+                } else {
+                    showError("Error de Registro", "Nombre de usuario ya existente");
+                }
             }
         });
+
+
 
         Scene scene = new Scene(vbox, 300, 220);
         stage.setScene(scene);
@@ -73,6 +85,13 @@ public class LogInWindow extends Application {
     private void showMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }

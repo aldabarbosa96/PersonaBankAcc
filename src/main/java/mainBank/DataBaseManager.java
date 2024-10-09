@@ -90,29 +90,40 @@ public class DataBaseManager {
     public boolean insertUser(String username, String password) {
         String sqlCheck = "SELECT * FROM users WHERE username = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
-            preparedStatement.setString(1, username);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                System.out.println("El usuario ya existe");
-                return false;
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al verificar usuario: " + e.getMessage());
+        if (!userIsValid(username)) {
+            System.out.println("Nombre de usuario inválido. Solo se permiten letras, números, guiones bajos y puntos.");
             return false;
         }
 
-        String sqlInsert = "INSERT INTO users(username, password) VALUES(?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)) {
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            preparedStatement.executeUpdate();
-            System.out.println("Usuario registrado con éxito");
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error al insertar usuario: " + e.getMessage());
-            return false;
-        }
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
+                preparedStatement.setString(1, username);
+                ResultSet rs = preparedStatement.executeQuery();
+                if (rs.next()) {
+                    System.out.println("El usuario ya existe");
+                    return false;
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al verificar usuario: " + e.getMessage());
+                return false;
+            }
+
+            String sqlInsert = "INSERT INTO users(username, password) VALUES(?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                preparedStatement.executeUpdate();
+                System.out.println("Usuario registrado con éxito");
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error al insertar usuario: " + e.getMessage());
+                return false;
+            }
+    }
+
+    public boolean userIsValid(String username){
+        String regex = "[a-zA-Z0-9_.]+$";
+        return username.matches(regex);
+
     }
 
     /**

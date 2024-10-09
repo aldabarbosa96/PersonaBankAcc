@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * Clase principal de la aplicación Personal Bank Account (PBA).
  */
-public class MainBankWindow extends Application {
+public class MainBankWindow {
     private ArrayList<String> historial = new ArrayList<>();
     private DecimalFormat df;
     private double totalInicial = 0.0;
@@ -44,20 +44,19 @@ public class MainBankWindow extends Application {
         dbmanager.setDecimalFormat(df);
     }
 
-    @Override
     public void start(Stage primaryStage) {
         Label labelRegistros = new Label("Ingresos/Gastos registrados: ");
         Label labelTotal = new Label("TOTAL: ");
 
-        TextField textFieldCantidad = new TextField("00.00");
+        TextField textFieldCantidad = new TextField();
         textFieldCantidad.setPromptText("00.00"); //placeholder
         textFieldCantidad.setPrefWidth(105);
         textFieldCantidad.setMinHeight(25);
 
         TextField textFieldConcepto = new TextField();
         textFieldConcepto.setPromptText("Concepto");
-        textFieldConcepto.setPrefWidth(105);
-        textFieldConcepto.setMinHeight(25);
+        textFieldConcepto.setPrefWidth(240);
+        textFieldConcepto.setMinHeight(30);
 
 
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
@@ -95,8 +94,8 @@ public class MainBankWindow extends Application {
         Button botonIngreso = new Button("INGRESO");
         Button botonGasto = new Button("GASTO");
         Button botonUndo = new Button("Deshacer ⎌");
-        botonIngreso.setMinWidth(108);
-        botonGasto.setMinWidth(108);
+        botonIngreso.setMinWidth(115);
+        botonGasto.setMinWidth(115);
         botonUndo.setMinWidth(88);
 
         HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
@@ -174,7 +173,7 @@ public class MainBankWindow extends Application {
         VBox vbox = new VBox(20, hboxCantidadTema, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
         vbox.setPadding(new Insets(20));
 
-        scene = new Scene(vbox, 420, 620);
+        scene = new Scene(vbox, 460, 620);
 
         lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
         darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
