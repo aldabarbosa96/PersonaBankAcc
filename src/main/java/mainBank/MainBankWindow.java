@@ -39,8 +39,11 @@ public class MainBankWindow {
     public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
         this.userId = userId;
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        df = new DecimalFormat("0.00", symbols);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("es", "ES"));
+        symbols.setDecimalSeparator(',');
+        symbols.setGroupingSeparator('.');
+        df = new DecimalFormat("#,##0.00", symbols);
+
         dbmanager.setDecimalFormat(df);
     }
 
@@ -143,7 +146,9 @@ public class MainBankWindow {
                 String tipo = parts[0];
                 String cantidadStr = parts[1];
 
-                double cantidad = Double.parseDouble(cantidadStr.replace(",", "."));
+                cantidadStr = cantidadStr.replace(".", "").replace(",", ".");
+
+                double cantidad = Double.parseDouble(cantidadStr);
 
                 if (tipo.equals("+")) {
                     totalInicial += cantidad;

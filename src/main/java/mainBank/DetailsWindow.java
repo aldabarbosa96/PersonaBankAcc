@@ -68,7 +68,9 @@ public class DetailsWindow {
                 String cantidadStr = parts[1];
                 String concepto = (parts.length > 2) ? parts[2] : "";
 
-                double cantidad = Double.parseDouble(cantidadStr.replace(",", "."));
+                cantidadStr = cantidadStr.replace(".", "").replace(",", ".");
+
+                double cantidad = Double.parseDouble(cantidadStr);
 
                 if (tipo.equals("+")) {
                     runningTotal += cantidad;
