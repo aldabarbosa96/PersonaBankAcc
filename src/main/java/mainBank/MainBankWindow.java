@@ -29,6 +29,7 @@ public class MainBankWindow {
     private Scene scene;
     private String lightTheme;
     private String darkTheme;
+    private Stage detallesStage;
 
     /**
      * Constructor de la clase MainBank.
@@ -201,12 +202,19 @@ public class MainBankWindow {
 
         ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
 
-        DetailsWindow detailsWindow = new DetailsWindow(userId, totalInicial, dbmanager, df);
-
         botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
         botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
         botonUndo.setOnAction(e -> buttonActions.deshacer());
         botonTema.setOnAction(e -> buttonActions.cambiarTema(botonTema));
-        botonDetalles.setOnAction(e -> detailsWindow.show());
+        botonDetalles.setOnAction(e -> {
+            if (detallesStage == null || !detallesStage.isShowing()) {
+                DetailsWindow detailsWindow = new DetailsWindow(userId, totalInicial, dbmanager, df);
+                detallesStage = detailsWindow.getStage();
+                detallesStage.show();
+            } else {
+                detallesStage.close();
+            }
+        });
+
     }
 }

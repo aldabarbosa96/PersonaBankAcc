@@ -14,33 +14,22 @@ import java.util.Objects;
  * Clase que gestiona la ventana de detalles de transacciones.
  */
 public class DetailsWindow {
+    private Stage stage;
     private DataBaseManager dbmanager;
     private int userId;
     private double total;
     private DecimalFormat df;
-    private String lightTheme;
-    private String darkTheme;
 
-    /**
-     * Constructor de la clase DetailsWindow.
-     *
-     * @param userId    Identificador del usuario.
-     * @param total     Total actual del usuario.
-     * @param dbmanager Gestor de la DB.
-     * @param df        Formato decimal para las cantidades.
-     */
     public DetailsWindow(int userId, double total, DataBaseManager dbmanager, DecimalFormat df) {
         this.userId = userId;
         this.total = total;
         this.dbmanager = dbmanager;
         this.df = df;
+        this.stage = new Stage();
+        createWindow();
     }
 
-    /**
-     * Muestra la ventana de detalles de transacciones.
-     */
-    public void show() {
-        Stage stage = new Stage();
+    private void createWindow() {
         stage.setTitle("Detalles de Transacciones");
 
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
@@ -95,8 +84,8 @@ public class DetailsWindow {
         vbox.setPadding(new Insets(20));
         Scene scene = new Scene(vbox, 580, 400);
 
-        lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
-        darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
+        String lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
+        String darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             scene.getStylesheets().add(lightTheme);
@@ -115,6 +104,9 @@ public class DetailsWindow {
 
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.show();
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }
