@@ -22,6 +22,7 @@
 .custom-text-area {
     -fx-control-inner-background: white;
     -fx-text-fill: black;
+    -fx-border-color: lightgray;
 }
 
 .custom-text-field {
@@ -41,8 +42,6 @@
     -fx-border-color: darkgray;
     -fx-border-width: 1px;
 }
-
-
 
 /* Eliminar barra de desplazamiento horizontal */
 .text-area .scroll-pane {
