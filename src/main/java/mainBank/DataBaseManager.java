@@ -27,7 +27,7 @@ public class DataBaseManager {
     public void dbconnect() {
         try {
             String userHome = System.getProperty("user.home");
-            String dbPath = userHome + File.separator + "PersonalBank.db";//
+            String dbPath = userHome + File.separator + "PersonalBank.db";
 
             String url = "jdbc:sqlite:" + dbPath;
             System.out.println("Conectando a la base de datos en: " + dbPath);
@@ -42,8 +42,8 @@ public class DataBaseManager {
      */
     public void dbdisconnect() {
         try {
-            if (connection != null) {
-                connection.close();//cierra la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
                 System.out.println("Desconectado de la base de datos");
             }
         } catch (SQLException e) {
@@ -74,8 +74,7 @@ public class DataBaseManager {
         try (Statement statement = connection.createStatement()) {
             statement.execute(sql);
             statement.execute(sqlTransactions);
-            System.out.println("Tabla creada o ya existente");
-
+            System.out.println("Tablas creadas o ya existentes");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -92,7 +91,7 @@ public class DataBaseManager {
         String sqlCheck = "SELECT * FROM users WHERE username = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
-            preparedStatement.setString(1, username); //
+            preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 System.out.println("El usuario ya existe");
@@ -105,10 +104,10 @@ public class DataBaseManager {
 
         String sqlInsert = "INSERT INTO users(username, password) VALUES(?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)) {
-            preparedStatement.setString(1, username); //establece username
-            preparedStatement.setString(2, password); //establece password
-            preparedStatement.executeUpdate(); //ejecuta la inserción
-            System.out.println("Usuario generado con éxito");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+            System.out.println("Usuario registrado con éxito");
             return true;
         } catch (SQLException e) {
             System.out.println("Error al insertar usuario: " + e.getMessage());
@@ -152,15 +151,13 @@ public class DataBaseManager {
      * @param timestamp       Marca de tiempo.
      * @param concept         Concepto de la transacción.
      */
-
     public void insertTransaction(int userId, String transactionType, double amount, String timestamp, String concept) {
-        String formattedAmount = df.format(amount).replace(",", ".");
         String sql = "INSERT INTO transactions(user_id, transaction_type, amount, timestamp, concept) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, transactionType);
-            preparedStatement.setDouble(3, Double.parseDouble(formattedAmount));
+            preparedStatement.setDouble(3, amount);
             preparedStatement.setString(4, timestamp);
             preparedStatement.setString(5, concept);
             preparedStatement.executeUpdate();

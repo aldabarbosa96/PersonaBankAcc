@@ -22,6 +22,7 @@
 .custom-text-area {
     -fx-control-inner-background: #3c3f41;
     -fx-text-fill: lightgray;
+    -fx-border-color: lightgray;
 }
 
 .custom-text-field {

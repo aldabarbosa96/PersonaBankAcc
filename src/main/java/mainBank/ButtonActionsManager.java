@@ -91,7 +91,6 @@ public class ButtonActionsManager {
             String formattedLine = String.format("  %-10s %-25s", transaccionConFecha, concepto1);
             historialArea.appendText(formattedLine + "\n");
 
-            //doble salto de línea al inicio del registro de hora/fecha (para alinear con cantidades)
             if (fechaHoraArea.getText().isEmpty()) {
                 fechaHoraArea.setText("\n\n");
             }
@@ -204,17 +203,12 @@ public class ButtonActionsManager {
      * @param toggleButton El botón que activa el cambio de tema.
      */
     public void cambiarTema(Button toggleButton) {
-        if (isDarkTheme) {
-            scene.getStylesheets().remove(darkTheme);
-            scene.getStylesheets().add(lightTheme);
-            isDarkTheme = false;
-            toggleButton.setText("☽");
+        if (ThemeManager.getCurrentTheme().equals("light")) {
+            ThemeManager.setCurrentTheme("dark");
+            toggleButton.setText("☀");
         } else {
-            scene.getStylesheets().remove(lightTheme);
-            scene.getStylesheets().add(darkTheme);
-            isDarkTheme = true;
+            ThemeManager.setCurrentTheme("light");
             toggleButton.setText("☽");
         }
     }
-
 }

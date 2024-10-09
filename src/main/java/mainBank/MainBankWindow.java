@@ -52,17 +52,17 @@ public class MainBankWindow extends Application {
         TextField textFieldCantidad = new TextField("00.00");
         textFieldCantidad.setPromptText("00.00"); //placeholder
         textFieldCantidad.setPrefWidth(105);
-        textFieldCantidad.setMinHeight(10);
+        textFieldCantidad.setMinHeight(25);
 
         TextField textFieldConcepto = new TextField();
         textFieldConcepto.setPromptText("Concepto");
         textFieldConcepto.setPrefWidth(105);
-        textFieldConcepto.setMinHeight(10);
+        textFieldConcepto.setMinHeight(25);
 
 
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
-            if (newText.length() <= 16) { //formateador 16 chars
+            if (newText.length() <= 16) { //limitamos a 16 caracteres el concepto
                 return change;
             } else {
                 return null;
@@ -80,14 +80,13 @@ public class MainBankWindow extends Application {
 
         Button botonDetalles = new Button("Detalles");
         botonDetalles.setMinHeight(30);
-        botonDetalles.setMinHeight(30);
+        botonDetalles.setMinWidth(90);
         botonDetalles.setFocusTraversable(false);
 
+        Region spacerTop = new Region();
+        HBox.setHgrow(spacerTop, Priority.ALWAYS);
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacer, botonTema, botonDetalles);
+        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacerTop, botonTema);
         hboxCantidadTema.setAlignment(Pos.CENTER_LEFT);
 
         HBox hboxConcepto = new HBox(10, textFieldConcepto);
@@ -107,10 +106,12 @@ public class MainBankWindow extends Application {
         historialArea.setPrefSize(250, 320);
         historialArea.setText("         HISTORIAL\n-----------------------------\n");
         historialArea.setEditable(false);
+        historialArea.setFocusTraversable(false);
 
         TextArea fechaHoraArea = new TextArea();
         fechaHoraArea.setPrefSize(175, 320);
         fechaHoraArea.setEditable(false);
+        fechaHoraArea.setFocusTraversable(false);
 
         historialArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
         fechaHoraArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
@@ -160,7 +161,17 @@ public class MainBankWindow extends Application {
 
         labelTotal.setText("TOTAL:  " + df.format(totalInicial));
 
-        VBox vbox = new VBox(20, hboxCantidadTema, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, labelTotal, botonUndo);
+        HBox hboxTotal = new HBox(labelTotal);
+        hboxTotal.setAlignment(Pos.CENTER_LEFT);
+
+        HBox hboxDeshacerDetalles = new HBox();
+        hboxDeshacerDetalles.setAlignment(Pos.CENTER_LEFT);
+        hboxDeshacerDetalles.setSpacing(10);
+        Region spacerDeshacer = new Region();
+        HBox.setHgrow(spacerDeshacer, Priority.ALWAYS);
+        hboxDeshacerDetalles.getChildren().addAll(botonUndo, spacerDeshacer, botonDetalles);
+
+        VBox vbox = new VBox(20, hboxCantidadTema, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
         vbox.setPadding(new Insets(20));
 
         scene = new Scene(vbox, 420, 620);
@@ -170,24 +181,28 @@ public class MainBankWindow extends Application {
 
         scene.getStylesheets().add(lightTheme);
 
+        ThemeManager.currentThemeProperty().addListener((observable, oldValue, newValue) -> {
+            scene.getStylesheets().clear();
+            if (newValue.equals("light")) {
+                scene.getStylesheets().add(lightTheme);
+            } else {
+                scene.getStylesheets().add(darkTheme);
+            }
+        });
+
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("PersonalBankAccount");
         primaryStage.show();
 
         ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
-        DetailsWindow detailsWindow = new DetailsWindow(userId, totalInicial);
+
+        DetailsWindow detailsWindow = new DetailsWindow(userId, totalInicial, dbmanager, df);
 
         botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
         botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
         botonUndo.setOnAction(e -> buttonActions.deshacer());
         botonTema.setOnAction(e -> buttonActions.cambiarTema(botonTema));
-        botonDetalles.setOnAction(e -> {
-            try {
-                detailsWindow.start(primaryStage);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        botonDetalles.setOnAction(e -> detailsWindow.show());
     }
 }
