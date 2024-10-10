@@ -10,6 +10,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -121,10 +122,8 @@ public class MainBankWindow {
 
         labelRegistros.getStyleClass().add("custom-label");
         labelTotal.getStyleClass().add("custom-label");
-
         historialArea.getStyleClass().add("custom-text-area");
         fechaHoraArea.getStyleClass().add("custom-text-area");
-
         textFieldCantidad.getStyleClass().add("custom-text-field");
         textFieldConcepto.getStyleClass().add("custom-text-field");
 
@@ -164,7 +163,7 @@ public class MainBankWindow {
             fechasHoras.add(transaction[1]);
         }
 
-        labelTotal.setText("TOTAL:  " + df.format(totalInicial));
+        labelTotal.setText("TOTAL:  " + df.format(totalInicial) + " €");
 
         HBox hboxTotal = new HBox(labelTotal);
         hboxTotal.setAlignment(Pos.CENTER_LEFT);
@@ -199,6 +198,12 @@ public class MainBankWindow {
         primaryStage.setScene(scene);
         primaryStage.setTitle("PersonalBankAccount");
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest((WindowEvent event) -> {
+            if (detallesStage != null && detallesStage.isShowing()) {
+                detallesStage.close();
+            }
+        });
 
         ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
 

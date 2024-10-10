@@ -79,7 +79,7 @@ public class ButtonActionsManager {
             total += cantidad;
 
             label1.setText("Último ingreso:  " + df.format(cantidad));
-            label2.setText("TOTAL:  " + df.format(total));
+            label2.setText("TOTAL:  " + df.format(total) + " €");
 
             String transaccionConFecha = "+ " + df.format(cantidad);
             String concepto1 = concepto.getText().trim();
@@ -126,7 +126,7 @@ public class ButtonActionsManager {
             total -= cantidad;
 
             label1.setText("Último gasto:  " + df.format(cantidad));
-            label2.setText("TOTAL:  " + df.format(total));
+            label2.setText("TOTAL:  " + df.format(total) + " €");
 
             String transaccionConFecha = "- " + df.format(cantidad);
             String concepto1 = concepto.getText().trim();
@@ -171,7 +171,9 @@ public class ButtonActionsManager {
                 String tipo = parts[0];
                 String cantidadStr = parts[1];
 
-                double valor = Double.parseDouble(cantidadStr.replace(",", "."));
+                cantidadStr = cantidadStr.replace(".", "").replace(",", ".");
+
+                double valor = Double.parseDouble(cantidadStr);
 
                 if (tipo.equals("+")) {
                     total -= valor;
@@ -180,7 +182,7 @@ public class ButtonActionsManager {
                 }
 
                 label1.setText("Última acción deshecha:  " + lastTransaction);
-                label2.setText("TOTAL:  " + df.format(total));
+                label2.setText("TOTAL:  " + df.format(total) + " €");
 
                 String historialTexto = historialArea.getText();
                 int ultimaLinea = historialTexto.lastIndexOf("\n", historialTexto.length() - 2);
