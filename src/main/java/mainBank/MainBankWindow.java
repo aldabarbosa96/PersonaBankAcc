@@ -1,10 +1,11 @@
 package mainBank;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
@@ -23,6 +24,7 @@ import java.util.Objects;
  */
 public class MainBankWindow {
     private ArrayList<String> historial = new ArrayList<>();
+    private ArrayList<String> fechas = new ArrayList<>();
     private DecimalFormat df;
     private double totalInicial = 0.0;
     private DataBaseManager dbmanager;
@@ -54,7 +56,7 @@ public class MainBankWindow {
         Label labelTotal = new Label("TOTAL: ");
 
         TextField textFieldCantidad = new TextField();
-        textFieldCantidad.setPromptText("00.00"); //placeholder
+        textFieldCantidad.setPromptText("00.00");
         textFieldCantidad.setPrefWidth(105);
         textFieldCantidad.setMinHeight(25);
 
@@ -63,24 +65,40 @@ public class MainBankWindow {
         textFieldConcepto.setPrefWidth(240);
         textFieldConcepto.setMinHeight(30);
 
-
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
-            if (newText.length() <= 16) { //limitamos a 16 caracteres el concepto
-                return change;
-            } else {
-                return null;
-            }
+            return newText.length() <= 16 ? change : null;
         });
         textFieldConcepto.setTextFormatter(textFormatter);
 
         HBox hboxCantidad = new HBox(10, textFieldCantidad);
         hboxCantidad.setAlignment(Pos.CENTER_LEFT);
 
-        Button botonTema = new Button("☽");
+        Button botonTema = new Button();
         botonTema.setMinWidth(30);
         botonTema.setMinHeight(30);
-        botonTema.setFocusTraversable(false); //evita que el botón sea enfocable con Tab
+        botonTema.setFocusTraversable(false);
+
+        Image iconSol = new Image(getClass().getResourceAsStream("/images/sun.png"));
+        Image iconLuna = new Image(getClass().getResourceAsStream("/images/moon.png"));
+        Image iconUndo = new Image(getClass().getResourceAsStream("/images/undo.png"));
+
+        ImageView viewSol = new ImageView(iconSol);
+        ImageView viewLuna = new ImageView(iconLuna);
+        ImageView viewUndo = new ImageView(iconUndo);
+
+        viewSol.setFitWidth(20);
+        viewSol.setFitHeight(20);
+        viewLuna.setFitWidth(20);
+        viewLuna.setFitHeight(20);
+        viewUndo.setFitWidth(10);
+        viewUndo.setFitHeight(10);
+
+        if (ThemeManager.getCurrentTheme().equals("light")) {
+            botonTema.setGraphic(viewLuna);
+        } else {
+            botonTema.setGraphic(viewSol);
+        }
 
         Button botonDetalles = new Button("Detalles");
         botonDetalles.setMinHeight(30);
@@ -98,10 +116,11 @@ public class MainBankWindow {
 
         Button botonIngreso = new Button("INGRESO");
         Button botonGasto = new Button("GASTO");
-        Button botonUndo = new Button("Deshacer ⎌");
+        Button botonUndo = new Button("Deshacer");
         botonIngreso.setMinWidth(115);
         botonGasto.setMinWidth(115);
         botonUndo.setMinWidth(88);
+        botonUndo.setGraphic(viewUndo);
 
         HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
         hboxBotones.setAlignment(Pos.CENTER_LEFT);
@@ -130,7 +149,6 @@ public class MainBankWindow {
         HBox hboxHistorial = new HBox(0, historialArea, fechaHoraArea);
         hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
-        ArrayList<String> fechasHoras = new ArrayList<>();
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
 
         fechaHoraArea.setText("\n\n");
@@ -155,12 +173,12 @@ public class MainBankWindow {
                 } else if (tipo.equals("-")) {
                     totalInicial -= cantidad;
                 }
+
+                historial.add(formattedLine);
+                fechas.add(transaction[1]);
             } else {
                 System.out.println("Formato de transacción inválido: " + transaction[0]);
             }
-
-            historial.add(formattedLine);
-            fechasHoras.add(transaction[1]);
         }
 
         labelTotal.setText("TOTAL:  " + df.format(totalInicial) + " €");
@@ -205,12 +223,22 @@ public class MainBankWindow {
             }
         });
 
-        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechasHoras, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
+        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
 
         botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
         botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
         botonUndo.setOnAction(e -> buttonActions.deshacer());
-        botonTema.setOnAction(e -> buttonActions.cambiarTema(botonTema));
+
+        botonTema.setOnAction(e -> {
+            if (ThemeManager.getCurrentTheme().equals("light")) {
+                ThemeManager.setCurrentTheme("dark");
+                botonTema.setGraphic(viewSol);
+            } else {
+                ThemeManager.setCurrentTheme("light");
+                botonTema.setGraphic(viewLuna);
+            }
+        });
+
         botonDetalles.setOnAction(e -> {
             if (detallesStage == null || !detallesStage.isShowing()) {
                 DetailsWindow detailsWindow = new DetailsWindow(userId, totalInicial, dbmanager, df);
@@ -220,6 +248,5 @@ public class MainBankWindow {
                 detallesStage.close();
             }
         });
-
     }
 }

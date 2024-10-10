@@ -198,19 +198,4 @@ public class ButtonActionsManager {
             }
         }
     }
-
-    /**
-     * Cambia el tema de la aplicación entre claro y oscuro.
-     *
-     * @param toggleButton El botón que activa el cambio de tema.
-     */
-    public void cambiarTema(Button toggleButton) {
-        if (ThemeManager.getCurrentTheme().equals("light")) {
-            ThemeManager.setCurrentTheme("dark");
-            toggleButton.setText("☀");
-        } else {
-            ThemeManager.setCurrentTheme("light");
-            toggleButton.setText("☽");
-        }
-    }
 }
