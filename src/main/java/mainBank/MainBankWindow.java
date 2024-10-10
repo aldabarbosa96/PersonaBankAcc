@@ -1,11 +1,13 @@
 package mainBank;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
@@ -130,6 +132,29 @@ public class MainBankWindow {
         historialArea.setText("         HISTORIAL\n-----------------------------\n");
         historialArea.setEditable(false);
         historialArea.setFocusTraversable(false);
+
+        Platform.runLater(() -> { //gestiona el bloqueo del desplazamiento horizontal en el historialArea
+            ScrollPane scrollPane = (ScrollPane) historialArea.lookup(".scroll-pane");
+            if (scrollPane != null) {
+                scrollPane.hvalueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal.doubleValue() != 0) {
+                        scrollPane.setHvalue(0);
+                    }
+                });
+
+                scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+                    if (event.getDeltaX() != 0) {
+                        event.consume();
+                    }
+                });
+
+                scrollPane.getContent().addEventFilter(ScrollEvent.SCROLL, event -> {
+                    if (event.getDeltaX() != 0) {
+                        event.consume();
+                    }
+                });
+            }
+        });
 
         TextArea fechaHoraArea = new TextArea();
         fechaHoraArea.setPrefSize(175, 320);
