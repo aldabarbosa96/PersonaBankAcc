@@ -24,10 +24,10 @@ public class SettingsWindow {
         stage.setTitle("Ajustes");
 
         TextArea textAreaAjustes = new TextArea();
-        textAreaAjustes.setPrefSize(475, 450);
+        textAreaAjustes.setPrefSize(400, 480);
         textAreaAjustes.setEditable(false);
         textAreaAjustes.getStyleClass().addAll("custom-text-area", "custom-font");
-        textAreaAjustes.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
+        textAreaAjustes.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
         textAreaAjustes.setWrapText(true);
 
         InputStream inputStream = getClass().getResourceAsStream("/others/ajustes.txt");
@@ -48,7 +48,7 @@ public class SettingsWindow {
         } else System.out.println("Archivo no encontrado");
 
         VBox vBox = new VBox(textAreaAjustes);
-        Scene scene = new Scene(vBox, 800, 470);
+        Scene scene = new Scene(vBox, 860, 500);
 
         String lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
         String darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
