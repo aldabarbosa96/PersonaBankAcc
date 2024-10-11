@@ -95,32 +95,36 @@ public class DataBaseManager {
             return false;
         }
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
-                preparedStatement.setString(1, username);
-                ResultSet rs = preparedStatement.executeQuery();
-                if (rs.next()) {
-                    System.out.println("El usuario ya existe");
-                    return false;
-                }
-            } catch (SQLException e) {
-                System.out.println("Error al verificar usuario: " + e.getMessage());
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
+            preparedStatement.setString(1, username);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                System.out.println("El usuario ya existe");
                 return false;
             }
+        } catch (SQLException e) {
+            System.out.println("Error al verificar usuario: " + e.getMessage());
+            return false;
+        }
 
-            String sqlInsert = "INSERT INTO users(username, password) VALUES(?, ?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
-                preparedStatement.executeUpdate();
-                System.out.println("Usuario registrado con éxito");
-                return true;
-            } catch (SQLException e) {
-                System.out.println("Error al insertar usuario: " + e.getMessage());
-                return false;
-            }
+        String sqlInsert = "INSERT INTO users(username, password) VALUES(?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+            System.out.println("Usuario registrado con éxito");
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al insertar usuario: " + e.getMessage());
+            return false;
+        }
     }
 
-    public boolean userIsValid(String username){
+    /**
+     * Comprueba que no se han insertado carácteres
+     * especiales en el nombre de usuario (evita SQLInyection)
+     */
+    public boolean userIsValid(String username) {
         String regex = "[a-zA-Z0-9_.]+$";
         return username.matches(regex);
 
@@ -199,8 +203,7 @@ public class DataBaseManager {
                 String timestamp = rs.getString("timestamp");
                 String concept = rs.getString("concept");
 
-                //truncamos el concepto si es demasiado largo
-                if (concept.length() > 25) {
+                if (concept.length() > 25) { //truncamos el concepto si es demasiado largo
                     concept = concept.substring(0, 25);
                 }
 

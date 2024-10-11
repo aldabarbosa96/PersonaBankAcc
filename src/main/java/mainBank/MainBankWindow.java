@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * Clase principal de la aplicación Personal Bank Account (PBA).
- */
+/**Clase principal de la aplicación Personal Bank Account (PBA)
+ * que gestiona la ventana principal de ésta.*/
 public class MainBankWindow {
     private ArrayList<String> historial = new ArrayList<>();
     private ArrayList<String> fechas = new ArrayList<>();
@@ -35,13 +34,8 @@ public class MainBankWindow {
     private String lightTheme;
     private String darkTheme;
     private Stage detallesStage;
+    private Stage ajustesStage;
 
-    /**
-     * Constructor de la clase MainBank.
-     *
-     * @param dbmanager Gestor de la DB.
-     * @param userId    Identificador del usuario.
-     */
     public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
         this.userId = userId;
@@ -59,7 +53,7 @@ public class MainBankWindow {
 
         TextField textFieldCantidad = new TextField();
         textFieldCantidad.setPromptText("00.00");
-        textFieldCantidad.setPrefWidth(105);
+        textFieldCantidad.setPrefWidth(115);
         textFieldCantidad.setMinHeight(25);
 
         TextField textFieldConcepto = new TextField();
@@ -81,13 +75,21 @@ public class MainBankWindow {
         botonTema.setMinHeight(30);
         botonTema.setFocusTraversable(false);
 
+        Button botonAjustes = new Button();
+        botonAjustes.setMinWidth(30);
+        botonAjustes.setMinHeight(30);
+        botonAjustes.setFocusTraversable(false);
+
+
         Image iconSol = new Image(getClass().getResourceAsStream("/images/sun.png"));
         Image iconLuna = new Image(getClass().getResourceAsStream("/images/moon.png"));
         Image iconUndo = new Image(getClass().getResourceAsStream("/images/undo.png"));
+        Image iconConfig = new Image(getClass().getResourceAsStream("/images/configuraciones.png"));
 
         ImageView viewSol = new ImageView(iconSol);
         ImageView viewLuna = new ImageView(iconLuna);
         ImageView viewUndo = new ImageView(iconUndo);
+        ImageView viewConfig = new ImageView(iconConfig);
 
         viewSol.setFitWidth(20);
         viewSol.setFitHeight(20);
@@ -95,6 +97,10 @@ public class MainBankWindow {
         viewLuna.setFitHeight(20);
         viewUndo.setFitWidth(10);
         viewUndo.setFitHeight(10);
+        viewConfig.setFitWidth(20);
+        viewConfig.setFitHeight(20);
+
+        botonAjustes.setGraphic(viewConfig);
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             botonTema.setGraphic(viewLuna);
@@ -113,8 +119,12 @@ public class MainBankWindow {
         HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacerTop, botonTema);
         hboxCantidadTema.setAlignment(Pos.CENTER_LEFT);
 
-        HBox hboxConcepto = new HBox(10, textFieldConcepto);
-        hboxConcepto.setAlignment(Pos.CENTER_LEFT);
+        HBox hboxConceptoAjustes = new HBox();
+        hboxConceptoAjustes.setAlignment(Pos.CENTER_LEFT);
+        hboxConceptoAjustes.setSpacing(10);
+        Region spacerConceptoAjsutes = new Region();
+        HBox.setHgrow(spacerConceptoAjsutes, Priority.ALWAYS);
+        hboxConceptoAjustes.getChildren().addAll(textFieldConcepto, spacerConceptoAjsutes, botonAjustes);
 
         Button botonIngreso = new Button("INGRESO");
         Button botonGasto = new Button("GASTO");
@@ -157,7 +167,7 @@ public class MainBankWindow {
         });
 
         TextArea fechaHoraArea = new TextArea();
-        fechaHoraArea.setPrefSize(175, 320);
+        fechaHoraArea.setPrefSize(160, 320);
         fechaHoraArea.setEditable(false);
         fechaHoraArea.setFocusTraversable(false);
 
@@ -171,7 +181,11 @@ public class MainBankWindow {
         textFieldCantidad.getStyleClass().add("custom-text-field");
         textFieldConcepto.getStyleClass().add("custom-text-field");
 
-        HBox hboxHistorial = new HBox(0, historialArea, fechaHoraArea);
+        Region spacerLeft = new Region();
+        Region spacerRight = new Region();
+        HBox.setHgrow(spacerLeft, Priority.ALWAYS);
+        HBox.setHgrow(spacerRight, Priority.ALWAYS);
+        HBox hboxHistorial = new HBox(spacerLeft, historialArea, fechaHoraArea,spacerRight);
         hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
@@ -218,7 +232,7 @@ public class MainBankWindow {
         HBox.setHgrow(spacerDeshacer, Priority.ALWAYS);
         hboxDeshacerDetalles.getChildren().addAll(botonUndo, spacerDeshacer, botonDetalles);
 
-        VBox vbox = new VBox(20, hboxCantidadTema, hboxConcepto, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
+        VBox vbox = new VBox(20, hboxCantidadTema, hboxConceptoAjustes, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
         vbox.setPadding(new Insets(20));
 
         scene = new Scene(vbox, 460, 620);
@@ -271,6 +285,16 @@ public class MainBankWindow {
                 detallesStage.show();
             } else {
                 detallesStage.close();
+            }
+        });
+
+        botonAjustes.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                SettingsWindow settingsWindow = new SettingsWindow();
+                ajustesStage = settingsWindow.getStage();
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
             }
         });
     }

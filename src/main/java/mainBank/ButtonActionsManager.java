@@ -30,23 +30,6 @@ public class ButtonActionsManager {
     private String lightTheme;
     private String darkTheme;
 
-    /**
-     * Constructor de la clase ButtonActionsManager.
-     *
-     * @param totalInicial  Total inicial del usuario.
-     * @param historial     Lista del historial de transacciones.
-     * @param fechas        Lista de fechas y horas de las transacciones.
-     * @param label1        Label para mostrar mensajes.
-     * @param label2        Label para mostrar el total.
-     * @param historialArea Área de texto para mostrar el historial.
-     * @param fechaHoraArea Área de texto para mostrar fechas y horas.
-     * @param df            Formato decimal para las cantidades.
-     * @param dbmanager     Gestor de la DB.
-     * @param userId        Identificador del usuario.
-     * @param scene         La escena principal.
-     * @param lightTheme    Ruta al tema claro.
-     * @param darkTheme     Ruta al tema oscuro.
-     */
     public ButtonActionsManager(double totalInicial, ArrayList<String> historial, ArrayList<String> fechas, Label label1, Label label2, TextArea historialArea, TextArea fechaHoraArea, DecimalFormat df, DataBaseManager dbmanager, int userId, Scene scene, String lightTheme, String darkTheme) {
         this.total = totalInicial;
         this.historial = historial;

@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Clase que gestiona la ventana de detalles de transacciones.
+ * Clase que gestiona la ventana de detalles de transacciones
+ * añadiendo claridad visual y el total en cada período.
  */
 public class DetailsWindow {
     private Stage stage;
@@ -38,7 +39,7 @@ public class DetailsWindow {
         areaDetalles.setPrefSize(800, 400);
         areaDetalles.setEditable(false);
         areaDetalles.getStyleClass().addAll("custom-text-area", "custom-font");
-        areaDetalles.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
+        areaDetalles.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
 
         String header = String.format("%-12s %-20s %-10s %-12s %-10s\n", "Cantidad", "Concepto", "Hora", "Fecha", "Total");
         areaDetalles.appendText(header);
@@ -82,7 +83,7 @@ public class DetailsWindow {
 
         VBox vbox = new VBox(areaDetalles);
         vbox.setPadding(new Insets(20));
-        Scene scene = new Scene(vbox, 580, 400);
+        Scene scene = new Scene(vbox, 620, 400);
 
         String lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
         String darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();

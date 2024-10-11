@@ -3,6 +3,9 @@ package mainBank;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Clase que gestiona las propiedades de los temas.
+ */
 public class ThemeManager {
     private static final StringProperty currentTheme = new SimpleStringProperty("light");
 

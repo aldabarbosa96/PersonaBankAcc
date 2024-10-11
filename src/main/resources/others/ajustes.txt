@@ -1,0 +1,25 @@
+Breve Guía de uso:
+
+La aplicación Personal Bank Account permite el control exhaustivo de todas las transacciones del usuario, tanto físicas como digitales, permitiendo un monitoreo completo del capital global.
+
+El funcionamiento es básico pero eficaz:
+
+1. Introduzca la cantidad que desea registrar (ya sea un ingreso o gasto).
+
+2. Introduzca concepto (opcional).
+
+3. Escoja el tipo de transacción (ingreso o gasto).
+
+4. Podrá visualizar su transacción en el historial con la fecha y hora.
+
+5. Si se ha equivocado podrá deshacer la última transacción con el botón "Deshacer".
+
+6. Si quiere ver de forma más detallada su historial pulse el botón "Detalles".
+
+7. La aplicación cuenta con tema oscuro y tema claro, pudiendo escoger en el botón de la "luna" o el "sol".
+
+
+Cualquier error por favor repórtese a: aldabarbosa1996@gmail.com
+
+
+V-1.5.7-alpha

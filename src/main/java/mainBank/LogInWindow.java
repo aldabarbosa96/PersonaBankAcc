@@ -8,7 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Clase para la ventana de inicio de sesión y registro de usuarios.
+ * Clase que gestiona la ventana de inicio de sesión y
+ * registro de usuarios (primera ventana en mostrarse).
  */
 public class LogInWindow extends Application {
     private DataBaseManager dbmanager = new DataBaseManager();
@@ -50,7 +51,7 @@ public class LogInWindow extends Application {
             String password = passwordField.getText().trim();
 
             if (username.isEmpty() || password.isEmpty()) {
-                showError("Error de Registro", "El nombre de usuario y la contraseña no pueden estar vacíos.");
+                showError("Error de Registro", "El nombre de usuario y/o la contraseña no pueden estar vacíos.");
                 return;
             }
 
@@ -66,8 +67,6 @@ public class LogInWindow extends Application {
             }
         });
 
-
-
         Scene scene = new Scene(vbox, 300, 220);
         stage.setScene(scene);
         stage.setTitle("Iniciar sesión");
@@ -77,10 +76,10 @@ public class LogInWindow extends Application {
     }
 
     /**
-     * Muestra mensajes de depuración.
+     * (Ambos métodos muestran mensajes de depuración.
      *
      * @param title   Título del cuadro de diálogo.
-     * @param message Mensaje a mostrar.
+     * @param message Mensaje a mostrar (formato estándard o formato error).
      */
     private void showMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -88,6 +87,7 @@ public class LogInWindow extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -96,11 +96,6 @@ public class LogInWindow extends Application {
         alert.showAndWait();
     }
 
-    /**
-     * Método principal para iniciar la aplicación.
-     *
-     * @param args Argumentos de línea de comandos.
-     */
     public static void main(String[] args) {
         launch(args);
     }
