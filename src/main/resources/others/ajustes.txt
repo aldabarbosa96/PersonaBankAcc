@@ -22,4 +22,4 @@ El funcionamiento es básico pero eficaz:
 Cualquier error por favor repórtese a: aldabarbosa1996@gmail.com
 
 
-V-1.5.7-alpha
+V-1.6.1-alpha
