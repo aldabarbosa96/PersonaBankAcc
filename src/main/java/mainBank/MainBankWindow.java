@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
-/**Clase principal de la aplicación Personal Bank Account (PBA)
- * que gestiona la ventana principal de ésta.*/
+/**
+ * Clase principal de la aplicación Personal Bank Account (PBA)
+ * que gestiona la ventana principal de ésta.
+ */
 public class MainBankWindow {
     private ArrayList<String> historial = new ArrayList<>();
     private ArrayList<String> fechas = new ArrayList<>();
@@ -79,6 +81,35 @@ public class MainBankWindow {
         botonAjustes.setMinWidth(30);
         botonAjustes.setMinHeight(30);
         botonAjustes.setFocusTraversable(false);
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem menu1 = new MenuItem("Configuración");
+        MenuItem menu2 = new MenuItem("Cuenta");
+        MenuItem menu3 = new MenuItem("Ayuda");
+
+        contextMenu.getItems().addAll(menu1, menu2, menu3);
+
+        botonAjustes.setOnAction(e -> {
+            if (!contextMenu.isShowing()) {
+                contextMenu.show(botonAjustes, javafx.geometry.Side.BOTTOM, 0, 0);
+            } else {
+                contextMenu.hide();
+            }
+        });
+
+        menu1.setOnAction(e -> System.out.println("Cargando configuraciones..."));
+        menu2.setOnAction(e -> System.out.println("Accediendo a su cuenta..."));
+
+        menu3.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                SettingsWindow settingsWindow = new SettingsWindow();
+                ajustesStage = settingsWindow.getStage();
+                System.out.println("Obteniendo ayuda...");
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
 
 
         Image iconSol = new Image(getClass().getResourceAsStream("/images/sun.png"));
@@ -167,7 +198,7 @@ public class MainBankWindow {
         });
 
         TextArea fechaHoraArea = new TextArea();
-        fechaHoraArea.setPrefSize(160, 320);
+        fechaHoraArea.setPrefSize(175, 320);
         fechaHoraArea.setEditable(false);
         fechaHoraArea.setFocusTraversable(false);
 
@@ -185,7 +216,7 @@ public class MainBankWindow {
         Region spacerRight = new Region();
         HBox.setHgrow(spacerLeft, Priority.ALWAYS);
         HBox.setHgrow(spacerRight, Priority.ALWAYS);
-        HBox hboxHistorial = new HBox(spacerLeft, historialArea, fechaHoraArea,spacerRight);
+        HBox hboxHistorial = new HBox(spacerLeft, historialArea, fechaHoraArea, spacerRight);
         hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
@@ -235,7 +266,7 @@ public class MainBankWindow {
         VBox vbox = new VBox(20, hboxCantidadTema, hboxConceptoAjustes, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
         vbox.setPadding(new Insets(20));
 
-        scene = new Scene(vbox, 460, 620);
+        scene = new Scene(vbox, 480, 620);
 
         lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
         darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
@@ -288,14 +319,5 @@ public class MainBankWindow {
             }
         });
 
-        botonAjustes.setOnAction(e -> {
-            if (ajustesStage == null || !ajustesStage.isShowing()) {
-                SettingsWindow settingsWindow = new SettingsWindow();
-                ajustesStage = settingsWindow.getStage();
-                ajustesStage.show();
-            } else {
-                ajustesStage.close();
-            }
-        });
     }
 }
