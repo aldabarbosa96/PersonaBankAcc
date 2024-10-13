@@ -45,13 +45,15 @@ public class AccountSubWindow {
 
         Button changeUsername = new Button("Change Username");
         Button changePassword = new Button("Change Password");
-        changeUsername.setMaxWidth(150);
-        changePassword.setMaxWidth(150);
+        changeUsername.setMaxWidth(140);
+        changePassword.setMaxWidth(140);
 
         TextField textFieldUsername = new TextField(getUserName(userID));
         TextField textFieldPassword = new TextField(getPassword(userID));
         textFieldUsername.setMaxWidth(100);
         textFieldPassword.setMaxWidth(100);
+        textFieldUsername.setEditable(false);
+        textFieldPassword.setEditable(false);
 
         textFieldUsername.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
         textFieldPassword.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
@@ -75,7 +77,8 @@ public class AccountSubWindow {
         VBox.setMargin(changeUsername, new Insets(35, 0, 10, 0));
         VBox.setMargin(changePassword, new Insets(0, 0, 10, 0));
 
-        Scene scene = new Scene(vBox, 400, 450);
+
+        Scene scene = new Scene(vBox, 300, 350);
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             scene.getStylesheets().add(lightTheme);

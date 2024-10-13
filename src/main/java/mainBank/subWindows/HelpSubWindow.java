@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import mainBank.ThemeManager;
 
 import java.io.*;
-import java.util.Objects;
 
 public class HelpSubWindow {
     private Stage stage;

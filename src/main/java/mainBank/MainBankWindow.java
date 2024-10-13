@@ -185,31 +185,8 @@ public class MainBankWindow {
         historialArea.setEditable(false);
         historialArea.setFocusTraversable(false);
 
-        Platform.runLater(() -> { //gestiona el bloqueo del desplazamiento horizontal en el historialArea
-            ScrollPane scrollPane = (ScrollPane) historialArea.lookup(".scroll-pane");
-            if (scrollPane != null) {
-                scrollPane.hvalueProperty().addListener((obs, oldVal, newVal) -> {
-                    if (newVal.doubleValue() != 0) {
-                        scrollPane.setHvalue(0);
-                    }
-                });
-
-                scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-                    if (event.getDeltaX() != 0) {
-                        event.consume();
-                    }
-                });
-
-                scrollPane.getContent().addEventFilter(ScrollEvent.SCROLL, event -> {
-                    if (event.getDeltaX() != 0) {
-                        event.consume();
-                    }
-                });
-            }
-        });
-
         TextArea fechaHoraArea = new TextArea();
-        fechaHoraArea.setPrefSize(175, 320);
+        fechaHoraArea.setPrefSize(160, 320);
         fechaHoraArea.setEditable(false);
         fechaHoraArea.setFocusTraversable(false);
 
@@ -222,6 +199,58 @@ public class MainBankWindow {
         fechaHoraArea.getStyleClass().add("custom-text-area");
         textFieldCantidad.getStyleClass().add("custom-text-field");
         textFieldConcepto.getStyleClass().add("custom-text-field");
+
+        Platform.runLater(() -> { // Gestiona el bloqueo del desplazamiento horizontal y vertical en el historialArea
+            ScrollPane scrollPane = (ScrollPane) historialArea.lookup(".scroll-pane");
+            if (scrollPane != null) {
+                // Bloquear desplazamiento horizontal
+                scrollPane.hvalueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal.doubleValue() != 0) {
+                        scrollPane.setHvalue(0);
+                    }
+                });
+
+                // Bloquear desplazamiento vertical
+                scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal.doubleValue() != 0) {
+                        scrollPane.setVvalue(0);
+                    }
+                });
+
+                // Consumir eventos de scroll para evitar desplazamiento con la rueda del mouse
+                scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+                    event.consume();
+                });
+
+                scrollPane.getContent().addEventFilter(ScrollEvent.SCROLL, event -> {
+                    event.consume();
+                });
+            }
+        });
+        Platform.runLater(() -> {
+            ScrollPane scrollPane = (ScrollPane) fechaHoraArea.lookup(".scroll-pane");
+            if (scrollPane != null) {
+                scrollPane.hvalueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal.doubleValue() != 0) {
+                        scrollPane.setHvalue(0);
+                    }
+                });
+
+                scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal.doubleValue() != 0) {
+                        scrollPane.setVvalue(0);
+                    }
+                });
+
+                scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+                    event.consume();
+                });
+
+                scrollPane.getContent().addEventFilter(ScrollEvent.SCROLL, event -> {
+                    event.consume();
+                });
+            }
+        });
 
         Region spacerLeft = new Region();
         Region spacerRight = new Region();
