@@ -1,5 +1,6 @@
 package mainBank.subWindows;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
@@ -42,6 +43,11 @@ public class AccountSubWindow {
         username = new Label("Nombre Usuario");
         password = new Label("Contraseña");
 
+        Button changeUsername = new Button("Change Username");
+        Button changePassword = new Button("Change Password");
+        changeUsername.setMaxWidth(150);
+        changePassword.setMaxWidth(150);
+
         TextField textFieldUsername = new TextField(getUserName(userID));
         TextField textFieldPassword = new TextField(getPassword(userID));
         textFieldUsername.setMaxWidth(100);
@@ -54,9 +60,20 @@ public class AccountSubWindow {
         username.getStyleClass().add("custom-label");
         password.getStyleClass().add("custom-label");
 
-        VBox vBox = new VBox(username, textFieldUsername,password,textFieldPassword);
-        vBox.setSpacing(15);
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(30));
         vBox.setAlignment(Pos.BASELINE_CENTER);
+
+        vBox.getChildren().addAll(username, textFieldUsername, password, textFieldPassword, changeUsername, changePassword);
+
+
+        VBox.setMargin(username, new Insets(0, 0, 10, 0));
+        VBox.setMargin(textFieldUsername, new Insets(0, 0, 10, 0));
+
+        VBox.setMargin(password, new Insets(0, 0, 25, 0));
+        VBox.setMargin(textFieldPassword, new Insets(0, 0, 10, 0));
+        VBox.setMargin(changeUsername, new Insets(35, 0, 10, 0));
+        VBox.setMargin(changePassword, new Insets(0, 0, 10, 0));
 
         Scene scene = new Scene(vBox, 400, 450);
 
@@ -78,6 +95,7 @@ public class AccountSubWindow {
         stage.setScene(scene);
         stage.setResizable(false);
     }
+
     private String getUserName(int userID) {
         String sqlUsername = "SELECT username FROM users WHERE id = ?";
         String username = "";
