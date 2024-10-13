@@ -1,17 +1,18 @@
-package mainBank;
+package mainBank.subWindows;
 
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mainBank.ThemeManager;
 
 import java.io.*;
 import java.util.Objects;
 
-public class SettingsWindow {
+public class HelpSubWindow {
     private Stage stage;
 
-    public SettingsWindow() {
+    public HelpSubWindow() { //ventana ayuda
         this.stage = new Stage();
         try {
             createWindow();
@@ -20,11 +21,11 @@ public class SettingsWindow {
         }
     }
 
-    private void createWindow() throws IOException { //por ahora esta ventana solo muestra el futuro apartado "Ayuda"
-        stage.setTitle("Ajustes");
+    private void createWindow() throws IOException {
+        stage.setTitle("Ayuda");
 
         TextArea textAreaAjustes = new TextArea();
-        textAreaAjustes.setPrefSize(400, 480);
+        textAreaAjustes.setPrefSize(375, 725);
         textAreaAjustes.setEditable(false);
         textAreaAjustes.getStyleClass().addAll("custom-text-area", "custom-font");
         textAreaAjustes.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
@@ -48,10 +49,10 @@ public class SettingsWindow {
         } else System.out.println("Archivo no encontrado");
 
         VBox vBox = new VBox(textAreaAjustes);
-        Scene scene = new Scene(vBox, 860, 500);
+        Scene scene = new Scene(vBox, 380, 730);
 
-        String lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
-        String darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
+        String lightTheme = ThemeManager.getLIGHTHEME();
+        String darkTheme = ThemeManager.getDARKTHEME();
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             scene.getStylesheets().add(lightTheme);
@@ -70,9 +71,7 @@ public class SettingsWindow {
 
         stage.setScene(scene);
         stage.setResizable(false);
-
     }
-
     public Stage getStage() {
         return stage;
     }

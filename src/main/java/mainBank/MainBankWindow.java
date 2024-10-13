@@ -14,6 +14,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import mainBank.subWindows.AccountSubWindow;
+import mainBank.subWindows.HelpSubWindow;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -33,10 +35,8 @@ public class MainBankWindow {
     private DataBaseManager dbmanager;
     private int userId;
     private Scene scene;
-    private String lightTheme;
-    private String darkTheme;
-    private Stage detallesStage;
-    private Stage ajustesStage;
+    private String lightTheme, darkTheme;
+    private Stage detallesStage, ajustesStage;
 
     public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
@@ -98,12 +98,23 @@ public class MainBankWindow {
         });
 
         menu1.setOnAction(e -> System.out.println("Cargando configuraciones..."));
-        menu2.setOnAction(e -> System.out.println("Accediendo a su cuenta..."));
+
+
+        menu2.setOnAction(e ->{
+            if (ajustesStage == null || !ajustesStage.isShowing()){
+                AccountSubWindow accountSubWindow = new AccountSubWindow(dbmanager, userId);
+                ajustesStage = accountSubWindow.getStage();
+                System.out.println("Accediendo a su cuenta...");
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
 
         menu3.setOnAction(e -> {
             if (ajustesStage == null || !ajustesStage.isShowing()) {
-                SettingsWindow settingsWindow = new SettingsWindow();
-                ajustesStage = settingsWindow.getStage();
+                HelpSubWindow helpSubWindow = new HelpSubWindow();
+                ajustesStage = helpSubWindow.getStage();
                 System.out.println("Obteniendo ayuda...");
                 ajustesStage.show();
             } else {
@@ -115,7 +126,7 @@ public class MainBankWindow {
         Image iconSol = new Image(getClass().getResourceAsStream("/images/sun.png"));
         Image iconLuna = new Image(getClass().getResourceAsStream("/images/moon.png"));
         Image iconUndo = new Image(getClass().getResourceAsStream("/images/undo.png"));
-        Image iconConfig = new Image(getClass().getResourceAsStream("/images/configuraciones.png"));
+        Image iconConfig = new Image(getClass().getResourceAsStream("/images/settings.png"));
 
         ImageView viewSol = new ImageView(iconSol);
         ImageView viewLuna = new ImageView(iconLuna);
@@ -268,8 +279,8 @@ public class MainBankWindow {
 
         scene = new Scene(vbox, 480, 620);
 
-        lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
-        darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
+        lightTheme = ThemeManager.getLIGHTHEME();
+        darkTheme = ThemeManager.getDARKTHEME();
 
         scene.getStylesheets().add(lightTheme);
 
@@ -290,6 +301,9 @@ public class MainBankWindow {
         primaryStage.setOnCloseRequest((WindowEvent event) -> {
             if (detallesStage != null && detallesStage.isShowing()) {
                 detallesStage.close();
+            }
+            if (ajustesStage != null && ajustesStage.isShowing()) {
+                ajustesStage.close();
             }
         });
 

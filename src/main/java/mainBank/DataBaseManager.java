@@ -240,4 +240,7 @@ public class DataBaseManager {
             System.out.println("Error al eliminar la última transacción: " + e.getMessage());
         }
     }
+    public Connection getConnection(){
+        return connection;
+    }
 }

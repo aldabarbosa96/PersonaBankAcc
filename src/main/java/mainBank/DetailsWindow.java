@@ -36,7 +36,7 @@ public class DetailsWindow {
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
 
         TextArea areaDetalles = new TextArea();
-        areaDetalles.setPrefSize(800, 400);
+        areaDetalles.setPrefSize(800, 540);
         areaDetalles.setEditable(false);
         areaDetalles.getStyleClass().addAll("custom-text-area", "custom-font");
         areaDetalles.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
@@ -83,10 +83,10 @@ public class DetailsWindow {
 
         VBox vbox = new VBox(areaDetalles);
         vbox.setPadding(new Insets(20));
-        Scene scene = new Scene(vbox, 620, 400);
+        Scene scene = new Scene(vbox, 620, 550);
 
-        String lightTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/light-theme.css")).toExternalForm();
-        String darkTheme = Objects.requireNonNull(getClass().getResource("/cssThemes/dark-theme.css")).toExternalForm();
+        String lightTheme = ThemeManager.getLIGHTHEME();
+        String darkTheme = ThemeManager.getDARKTHEME();
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             scene.getStylesheets().add(lightTheme);
