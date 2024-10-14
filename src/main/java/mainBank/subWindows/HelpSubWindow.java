@@ -26,6 +26,7 @@ public class HelpSubWindow {
         TextArea textAreaAjustes = new TextArea();
         textAreaAjustes.setPrefSize(375, 725);
         textAreaAjustes.setEditable(false);
+        textAreaAjustes.setFocusTraversable(false);
         textAreaAjustes.getStyleClass().addAll("custom-text-area", "custom-font");
         textAreaAjustes.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
         textAreaAjustes.setWrapText(true);

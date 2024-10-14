@@ -43,10 +43,10 @@ public class AccountSubWindow {
         username = new Label("Nombre Usuario");
         password = new Label("Contraseña");
 
-        Button changeUsername = new Button("Change Username");
-        Button changePassword = new Button("Change Password");
-        changeUsername.setMaxWidth(140);
-        changePassword.setMaxWidth(140);
+        Button changeUsername = new Button("Cambiar Usuario");
+        Button changePassword = new Button("Cambiar Contraseña");
+        changeUsername.setMaxWidth(150);
+        changePassword.setMaxWidth(150);
 
         TextField textFieldUsername = new TextField(getUserName(userID));
         TextField textFieldPassword = new TextField(getPassword(userID));
@@ -54,6 +54,8 @@ public class AccountSubWindow {
         textFieldPassword.setMaxWidth(100);
         textFieldUsername.setEditable(false);
         textFieldPassword.setEditable(false);
+        textFieldUsername.setFocusTraversable(false);
+        textFieldPassword.setFocusTraversable(false);
 
         textFieldUsername.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
         textFieldPassword.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
@@ -68,7 +70,6 @@ public class AccountSubWindow {
 
         vBox.getChildren().addAll(username, textFieldUsername, password, textFieldPassword, changeUsername, changePassword);
 
-
         VBox.setMargin(username, new Insets(0, 0, 10, 0));
         VBox.setMargin(textFieldUsername, new Insets(0, 0, 10, 0));
 
@@ -78,7 +79,7 @@ public class AccountSubWindow {
         VBox.setMargin(changePassword, new Insets(0, 0, 10, 0));
 
 
-        Scene scene = new Scene(vBox, 300, 350);
+        Scene scene = new Scene(vBox, 275, 350);
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             scene.getStylesheets().add(lightTheme);

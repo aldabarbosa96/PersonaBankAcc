@@ -7,11 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mainBank.subWindows.AccountSubWindow;
@@ -21,12 +19,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
-/**
- * Clase principal de la aplicación Personal Bank Account (PBA)
- * que gestiona la ventana principal de ésta.
- */
 public class MainBankWindow {
     private ArrayList<String> historial = new ArrayList<>();
     private ArrayList<String> fechas = new ArrayList<>();
@@ -45,14 +38,15 @@ public class MainBankWindow {
         symbols.setDecimalSeparator(',');
         symbols.setGroupingSeparator('.');
         df = new DecimalFormat("#,##0.00", symbols);
-
         dbmanager.setDecimalFormat(df);
     }
 
     public void start(Stage primaryStage) {
+        // Configuración de etiquetas
         Label labelRegistros = new Label("Ingresos/Gastos registrados: ");
         Label labelTotal = new Label("TOTAL: ");
 
+        // Configuración de campos de texto
         TextField textFieldCantidad = new TextField();
         textFieldCantidad.setPromptText("00.00");
         textFieldCantidad.setPrefWidth(115);
@@ -69,9 +63,7 @@ public class MainBankWindow {
         });
         textFieldConcepto.setTextFormatter(textFormatter);
 
-        HBox hboxCantidad = new HBox(10, textFieldCantidad);
-        hboxCantidad.setAlignment(Pos.CENTER_LEFT);
-
+        // Configuración de botones y menús
         Button botonTema = new Button();
         botonTema.setMinWidth(30);
         botonTema.setMinHeight(30);
@@ -86,43 +78,9 @@ public class MainBankWindow {
         MenuItem menu1 = new MenuItem("Configuración");
         MenuItem menu2 = new MenuItem("Cuenta");
         MenuItem menu3 = new MenuItem("Ayuda");
-
         contextMenu.getItems().addAll(menu1, menu2, menu3);
 
-        botonAjustes.setOnAction(e -> {
-            if (!contextMenu.isShowing()) {
-                contextMenu.show(botonAjustes, javafx.geometry.Side.BOTTOM, 0, 0);
-            } else {
-                contextMenu.hide();
-            }
-        });
-
-        menu1.setOnAction(e -> System.out.println("Cargando configuraciones..."));
-
-
-        menu2.setOnAction(e ->{
-            if (ajustesStage == null || !ajustesStage.isShowing()){
-                AccountSubWindow accountSubWindow = new AccountSubWindow(dbmanager, userId);
-                ajustesStage = accountSubWindow.getStage();
-                System.out.println("Accediendo a su cuenta...");
-                ajustesStage.show();
-            } else {
-                ajustesStage.close();
-            }
-        });
-
-        menu3.setOnAction(e -> {
-            if (ajustesStage == null || !ajustesStage.isShowing()) {
-                HelpSubWindow helpSubWindow = new HelpSubWindow();
-                ajustesStage = helpSubWindow.getStage();
-                System.out.println("Obteniendo ayuda...");
-                ajustesStage.show();
-            } else {
-                ajustesStage.close();
-            }
-        });
-
-
+        // Configuración de imágenes e íconos
         Image iconSol = new Image(getClass().getResourceAsStream("/images/sun.png"));
         Image iconLuna = new Image(getClass().getResourceAsStream("/images/moon.png"));
         Image iconUndo = new Image(getClass().getResourceAsStream("/images/undo.png"));
@@ -155,19 +113,6 @@ public class MainBankWindow {
         botonDetalles.setMinWidth(90);
         botonDetalles.setFocusTraversable(false);
 
-        Region spacerTop = new Region();
-        HBox.setHgrow(spacerTop, Priority.ALWAYS);
-
-        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacerTop, botonTema);
-        hboxCantidadTema.setAlignment(Pos.CENTER_LEFT);
-
-        HBox hboxConceptoAjustes = new HBox();
-        hboxConceptoAjustes.setAlignment(Pos.CENTER_LEFT);
-        hboxConceptoAjustes.setSpacing(10);
-        Region spacerConceptoAjsutes = new Region();
-        HBox.setHgrow(spacerConceptoAjsutes, Priority.ALWAYS);
-        hboxConceptoAjustes.getChildren().addAll(textFieldConcepto, spacerConceptoAjsutes, botonAjustes);
-
         Button botonIngreso = new Button("INGRESO");
         Button botonGasto = new Button("GASTO");
         Button botonUndo = new Button("Deshacer");
@@ -176,9 +121,7 @@ public class MainBankWindow {
         botonUndo.setMinWidth(88);
         botonUndo.setGraphic(viewUndo);
 
-        HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
-        hboxBotones.setAlignment(Pos.CENTER_LEFT);
-
+        // Configuración de áreas de texto
         TextArea historialArea = new TextArea();
         historialArea.setPrefSize(250, 320);
         historialArea.setText("         HISTORIAL\n-----------------------------\n");
@@ -193,6 +136,7 @@ public class MainBankWindow {
         historialArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
         fechaHoraArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
 
+        // Aplicación de estilos
         labelRegistros.getStyleClass().add("custom-label");
         labelTotal.getStyleClass().add("custom-label");
         historialArea.getStyleClass().add("custom-text-area");
@@ -200,33 +144,27 @@ public class MainBankWindow {
         textFieldCantidad.getStyleClass().add("custom-text-field");
         textFieldConcepto.getStyleClass().add("custom-text-field");
 
-        Platform.runLater(() -> { // Gestiona el bloqueo del desplazamiento horizontal y vertical en el historialArea
+        // Configuración de eventos y filtros para áreas de texto
+        Platform.runLater(() -> {
             ScrollPane scrollPane = (ScrollPane) historialArea.lookup(".scroll-pane");
             if (scrollPane != null) {
-                // Bloquear desplazamiento horizontal
                 scrollPane.hvalueProperty().addListener((obs, oldVal, newVal) -> {
                     if (newVal.doubleValue() != 0) {
                         scrollPane.setHvalue(0);
                     }
                 });
-
-                // Bloquear desplazamiento vertical
-                scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> {
-                    if (newVal.doubleValue() != 0) {
-                        scrollPane.setVvalue(0);
-                    }
-                });
-
-                // Consumir eventos de scroll para evitar desplazamiento con la rueda del mouse
                 scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
                     event.consume();
                 });
-
                 scrollPane.getContent().addEventFilter(ScrollEvent.SCROLL, event -> {
                     event.consume();
                 });
             }
+            historialArea.addEventFilter(MouseEvent.ANY, event -> {
+                event.consume();
+            });
         });
+
         Platform.runLater(() -> {
             ScrollPane scrollPane = (ScrollPane) fechaHoraArea.lookup(".scroll-pane");
             if (scrollPane != null) {
@@ -235,22 +173,36 @@ public class MainBankWindow {
                         scrollPane.setHvalue(0);
                     }
                 });
-
-                scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> {
-                    if (newVal.doubleValue() != 0) {
-                        scrollPane.setVvalue(0);
-                    }
-                });
-
                 scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
                     event.consume();
                 });
-
                 scrollPane.getContent().addEventFilter(ScrollEvent.SCROLL, event -> {
+                    event.consume();
+                });
+                fechaHoraArea.addEventFilter(MouseEvent.ANY, event -> {
                     event.consume();
                 });
             }
         });
+
+        // Construcción de layouts
+        HBox hboxCantidad = new HBox(10, textFieldCantidad);
+        hboxCantidad.setAlignment(Pos.CENTER_LEFT);
+
+        Region spacerTop = new Region();
+        HBox.setHgrow(spacerTop, Priority.ALWAYS);
+        HBox hboxCantidadTema = new HBox(10, hboxCantidad, spacerTop, botonTema);
+        hboxCantidadTema.setAlignment(Pos.CENTER_LEFT);
+
+        HBox hboxConceptoAjustes = new HBox();
+        hboxConceptoAjustes.setAlignment(Pos.CENTER_LEFT);
+        hboxConceptoAjustes.setSpacing(10);
+        Region spacerConceptoAjsutes = new Region();
+        HBox.setHgrow(spacerConceptoAjsutes, Priority.ALWAYS);
+        hboxConceptoAjustes.getChildren().addAll(textFieldConcepto, spacerConceptoAjsutes, botonAjustes);
+
+        HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
+        hboxBotones.setAlignment(Pos.CENTER_LEFT);
 
         Region spacerLeft = new Region();
         Region spacerRight = new Region();
@@ -259,6 +211,21 @@ public class MainBankWindow {
         HBox hboxHistorial = new HBox(spacerLeft, historialArea, fechaHoraArea, spacerRight);
         hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
+        HBox hboxTotal = new HBox(labelTotal);
+        hboxTotal.setAlignment(Pos.CENTER_LEFT);
+
+        HBox hboxDeshacerDetalles = new HBox();
+        hboxDeshacerDetalles.setAlignment(Pos.CENTER_LEFT);
+        hboxDeshacerDetalles.setSpacing(10);
+        Region spacerDeshacer = new Region();
+        HBox.setHgrow(spacerDeshacer, Priority.ALWAYS);
+        hboxDeshacerDetalles.getChildren().addAll(botonUndo, spacerDeshacer, botonDetalles);
+
+        VBox vbox = new VBox(20, hboxCantidadTema, hboxConceptoAjustes, hboxBotones, labelRegistros,
+                hboxHistorial, hboxTotal, hboxDeshacerDetalles);
+        vbox.setPadding(new Insets(20));
+
+        // Carga de datos y actualización de componentes
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
 
         fechaHoraArea.setText("\n\n");
@@ -293,19 +260,7 @@ public class MainBankWindow {
 
         labelTotal.setText("TOTAL:  " + df.format(totalInicial) + " €");
 
-        HBox hboxTotal = new HBox(labelTotal);
-        hboxTotal.setAlignment(Pos.CENTER_LEFT);
-
-        HBox hboxDeshacerDetalles = new HBox();
-        hboxDeshacerDetalles.setAlignment(Pos.CENTER_LEFT);
-        hboxDeshacerDetalles.setSpacing(10);
-        Region spacerDeshacer = new Region();
-        HBox.setHgrow(spacerDeshacer, Priority.ALWAYS);
-        hboxDeshacerDetalles.getChildren().addAll(botonUndo, spacerDeshacer, botonDetalles);
-
-        VBox vbox = new VBox(20, hboxCantidadTema, hboxConceptoAjustes, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
-        vbox.setPadding(new Insets(20));
-
+        // Configuración de temas
         scene = new Scene(vbox, 480, 620);
 
         lightTheme = ThemeManager.getLIGHTHEME();
@@ -322,6 +277,7 @@ public class MainBankWindow {
             }
         });
 
+        // Configuración del escenario (Stage)
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("PersonalBankAccount");
@@ -336,7 +292,42 @@ public class MainBankWindow {
             }
         });
 
-        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas, labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene, lightTheme, darkTheme);
+        // Asignación de manejadores de eventos
+        botonAjustes.setOnAction(e -> {
+            if (!contextMenu.isShowing()) {
+                contextMenu.show(botonAjustes, javafx.geometry.Side.BOTTOM, 0, 0);
+            } else {
+                contextMenu.hide();
+            }
+        });
+
+        menu1.setOnAction(e -> System.out.println("Cargando configuraciones..."));
+
+        menu2.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                AccountSubWindow accountSubWindow = new AccountSubWindow(dbmanager, userId);
+                ajustesStage = accountSubWindow.getStage();
+                System.out.println("Accediendo a su cuenta...");
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
+
+        menu3.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                HelpSubWindow helpSubWindow = new HelpSubWindow();
+                ajustesStage = helpSubWindow.getStage();
+                System.out.println("Obteniendo ayuda...");
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
+
+        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas,
+                labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene,
+                lightTheme, darkTheme);
 
         botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
         botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
@@ -361,6 +352,5 @@ public class MainBankWindow {
                 detallesStage.close();
             }
         });
-
     }
 }
