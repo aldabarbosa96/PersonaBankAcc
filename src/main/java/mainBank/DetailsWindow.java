@@ -5,21 +5,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mainBank.LanguageManager;
+import mainBank.ThemeManager;
 
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.ResourceBundle;
 
-/**
- * Clase que gestiona la ventana de detalles de transacciones
- * añadiendo claridad visual y el total en cada período.
- */
 public class DetailsWindow {
     private Stage stage;
     private DataBaseManager dbmanager;
     private int userId;
     private double total;
     private DecimalFormat df;
+    private ResourceBundle resources;
 
     public DetailsWindow(int userId, double total, DataBaseManager dbmanager, DecimalFormat df) {
         this.userId = userId;
@@ -27,11 +27,12 @@ public class DetailsWindow {
         this.dbmanager = dbmanager;
         this.df = df;
         this.stage = new Stage();
+        this.resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
         createWindow();
     }
 
     private void createWindow() {
-        stage.setTitle("Detalles de Transacciones");
+        stage.setTitle(resources.getString("details.title"));
 
         ArrayList<String[]> transactions = dbmanager.getUserTransactions(userId);
 
@@ -41,7 +42,12 @@ public class DetailsWindow {
         areaDetalles.getStyleClass().addAll("custom-text-area", "custom-font");
         areaDetalles.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
 
-        String header = String.format("%-12s %-20s %-10s %-12s %-10s\n", "Cantidad", "Concepto", "Hora", "Fecha", "Total");
+        String header = String.format("%-12s %-20s %-10s %-12s %-10s\n",
+                resources.getString("details.amount"),
+                resources.getString("details.concept"),
+                resources.getString("details.time"),
+                resources.getString("details.date"),
+                resources.getString("details.total"));
         areaDetalles.appendText(header);
         areaDetalles.appendText("---------------------------------------------------" +
                 "----------------------------------------------------\n");
@@ -73,7 +79,8 @@ public class DetailsWindow {
                 String hora = timestamp.substring(0, 8); //HH:mm:ss
                 String fecha = timestamp.substring(9);    //yyyy-MM-dd
 
-                String linea = String.format("%-12s %-20s %-10s %-12s %-10s\n", tipo + cantidadStr, concepto, hora, fecha, totalFormateado);
+                String linea = String.format("%-12s %-20s %-10s %-12s %-10s\n",
+                        tipo + cantidadStr, concepto, hora, fecha, totalFormateado);
 
                 areaDetalles.appendText(linea);
             } else {

@@ -181,4 +181,8 @@ public class ButtonActionsManager {
             }
         }
     }
+    public double getTotal() {
+        return total;
+    }
+
 }

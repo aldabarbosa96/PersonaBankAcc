@@ -7,26 +7,27 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * Clase que gestiona la ventana de inicio de sesión y
- * registro de usuarios (primera ventana en mostrarse).
- */
+import java.util.ResourceBundle;
+
 public class LogInWindow extends Application {
     private DataBaseManager dbmanager = new DataBaseManager();
 
     @Override
     public void start(Stage stage) {
+        LanguageManager.loadLocalePreference();
         dbmanager.dbconnect();
         dbmanager.createTable();
 
-        Label usernameLabel = new Label("Username");
+        ResourceBundle resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
+
+        Label usernameLabel = new Label(resources.getString("login.username"));
         TextField usernameField = new TextField();
 
-        Label passwordLabel = new Label("Password");
+        Label passwordLabel = new Label(resources.getString("login.password"));
         PasswordField passwordField = new PasswordField();
 
-        Button loginButton = new Button("Iniciar Sesión");
-        Button registerButton = new Button("Registrarse");
+        Button loginButton = new Button(resources.getString("login.loginButton"));
+        Button registerButton = new Button(resources.getString("login.registerButton"));
         loginButton.setMinWidth(90);
         registerButton.setMinWidth(90);
 
@@ -39,10 +40,11 @@ public class LogInWindow extends Application {
 
             int userId = dbmanager.verifyUser(username, password);
             if (userId != -1) {
-                showMessage("Inicio de sesión correcto", "Bienvenido/a " + username);
+                showMessage(resources.getString("login.success"),
+                        String.format(resources.getString("login.successMessage"), username));
                 new MainBankWindow(dbmanager, userId).start(stage);
             } else {
-                showError("Error", "Usuario o contraseña incorrectos");
+                showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
             }
         });
 
@@ -51,36 +53,30 @@ public class LogInWindow extends Application {
             String password = passwordField.getText().trim();
 
             if (username.isEmpty() || password.isEmpty()) {
-                showError("Error de Registro", "El nombre de usuario y/o la contraseña no pueden estar vacíos.");
+                showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
                 return;
             }
 
             boolean success = dbmanager.insertUser(username, password);
             if (success) {
-                showMessage("Éxito", "Usuario registrado con éxito");
+                showMessage(resources.getString("login.success"), resources.getString("login.successMessage"));
             } else {
                 if (!dbmanager.userIsValid(username)) {
-                    showError("Error de Registro", "Nombre de usuario inválido. Solo se permiten letras, números, guiones bajos y puntos.");
+                    showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
                 } else {
-                    showError("Error de Registro", "Nombre de usuario ya existente");
+                    showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
                 }
             }
         });
 
         Scene scene = new Scene(vbox, 300, 220);
         stage.setScene(scene);
-        stage.setTitle("Iniciar sesión");
+        stage.setTitle(resources.getString("main.title"));
         stage.show();
 
         stage.setOnCloseRequest(event -> dbmanager.dbdisconnect());
     }
 
-    /**
-     * (Ambos métodos muestran mensajes de depuración.
-     *
-     * @param title   Título del cuadro de diálogo.
-     * @param message Mensaje a mostrar (formato estándard o formato error).
-     */
     private void showMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

@@ -6,45 +6,47 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mainBank.DataBaseManager;
+import mainBank.LanguageManager;
+import mainBank.ThemeManager;
 
 import javafx.scene.control.*;
-import mainBank.ThemeManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class AccountSubWindow {
     private Stage stage;
     private DataBaseManager dataBaseManager;
     private int userID;
-    private Label username;
-    private Label password;
+    private Label usernameLabel;
+    private Label passwordLabel;
     private Connection connection;
+    private ResourceBundle resources;
 
     public AccountSubWindow(DataBaseManager dataBaseManager, int userID) {
         this.stage = new Stage();
         this.userID = userID;
         this.dataBaseManager = dataBaseManager;
         this.connection = dataBaseManager.getConnection();
+        this.resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
         createWindow();
     }
 
-    private void createWindow() { //ventana cuenta
+    private void createWindow() {
 
         String lightTheme = ThemeManager.getLIGHTHEME();
         String darkTheme = ThemeManager.getDARKTHEME();
 
-        stage.setTitle("Cuenta");
+        stage.setTitle(resources.getString("account.title"));
 
-        username = new Label("Nombre Usuario");
-        password = new Label("Contraseña");
+        usernameLabel = new Label(resources.getString("account.username"));
+        passwordLabel = new Label(resources.getString("account.password"));
 
-        Button changeUsername = new Button("Cambiar Usuario");
-        Button changePassword = new Button("Cambiar Contraseña");
+        Button changeUsername = new Button(resources.getString("account.changeUsername"));
+        Button changePassword = new Button(resources.getString("account.changePassword"));
         changeUsername.setMaxWidth(150);
         changePassword.setMaxWidth(150);
 
@@ -61,23 +63,22 @@ public class AccountSubWindow {
         textFieldPassword.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
         textFieldUsername.getStyleClass().add("custom-text-field");
         textFieldPassword.getStyleClass().add("custom-text-field");
-        username.getStyleClass().add("custom-label");
-        password.getStyleClass().add("custom-label");
+        usernameLabel.getStyleClass().add("custom-label");
+        passwordLabel.getStyleClass().add("custom-label");
 
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(30));
         vBox.setAlignment(Pos.BASELINE_CENTER);
 
-        vBox.getChildren().addAll(username, textFieldUsername, password, textFieldPassword, changeUsername, changePassword);
+        vBox.getChildren().addAll(usernameLabel, textFieldUsername, passwordLabel, textFieldPassword, changeUsername, changePassword);
 
-        VBox.setMargin(username, new Insets(0, 0, 10, 0));
+        VBox.setMargin(usernameLabel, new Insets(0, 0, 10, 0));
         VBox.setMargin(textFieldUsername, new Insets(0, 0, 10, 0));
 
-        VBox.setMargin(password, new Insets(0, 0, 25, 0));
+        VBox.setMargin(passwordLabel, new Insets(0, 0, 25, 0));
         VBox.setMargin(textFieldPassword, new Insets(0, 0, 10, 0));
         VBox.setMargin(changeUsername, new Insets(35, 0, 10, 0));
         VBox.setMargin(changePassword, new Insets(0, 0, 10, 0));
-
 
         Scene scene = new Scene(vBox, 275, 350);
 

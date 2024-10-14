@@ -13,12 +13,13 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mainBank.subWindows.AccountSubWindow;
+import mainBank.subWindows.ConfigurationSubWindow;
 import mainBank.subWindows.HelpSubWindow;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainBankWindow {
     private ArrayList<String> historial = new ArrayList<>();
@@ -30,11 +31,24 @@ public class MainBankWindow {
     private Scene scene;
     private String lightTheme, darkTheme;
     private Stage detallesStage, ajustesStage;
+    private ResourceBundle resources;
+    private Label labelRegistros;
+    private Label labelTotal;
+    private TextField textFieldCantidad;
+    private TextField textFieldConcepto;
+    private Button botonIngreso;
+    private Button botonGasto;
+    private Button botonUndo;
+    private Button botonDetalles;
+    private MenuItem menu1;
+    private MenuItem menu2;
+    private MenuItem menu3;
+    private Stage primaryStage;
 
     public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
         this.userId = userId;
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("es", "ES"));
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(LanguageManager.getLocale());
         symbols.setDecimalSeparator(',');
         symbols.setGroupingSeparator('.');
         df = new DecimalFormat("#,##0.00", symbols);
@@ -42,18 +56,21 @@ public class MainBankWindow {
     }
 
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
+
         // Configuración de etiquetas
-        Label labelRegistros = new Label("Ingresos/Gastos registrados: ");
-        Label labelTotal = new Label("TOTAL: ");
+        labelRegistros = new Label(resources.getString("main.records"));
+        labelTotal = new Label(resources.getString("main.total") + ": ");
 
         // Configuración de campos de texto
-        TextField textFieldCantidad = new TextField();
-        textFieldCantidad.setPromptText("00.00");
+        textFieldCantidad = new TextField();
+        textFieldCantidad.setPromptText(resources.getString("main.amount"));
         textFieldCantidad.setPrefWidth(115);
         textFieldCantidad.setMinHeight(25);
 
-        TextField textFieldConcepto = new TextField();
-        textFieldConcepto.setPromptText("Concepto");
+        textFieldConcepto = new TextField();
+        textFieldConcepto.setPromptText(resources.getString("main.concept"));
         textFieldConcepto.setPrefWidth(240);
         textFieldConcepto.setMinHeight(30);
 
@@ -75,10 +92,48 @@ public class MainBankWindow {
         botonAjustes.setFocusTraversable(false);
 
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem menu1 = new MenuItem("Configuración");
-        MenuItem menu2 = new MenuItem("Cuenta");
-        MenuItem menu3 = new MenuItem("Ayuda");
+        menu1 = new MenuItem(resources.getString("main.config"));
+        menu2 = new MenuItem(resources.getString("main.account"));
+        menu3 = new MenuItem(resources.getString("main.help"));
         contextMenu.getItems().addAll(menu1, menu2, menu3);
+
+        botonAjustes.setOnAction(e -> {
+            if (!contextMenu.isShowing()) {
+                contextMenu.show(botonAjustes, javafx.geometry.Side.BOTTOM, 0, 0);
+            } else {
+                contextMenu.hide();
+            }
+        });
+
+        menu1.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                ConfigurationSubWindow configSubWindow = new ConfigurationSubWindow(this);
+                ajustesStage = configSubWindow.getStage();
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
+
+        menu2.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                AccountSubWindow accountSubWindow = new AccountSubWindow(dbmanager, userId);
+                ajustesStage = accountSubWindow.getStage();
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
+
+        menu3.setOnAction(e -> {
+            if (ajustesStage == null || !ajustesStage.isShowing()) {
+                HelpSubWindow helpSubWindow = new HelpSubWindow();
+                ajustesStage = helpSubWindow.getStage();
+                ajustesStage.show();
+            } else {
+                ajustesStage.close();
+            }
+        });
 
         // Configuración de imágenes e íconos
         Image iconSol = new Image(getClass().getResourceAsStream("/images/sun.png"));
@@ -108,14 +163,14 @@ public class MainBankWindow {
             botonTema.setGraphic(viewSol);
         }
 
-        Button botonDetalles = new Button("Detalles");
+        botonDetalles = new Button(resources.getString("main.details"));
         botonDetalles.setMinHeight(30);
         botonDetalles.setMinWidth(90);
         botonDetalles.setFocusTraversable(false);
 
-        Button botonIngreso = new Button("INGRESO");
-        Button botonGasto = new Button("GASTO");
-        Button botonUndo = new Button("Deshacer");
+        botonIngreso = new Button(resources.getString("main.income"));
+        botonGasto = new Button(resources.getString("main.expense"));
+        botonUndo = new Button(resources.getString("main.undo"));
         botonIngreso.setMinWidth(115);
         botonGasto.setMinWidth(115);
         botonUndo.setMinWidth(88);
@@ -258,7 +313,7 @@ public class MainBankWindow {
             }
         }
 
-        labelTotal.setText("TOTAL:  " + df.format(totalInicial) + " €");
+        labelTotal.setText(resources.getString("main.total") + ": " + df.format(totalInicial) + " €");
 
         // Configuración de temas
         scene = new Scene(vbox, 480, 620);
@@ -280,7 +335,7 @@ public class MainBankWindow {
         // Configuración del escenario (Stage)
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("PersonalBankAccount");
+        primaryStage.setTitle(resources.getString("main.title"));
         primaryStage.show();
 
         primaryStage.setOnCloseRequest((WindowEvent event) -> {
@@ -293,45 +348,29 @@ public class MainBankWindow {
         });
 
         // Asignación de manejadores de eventos
-        botonAjustes.setOnAction(e -> {
-            if (!contextMenu.isShowing()) {
-                contextMenu.show(botonAjustes, javafx.geometry.Side.BOTTOM, 0, 0);
-            } else {
-                contextMenu.hide();
-            }
+        botonIngreso.setOnAction(e -> {
+            ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas,
+                    labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene,
+                    lightTheme, darkTheme);
+            buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto);
+            totalInicial = buttonActions.getTotal(); // Actualizar totalInicial
         });
 
-        menu1.setOnAction(e -> System.out.println("Cargando configuraciones..."));
-
-        menu2.setOnAction(e -> {
-            if (ajustesStage == null || !ajustesStage.isShowing()) {
-                AccountSubWindow accountSubWindow = new AccountSubWindow(dbmanager, userId);
-                ajustesStage = accountSubWindow.getStage();
-                System.out.println("Accediendo a su cuenta...");
-                ajustesStage.show();
-            } else {
-                ajustesStage.close();
-            }
+        botonGasto.setOnAction(e -> {
+            ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas,
+                    labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene,
+                    lightTheme, darkTheme);
+            buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto);
+            totalInicial = buttonActions.getTotal(); // Actualizar totalInicial
         });
 
-        menu3.setOnAction(e -> {
-            if (ajustesStage == null || !ajustesStage.isShowing()) {
-                HelpSubWindow helpSubWindow = new HelpSubWindow();
-                ajustesStage = helpSubWindow.getStage();
-                System.out.println("Obteniendo ayuda...");
-                ajustesStage.show();
-            } else {
-                ajustesStage.close();
-            }
+        botonUndo.setOnAction(e -> {
+            ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas,
+                    labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene,
+                    lightTheme, darkTheme);
+            buttonActions.deshacer();
+            totalInicial = buttonActions.getTotal(); // Actualizar totalInicial
         });
-
-        ButtonActionsManager buttonActions = new ButtonActionsManager(totalInicial, historial, fechas,
-                labelRegistros, labelTotal, historialArea, fechaHoraArea, df, dbmanager, userId, scene,
-                lightTheme, darkTheme);
-
-        botonIngreso.setOnAction(e -> buttonActions.registrarIngreso(textFieldCantidad, textFieldConcepto));
-        botonGasto.setOnAction(e -> buttonActions.registrarGasto(textFieldCantidad, textFieldConcepto));
-        botonUndo.setOnAction(e -> buttonActions.deshacer());
 
         botonTema.setOnAction(e -> {
             if (ThemeManager.getCurrentTheme().equals("light")) {
@@ -353,4 +392,25 @@ public class MainBankWindow {
             }
         });
     }
+
+    public void updateTexts() {
+        resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
+
+        // Actualizar etiquetas y textos
+        labelRegistros.setText(resources.getString("main.records"));
+        labelTotal.setText(resources.getString("main.total") + ": " + df.format(totalInicial) + " €");
+        botonIngreso.setText(resources.getString("main.income"));
+        botonGasto.setText(resources.getString("main.expense"));
+        botonUndo.setText(resources.getString("main.undo"));
+        botonDetalles.setText(resources.getString("main.details"));
+        textFieldCantidad.setPromptText(resources.getString("main.amount"));
+        textFieldConcepto.setPromptText(resources.getString("main.concept"));
+        primaryStage.setTitle(resources.getString("main.title"));
+
+        // Actualizar menús
+        menu1.setText(resources.getString("main.config"));
+        menu2.setText(resources.getString("main.account"));
+        menu3.setText(resources.getString("main.help"));
+    }
+
 }

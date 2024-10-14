@@ -1,0 +1,32 @@
+Brief User Guide
+
+Personal Bank Account offers you comprehensive control over all your transactions, both physical and digital, allowing complete monitoring of your overall capital.
+
+How It Works
+
+1. Register a Transaction
+Amount: Enter the amount you wish to record.
+Concept (optional): Add a description to better identify the transaction.
+Transaction Type: Select whether the operation is an income or an expense.
+
+2. View the History
+All your transactions are stored in the history, where you can see the date and time of each one.
+
+3. Manage Transactions
+Undo Last Transaction: If you make a mistake, use the "Undo" button to revert the last action taken.
+History Details: For a more detailed view of your transactions, press the "Details" button.
+
+4. Interface Customization
+Light/Dark Theme: Easily switch between light and dark themes by clicking on the "moon" or "sun" button according to your preference.
+
+5. Settings Menu
+Access the Settings Menu to manage different aspects of the application. This menu contains the following sub-sections:
+Settings: Adjust the application's preferences according to your needs.
+Account: Manage your account information, such as personal data and security options.
+Help: Access support resources and this user guide to resolve any questions.
+
+Support and Contact
+
+If you find any errors or have any questions, please report them to: aldabarbosa1996@gmail.com
+
+Version: V-1.6.3-alpha
