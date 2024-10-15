@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 public class LogInWindow extends Application {
@@ -40,8 +41,10 @@ public class LogInWindow extends Application {
 
             int userId = dbmanager.verifyUser(username, password);
             if (userId != -1) {
-                showMessage(resources.getString("login.success"),
-                        String.format(resources.getString("login.successMessage"), username));
+                String successMessageTemplate = resources.getString("login.successMessage");
+                String successMessage = MessageFormat.format(successMessageTemplate, username);
+                showMessage(resources.getString("login.success"), successMessage);
+
                 new MainBankWindow(dbmanager, userId).start(stage);
             } else {
                 showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
@@ -59,7 +62,7 @@ public class LogInWindow extends Application {
 
             boolean success = dbmanager.insertUser(username, password);
             if (success) {
-                showMessage(resources.getString("login.success"), resources.getString("login.successMessage"));
+                showMessage(resources.getString("login.success"), resources.getString("register.successMessage"));
             } else {
                 if (!dbmanager.userIsValid(username)) {
                     showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
@@ -80,6 +83,7 @@ public class LogInWindow extends Application {
     private void showMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
