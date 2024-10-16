@@ -29,4 +29,4 @@ Suport i Contacte
 
 Si trobes algun error o tens alguna consulta, si us plau, reporta-ho a: aldabarbosa1996@gmail.com
 
-Versió: V-1.6.3-alpha
+Versió: V-1.8.0-alpha

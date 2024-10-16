@@ -1,4 +1,4 @@
-package mainBank;
+package mainBank.managers;
 
 import java.io.*;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package mainBank;
+package mainBank.windows;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mainBank.managers.DataBaseManager;
+import mainBank.managers.LanguageManager;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;

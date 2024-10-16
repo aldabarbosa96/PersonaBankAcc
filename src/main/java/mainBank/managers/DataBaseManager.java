@@ -1,4 +1,4 @@
-package mainBank;
+package mainBank.managers;
 
 import java.io.File;
 import java.sql.*;
@@ -162,7 +162,7 @@ public class DataBaseManager {
      *
      * @param userId          ID del usuario.
      * @param transactionType Tipo de transacción ("+" o "-").
-     * @param amount          Cantidad.
+     * @param amount          Cantidad en euros.
      * @param timestamp       Marca de tiempo.
      * @param concept         Concepto de la transacción.
      */
@@ -186,7 +186,7 @@ public class DataBaseManager {
      * Obtiene las transacciones de un usuario.
      *
      * @param userId ID del usuario.
-     * @return Lista de transacciones en formato [linea formateada, timestamp].
+     * @return Lista de transacciones en formato [tipo, amount, concepto, timestamp].
      */
     public ArrayList<String[]> getUserTransactions(int userId) {
         String sql = "SELECT transaction_type, amount, timestamp, concept FROM transactions WHERE user_id = ?";
@@ -199,18 +199,10 @@ public class DataBaseManager {
             while (rs.next()) {
                 String transactionType = rs.getString("transaction_type");
                 double amount = rs.getDouble("amount");
-                String formattedAmount = df.format(amount);
                 String timestamp = rs.getString("timestamp");
                 String concept = rs.getString("concept");
 
-                if (concept.length() > 25) { //truncamos el concepto si es demasiado largo
-                    concept = concept.substring(0, 25);
-                }
-
-                String transaccionConFecha = transactionType + " " + formattedAmount;
-                String formattedLine = String.format("  %-10s %-25s", transaccionConFecha, concept);
-
-                transactions.add(new String[]{formattedLine, timestamp});
+                transactions.add(new String[]{transactionType, String.valueOf(amount), concept, timestamp});
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener transacciones: " + e.getMessage());
@@ -240,6 +232,7 @@ public class DataBaseManager {
             System.out.println("Error al eliminar la última transacción: " + e.getMessage());
         }
     }
+
     public Connection getConnection(){
         return connection;
     }

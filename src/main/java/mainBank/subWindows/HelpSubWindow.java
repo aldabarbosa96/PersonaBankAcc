@@ -4,8 +4,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import mainBank.LanguageManager;
-import mainBank.ThemeManager;
+import mainBank.managers.LanguageManager;
+import mainBank.managers.ThemeManager;
 
 import java.io.*;
 import java.util.ResourceBundle;

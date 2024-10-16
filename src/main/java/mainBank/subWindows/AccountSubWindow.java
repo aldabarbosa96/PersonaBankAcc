@@ -5,9 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mainBank.DataBaseManager;
-import mainBank.LanguageManager;
-import mainBank.ThemeManager;
+import mainBank.managers.DataBaseManager;
+import mainBank.managers.LanguageManager;
+import mainBank.managers.ThemeManager;
 
 import javafx.scene.control.*;
 
