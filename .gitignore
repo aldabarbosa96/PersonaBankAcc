@@ -3,7 +3,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 /target
-
+src/main/resources/others/futureImplementations.txt
 
 ### Eclipse ###
 .apt_generated
@@ -23,6 +23,7 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+
 ### VS Code ###
 .vscode/
 

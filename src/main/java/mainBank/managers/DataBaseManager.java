@@ -1,9 +1,12 @@
-package mainBank;
+package mainBank.managers;
+
+import mainBank.windows.MainBankWindow;
 
 import java.io.File;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que gestiona las operaciones con la DB.
@@ -90,6 +93,11 @@ public class DataBaseManager {
     public boolean insertUser(String username, String password) {
         String sqlCheck = "SELECT * FROM users WHERE username = ?";
 
+        if (!userIsValid(username)) {
+            System.out.println("Nombre de usuario inválido. Solo se permiten letras, números, guiones bajos y puntos.");
+            return false;
+        }
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheck)) {
             preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();
@@ -113,6 +121,16 @@ public class DataBaseManager {
             System.out.println("Error al insertar usuario: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Comprueba que no se han insertado carácteres
+     * especiales en el nombre de usuario (evita SQLInyection)
+     */
+    public boolean userIsValid(String username) {
+        String regex = "[a-zA-Z0-9_.]+$";
+        return username.matches(regex);
+
     }
 
     /**
@@ -147,7 +165,7 @@ public class DataBaseManager {
      *
      * @param userId          ID del usuario.
      * @param transactionType Tipo de transacción ("+" o "-").
-     * @param amount          Cantidad.
+     * @param amount          Cantidad en euros.
      * @param timestamp       Marca de tiempo.
      * @param concept         Concepto de la transacción.
      */
@@ -171,7 +189,7 @@ public class DataBaseManager {
      * Obtiene las transacciones de un usuario.
      *
      * @param userId ID del usuario.
-     * @return Lista de transacciones en formato [linea formateada, timestamp].
+     * @return Lista de transacciones en formato [tipo, amount, concepto, timestamp].
      */
     public ArrayList<String[]> getUserTransactions(int userId) {
         String sql = "SELECT transaction_type, amount, timestamp, concept FROM transactions WHERE user_id = ?";
@@ -184,19 +202,10 @@ public class DataBaseManager {
             while (rs.next()) {
                 String transactionType = rs.getString("transaction_type");
                 double amount = rs.getDouble("amount");
-                String formattedAmount = df.format(amount);
                 String timestamp = rs.getString("timestamp");
                 String concept = rs.getString("concept");
 
-                //truncamos el concepto si es demasiado largo
-                if (concept.length() > 25) {
-                    concept = concept.substring(0, 25);
-                }
-
-                String transaccionConFecha = transactionType + " " + formattedAmount;
-                String formattedLine = String.format("  %-10s %-25s", transaccionConFecha, concept);
-
-                transactions.add(new String[]{formattedLine, timestamp});
+                transactions.add(new String[]{transactionType, String.valueOf(amount), concept, timestamp});
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener transacciones: " + e.getMessage());
@@ -204,6 +213,29 @@ public class DataBaseManager {
 
         return transactions;
     }
+    public List<MainBankWindow.Transaction> getUserTransactionsObjects(int userId) {
+        String sql = "SELECT transaction_type, amount, timestamp, concept FROM transactions WHERE user_id = ? ORDER BY timestamp ASC";
+        List<MainBankWindow.Transaction> transactions = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                String type = rs.getString("transaction_type");
+                double amount = rs.getDouble("amount");
+                String timestamp = rs.getString("timestamp");
+                String concept = rs.getString("concept");
+
+                transactions.add(new MainBankWindow.Transaction(type, amount, concept, timestamp));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener transacciones como objetos: " + e.getMessage());
+        }
+
+        return transactions;
+    }
+
 
     /**
      * Elimina la última transacción del usuario.
@@ -225,5 +257,9 @@ public class DataBaseManager {
         } catch (SQLException e) {
             System.out.println("Error al eliminar la última transacción: " + e.getMessage());
         }
+    }
+
+    public Connection getConnection(){
+        return connection;
     }
 }

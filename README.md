@@ -6,7 +6,8 @@ Características
 
     Registro e inicio de sesión de usuarios: Cada usuario puede crear una cuenta y tener su propio historial de transacciones.
     Registro de ingresos y gastos: Permite registrar transacciones con cantidad y concepto.
-    Historial de transacciones: Muestra un historial detallado con fecha y hora.
+    Historial de transacciones: Muestra un historial detallado con fecha y hora y el total en cada 
+    período.
     Función de deshacer: Permite eliminar la última transacción registrada.
     Función de cambiar tema: Permite alternar entre tema claro y oscuro.
     Interfaz gráfica de usuario (GUI): Desarrollada con JavaFX para una experiencia interactiva.

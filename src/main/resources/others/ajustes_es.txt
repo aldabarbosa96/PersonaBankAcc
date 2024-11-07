@@ -1,0 +1,31 @@
+Breve Guía de Uso
+
+Personal Bank Account te ofrece un control exhaustivo de todas tus transacciones, tanto físicas como digitales, permitiendo un monitoreo completo de tu capital global.
+Cómo Funciona
+
+1. Registrar una Transacción
+Cantidad: Introduce el monto que deseas registrar.
+Concepto (opcional): Añade una descripción para identificar mejor la transacción.
+Tipo de Transacción: Selecciona si la operación es un ingreso o un gasto.
+
+2. Visualizar el Historial
+Todas tus transacciones se almacenan en el historial, donde podrás ver la fecha y hora de cada una.
+
+3. Gestionar Transacciones
+Deshacer Última Transacción: Si cometes un error, utiliza el botón "Deshacer" para revertir la última acción realizada.
+Detalles del Historial: Para una visión más detallada de tus transacciones, pulsa el botón "Detalles".
+
+4. Personalización de la Interfaz
+Tema Claro/Oscuro: Cambia entre el tema claro y oscuro fácilmente haciendo clic en el botón de la "luna" o el "sol" según tu preferencia.
+
+5. Menú de Ajustes
+Accede al Menú de Ajustes para gestionar diferentes aspectos de la aplicación. Este menú contiene los siguientes subapartados:
+Configuración: Ajusta las preferencias de la aplicación según tus necesidades.
+Cuenta: Gestiona la información de tu cuenta, como datos personales y opciones de seguridad.
+Ayuda: Accede a recursos de soporte y esta guía de uso para resolver cualquier duda.
+
+Soporte y Contacto
+
+Si encuentras algún error o tienes alguna consulta, por favor, repórtalo a: aldabarbosa1996@gmail.com
+
+Versión: V-1.8.1-alpha

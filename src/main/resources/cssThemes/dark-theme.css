@@ -1,49 +1,85 @@
 /* dark-theme.css */
 
+/* Fuente base para toda la aplicación */
 .root {
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-size: 12px;
     -fx-background-color: #2b2b2b;
 }
 
+/* Estilos para botones */
 .button {
     -fx-background-color: #3c3f41;
-    -fx-text-fill: white;
-    -fx-border-width: 0;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+    -fx-border-color: #555555;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 2, 0, 0, 1);
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.3s, text-fill 0.3s;
 }
+
 .button:hover {
     -fx-background-color: #4b4e50;
-    -fx-text-fill: white;
-    -fx-border-width: 0;
+    -fx-text-fill: #ffffff;
 }
 
+.button:pressed {
+    -fx-background-color: #5a5d60;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);
+}
+
+/* Estilos para etiquetas personalizadas */
 .custom-label {
-    -fx-text-fill: white;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-weight: bold;
 }
 
+/* Estilos para áreas de texto personalizadas */
 .custom-text-area {
     -fx-control-inner-background: #3c3f41;
     -fx-text-fill: lightgray;
     -fx-border-color: lightgray;
+    -fx-text-fill:#f0f0f0;
+    -fx-padding: 8px;
+    -fx-padding: 8px 2px 10px 2px;
+    -fx-background-color: #3c3f41;
+    -fx-border-width: 1px;
+    -fx-border-color: #555555;
 }
 
+/* Estilos para campos de texto personalizados */
 .custom-text-field {
     -fx-background-color: #3c3f41;
-    -fx-text-fill: lightgray;
-    -fx-border-color: lightgray;
+    -fx-text-fill: #c0c0c0;
+    -fx-border-color: #555555;
     -fx-border-width: 1px;
-    -fx-border-radius: 3px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 1, 0, 0, 1);
+    -fx-transition: border-color 0.3s, background-color 0.3s;
 }
 
 .custom-text-field:hover {
-    -fx-border-color: gray;
-    -fx-border-width: 1px;
+    -fx-border-color: #888888;
 }
 
 .custom-text-field:focused {
-    -fx-border-color: lightgray;
-    -fx-border-width: 1px;
+    -fx-border-color: #00aaff;
+    -fx-background-color: #3c3f41;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,170,255,0.3), 4, 0, 0, 2);
 }
 
-/* Eliminar barra de desplazamiento horizontal */
+/* Eliminar barra de desplazamiento horizontal (solo visualmente) */
 .text-area .scroll-pane {
     -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
 }
+
+
+
