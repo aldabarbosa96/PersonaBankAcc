@@ -28,4 +28,4 @@ Soporte y Contacto
 
 Si encuentras algún error o tienes alguna consulta, por favor, repórtalo a: aldabarbosa1996@gmail.com
 
-Versión: V-1.8.0-alpha
+Versión: V-1.8.1-alpha

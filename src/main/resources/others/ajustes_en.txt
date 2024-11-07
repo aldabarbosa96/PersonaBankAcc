@@ -29,4 +29,4 @@ Support and Contact
 
 If you find any errors or have any questions, please report them to: aldabarbosa1996@gmail.com
 
-Version: V-1.8.0-alpha
+Version: V-1.8.1-alpha

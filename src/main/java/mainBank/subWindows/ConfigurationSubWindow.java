@@ -39,7 +39,7 @@ public class ConfigurationSubWindow {
         languageLabel.getStyleClass().add("custom-label");
         languageLabel.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
         languageComboBox = new ComboBox<>();
-        languageComboBox.setMaxWidth(75);
+        languageComboBox.setMaxWidth(85);
         languageComboBox.getItems().addAll("es", "en", "ca");
 
         languageComboBox.setCellFactory(lv -> new ListCell<String>() {
@@ -81,7 +81,7 @@ public class ConfigurationSubWindow {
         currencyLabel.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
 
         currencyComboBox = new ComboBox<>();
-        currencyComboBox.setMaxWidth(75);
+        currencyComboBox.setMaxWidth(85);
         currencyComboBox.getItems().addAll("EUR", "USD", "GBP");
 
         currencyComboBox.setCellFactory(lv -> new ListCell<String>() {
