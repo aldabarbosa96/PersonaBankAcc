@@ -24,8 +24,12 @@ Configuración: Ajusta las preferencias de la aplicación según tus necesidades
 Cuenta: Gestiona la información de tu cuenta, como datos personales y opciones de seguridad.
 Ayuda: Accede a recursos de soporte y esta guía de uso para resolver cualquier duda.
 
+6. Ventana Detalles/Gráfico
+Accede a la pestaña Detalles para ver la lista completa y detallada de todas las transacciones realizadas. Incluye el monto, descricpción,
+fecha, hora y el total en ese período. Además ofrece la posibilidad de visualizar los datos cómodamente en formato de gráfico de líneas.
+
 Soporte y Contacto
 
 Si encuentras algún error o tienes alguna consulta, por favor, repórtalo a: aldabarbosa1996@gmail.com
 
-Versión: V-1.8.1-alpha
+Versión: V-1.9.3-alpha

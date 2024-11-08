@@ -8,25 +8,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase que gestiona las operaciones con la DB.
- */
 public class DataBaseManager {
     private Connection connection;
     private DecimalFormat df;
 
-    /**
-     * Establece el formato decimal a utilizar.
-     *
-     * @param df Formato decimal.
-     */
     public void setDecimalFormat(DecimalFormat df) {
         this.df = df;
     }
 
-    /**
-     * Conecta a la DB SQLite.
-     */
     public void dbconnect() {
         try {
             String userHome = System.getProperty("user.home");
@@ -40,9 +29,6 @@ public class DataBaseManager {
         }
     }
 
-    /**
-     * Desconecta de la DB.
-     */
     public void dbdisconnect() {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -54,9 +40,6 @@ public class DataBaseManager {
         }
     }
 
-    /**
-     * Crea las tablas necesarias en la DB si no existen.
-     */
     public void createTable() {
         //tabla usuarios
         String sql = "CREATE TABLE IF NOT EXISTS users (" +
@@ -83,13 +66,6 @@ public class DataBaseManager {
         }
     }
 
-    /**
-     * Inserta un nuevo usuario en la DB.
-     *
-     * @param username Nombre de usuario.
-     * @param password Contraseña.
-     * @return true si se inserta correctamente, false si el usuario ya existe o hay un error.
-     */
     public boolean insertUser(String username, String password) {
         String sqlCheck = "SELECT * FROM users WHERE username = ?";
 
@@ -123,23 +99,12 @@ public class DataBaseManager {
         }
     }
 
-    /**
-     * Comprueba que no se han insertado carácteres
-     * especiales en el nombre de usuario (evita SQLInyection)
-     */
-    public boolean userIsValid(String username) {
+    public boolean userIsValid(String username) { //filtro para evitar SQLI
         String regex = "[a-zA-Z0-9_.]+$";
         return username.matches(regex);
 
     }
 
-    /**
-     * Verifica las credenciales de un usuario.
-     *
-     * @param username Nombre de usuario.
-     * @param password Contraseña.
-     * @return ID del usuario si las credenciales son correctas, -1 en caso contrario.
-     */
     public int verifyUser(String username, String password) {
         String sql = "SELECT id FROM users WHERE username = ? AND password = ?";
 
@@ -160,15 +125,6 @@ public class DataBaseManager {
         }
     }
 
-    /**
-     * Inserta una transacción en la base de datos.
-     *
-     * @param userId          ID del usuario.
-     * @param transactionType Tipo de transacción ("+" o "-").
-     * @param amount          Cantidad en euros.
-     * @param timestamp       Marca de tiempo.
-     * @param concept         Concepto de la transacción.
-     */
     public void insertTransaction(int userId, String transactionType, double amount, String timestamp, String concept) {
         String sql = "INSERT INTO transactions(user_id, transaction_type, amount, timestamp, concept) VALUES (?, ?, ?, ?, ?)";
 
@@ -185,12 +141,6 @@ public class DataBaseManager {
         }
     }
 
-    /**
-     * Obtiene las transacciones de un usuario.
-     *
-     * @param userId ID del usuario.
-     * @return Lista de transacciones en formato [tipo, amount, concepto, timestamp].
-     */
     public ArrayList<String[]> getUserTransactions(int userId) {
         String sql = "SELECT transaction_type, amount, timestamp, concept FROM transactions WHERE user_id = ?";
         ArrayList<String[]> transactions = new ArrayList<>();
@@ -213,35 +163,7 @@ public class DataBaseManager {
 
         return transactions;
     }
-    public List<MainBankWindow.Transaction> getUserTransactionsObjects(int userId) {
-        String sql = "SELECT transaction_type, amount, timestamp, concept FROM transactions WHERE user_id = ? ORDER BY timestamp ASC";
-        List<MainBankWindow.Transaction> transactions = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                String type = rs.getString("transaction_type");
-                double amount = rs.getDouble("amount");
-                String timestamp = rs.getString("timestamp");
-                String concept = rs.getString("concept");
-
-                transactions.add(new MainBankWindow.Transaction(type, amount, concept, timestamp));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener transacciones como objetos: " + e.getMessage());
-        }
-
-        return transactions;
-    }
-
-
-    /**
-     * Elimina la última transacción del usuario.
-     *
-     * @param userId ID del usuario.
-     */
     public void deleteLastTransaction(int userId) {
         String sql = "DELETE FROM transactions WHERE id = (SELECT MAX(id) FROM transactions WHERE user_id = ?)";
 

@@ -25,8 +25,12 @@ Configuració: Ajusta les preferències de l'aplicació segons les teves necessi
 Compte: Gestiona la informació del teu compte, com ara dades personals i opcions de seguretat.
 Ajuda: Accedeix a recursos de suport i aquesta guia d'ús per resoldre qualsevol dubte.
 
+6. Finestra Detalls/Gràfic
+Accedeix a la pestanya Detalls per veure la llista completa i detallada de totes les transaccions realitzades. Inclou la suma, descripció,
+data, hora i el total en aquest període. A més, ofereix la possibilitat de visualitzar les dades còmodament en format de gràfic de línies.
+
 Suport i Contacte
 
 Si trobes algun error o tens alguna consulta, si us plau, reporta-ho a: aldabarbosa1996@gmail.com
 
-Versió: V-1.8.1-alpha
+Versió: V-1.9.3-alpha

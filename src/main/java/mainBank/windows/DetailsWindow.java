@@ -40,7 +40,6 @@ public class DetailsWindow {
     private VBox graficoLayout;
 
     private LineChart<String, Number> lineChart;
-    private GraphicsManager graphicsManager;
 
     private XYChart.Series<String, Number> series;
 
@@ -51,7 +50,6 @@ public class DetailsWindow {
         this.df = df;
         this.stage = new Stage();
         this.resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
-        this.graphicsManager = new GraphicsManager(dbmanager, userId);
 
         //guardamos la lista de transacciones
         ArrayList<String[]> transactionsData = dbmanager.getUserTransactions(userId);
@@ -96,7 +94,7 @@ public class DetailsWindow {
         graficoLayout = new VBox();
         graficoLayout.setPadding(new Insets(20));
 
-        //usamos borderPane para poder switchear entre ambas ventanas
+        //usamos borderPane para crear dos layouts
         BorderPane mainLayout = new BorderPane();
         mainLayout.setPadding(new Insets(20));
         mainLayout.setCenter(detallesLayout); //mostramos detalles por defecto
@@ -139,12 +137,11 @@ public class DetailsWindow {
     }
 
     private void initializeLineChart() {
-        //configurar los ejes
+        //conf. ejes
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel(resources.getString("details.date")); //etiqueta eje X
-
+        xAxis.setLabel(resources.getString("details.date"));
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel(resources.getString("details.capital")); //etiqueta eje Y
+        yAxis.setLabel(resources.getString("details.capital"));
 
         //confg. gráfico
         lineChart = new LineChart<>(xAxis, yAxis);
@@ -155,8 +152,8 @@ public class DetailsWindow {
         series = new XYChart.Series<>();
         series.setName(resources.getString("details.dailyTotal"));
 
-        //añadimos serie de datos al gráfico
-        lineChart.getData().add(series);
+
+        lineChart.getData().add(series); //añadimos serie de datos al gráfico
 
         loadChartData();
 

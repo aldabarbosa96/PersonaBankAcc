@@ -25,8 +25,12 @@ Settings: Adjust the application's preferences according to your needs.
 Account: Manage your account information, such as personal data and security options.
 Help: Access support resources and this user guide to resolve any questions.
 
+6. Details/Graph Window
+Access the Details tab to see the complete and detailed list of all transactions made. Includes the amount, description,
+date, time and the total in that period. It also offers the possibility of viewing the data comfortably in line graph format.
+
 Support and Contact
 
 If you find any errors or have any questions, please report them to: aldabarbosa1996@gmail.com
 
-Version: V-1.8.1-alpha
+Version: V-1.9.3-alpha

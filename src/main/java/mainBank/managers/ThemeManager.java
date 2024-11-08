@@ -5,9 +5,6 @@ import javafx.beans.property.StringProperty;
 
 import java.util.Objects;
 
-/**
- * Clase que gestiona las propiedades de los temas.
- */
 public class ThemeManager {
     private static final String LIGHTHEME = Objects.requireNonNull(ThemeManager.class.getResource("/cssThemes/light-theme.css")).toExternalForm();
     private static final String DARKTHEME = Objects.requireNonNull(ThemeManager.class.getResource("/cssThemes/dark-theme.css")).toExternalForm();

@@ -401,7 +401,7 @@ public class MainBankWindow {
         return textArea;
     }
 
-    //clase interna para gestionar las actualizaciones de las transacciones
+    //clase interna para gestionar las actualizaciones de las transacciones desde la clase principal
     public static class Transaction {
         private String type;
         private double amountInEuros;
