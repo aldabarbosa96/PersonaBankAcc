@@ -219,7 +219,7 @@ public class MainBankWindow {
             textFieldConcepto.clear();
             updateCurrency();
         } catch (NumberFormatException ex) {
-            System.out.println("Error al parsear la cantidad: " + ex.getMessage());
+            labelRegistros.setText(resources.getString("main.error"));
         }
     }
 
