@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainBankWindow {
-    // Datos/Recursos
+    //datos/recursos
     private ArrayList<Transaction> transactionsList = new ArrayList<>();
     private DecimalFormat dfTotal, dfTransaction;
     private double totalInicial = 0.0;
@@ -34,7 +34,7 @@ public class MainBankWindow {
     private int userId;
     private ResourceBundle resources;
 
-    // Componentes GUI
+    //componenetes GUI
     private Scene scene;
     private String lightTheme, darkTheme;
     private double cantidad;
@@ -56,7 +56,7 @@ public class MainBankWindow {
         this.primaryStage = primaryStage;
         resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
 
-        // Inicialización de componentes
+        //inicialización componentes principales
         configureThemes();
         initLabels();
         initTextFields();
@@ -67,8 +67,7 @@ public class MainBankWindow {
         disableTextAreaInteraction(fechaHoraArea);
         loadTransactions();
 
-
-        // Configuración de la escena y eventos
+        //escena principal
         scene = new Scene(buildMainLayout(), 480, 620);
         applyCurrentTheme();
         primaryStage.setResizable(false);
@@ -77,7 +76,6 @@ public class MainBankWindow {
         primaryStage.show();
         primaryStage.setOnCloseRequest(this::handleCloseEvent);
 
-        // Actualizar interfaz y asignar manejadores
         updateCurrency();
         assignEventHandlers();
     }
@@ -195,7 +193,7 @@ public class MainBankWindow {
         scene.getStylesheets().add(ThemeManager.getCurrentTheme().equals("light") ? lightTheme : darkTheme);
     }
 
-    private void handleCloseEvent(WindowEvent event) {
+    private void handleCloseEvent(WindowEvent event) {//cierra ambas ventanas si se cierra la principal
         if (detallesStage != null && detallesStage.isShowing()) detallesStage.close();
         if (ajustesStage != null && ajustesStage.isShowing()) ajustesStage.close();
     }
@@ -258,7 +256,7 @@ public class MainBankWindow {
     }
 
     private void updateTransactionList() {
-        StringBuilder historialContent = new StringBuilder("         HISTORIAL\n-----------------------------\n");
+        StringBuilder historialContent = new StringBuilder("           HISTORIAL\n-------------------------------\n");
         StringBuilder fechaHoraContent = new StringBuilder("\n\n");
         double exchangeRate = CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
         totalInicial = 0.0;
@@ -320,7 +318,7 @@ public class MainBankWindow {
         }
     }
 
-    private void disableTextAreaInteraction(TextArea textArea) {
+    private void disableTextAreaInteraction(TextArea textArea) { //esto gestiona que el textArea no se pueda desplazar ni vertical ni horizontalmente
         Platform.runLater(() -> {
             ScrollPane scrollPane = (ScrollPane) textArea.lookup(".scroll-pane");
             if (scrollPane != null) {
@@ -352,7 +350,7 @@ public class MainBankWindow {
         updateTotalLabel();
     }
 
-    private ImageView createImageView(String path, int width, int height) {
+    private ImageView createImageView(String path, int width, int height) {//gestiona la importación de imágenes
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(path)));
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
@@ -387,7 +385,7 @@ public class MainBankWindow {
         return botonAjustes;
     }
 
-    private Region createSpacer() {
+    private Region createSpacer() {//separador para mejor gestión de la disposición de los elementos
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         return spacer;
@@ -403,7 +401,7 @@ public class MainBankWindow {
         return textArea;
     }
 
-    // Clase interna Transaction
+    //clase interna para gestionar las actualizaciones de las transacciones
     public static class Transaction {
         private String type;
         private double amountInEuros;
@@ -417,7 +415,6 @@ public class MainBankWindow {
             this.timestamp = timestamp;
         }
 
-        // Métodos Getter
         public String getType() {
             return type;
         }

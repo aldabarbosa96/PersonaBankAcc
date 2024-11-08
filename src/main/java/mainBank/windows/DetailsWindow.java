@@ -17,8 +17,14 @@ import mainBank.managers.*;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
+import java.util.Map;
 
 public class DetailsWindow {
     private Stage stage;
@@ -47,7 +53,7 @@ public class DetailsWindow {
         this.resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
         this.graphicsManager = new GraphicsManager(dbmanager, userId);
 
-        // Cargar transacciones
+        //guardamos la lista de transacciones
         ArrayList<String[]> transactionsData = dbmanager.getUserTransactions(userId);
 
         for (String[] transactionData : transactionsData) {
@@ -62,7 +68,7 @@ public class DetailsWindow {
 
         createWindow();
 
-        // Añadir listener para cambios de divisa
+        //listener para cambio de divisa
         CurrencyManager.currentCurrencyProperty().addListener((observable, oldValue, newValue) -> {
             updateCurrency();
         });
@@ -73,45 +79,31 @@ public class DetailsWindow {
         String darkTheme = ThemeManager.getDARKTHEME();
         stage.setTitle(resources.getString("details.title"));
 
-        // Inicializar el área de detalles
         areaDetalles = new TextArea();
         areaDetalles.setEditable(false);
         areaDetalles.getStyleClass().addAll("custom-text-area", "custom-font");
         areaDetalles.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
-        areaDetalles.setMaxWidth(Double.MAX_VALUE);
-        areaDetalles.setMaxHeight(Double.MAX_VALUE);
-        // Eliminar el setPrefSize para evitar conflictos
-        // areaDetalles.setPrefSize(800,600);
 
-        // Crear el botón "Mostrar Gráfico"
         btnShowChart = new Button(resources.getString("details.showCart"));
         btnShowChart.setMinSize(100, 33);
-        btnShowChart.setPadding(new Insets(10, 20, 10, 20));
+        btnShowChart.setPadding(new Insets(20));
         btnShowChart.setOnAction(e -> toggleView());
 
-        // Configurar el layout de detalles
         detallesLayout = new VBox(10, areaDetalles);
         detallesLayout.setPadding(new Insets(10));
-        VBox.setVgrow(areaDetalles, Priority.ALWAYS); // Permitir que el TextArea se expanda
+        VBox.setVgrow(areaDetalles, Priority.ALWAYS);
 
-        // Inicializar el layout del gráfico (vacío por ahora)
         graficoLayout = new VBox();
         graficoLayout.setPadding(new Insets(20));
-        // Eliminar la línea de visibilidad para que el graficoLayout sea visible cuando se establezca como centro
-        // graficoLayout.setVisible(false); // Oculto inicialmente
-        graficoLayout.setMaxWidth(Double.MAX_VALUE);
-        graficoLayout.setMaxHeight(Double.MAX_VALUE);
 
-        // Crear el contenedor principal usando BorderPane
+        //usamos borderPane para poder switchear entre ambas ventanas
         BorderPane mainLayout = new BorderPane();
         mainLayout.setPadding(new Insets(20));
-        mainLayout.setCenter(detallesLayout); // Por defecto, mostrar detalles
-
-        // Colocar el botón en la parte inferior
-        BorderPane.setMargin(btnShowChart, new Insets(10, 0, 0, 0)); // Margen superior para separación
+        mainLayout.setCenter(detallesLayout); //mostramos detalles por defecto
+        BorderPane.setMargin(btnShowChart, new Insets(10, 0, 0, 0));
         mainLayout.setBottom(btnShowChart);
 
-        Scene scene = new Scene(mainLayout, 620, 650);
+        Scene scene = new Scene(mainLayout, 625, 700);
 
         if (ThemeManager.getCurrentTheme().equals("light")) {
             scene.getStylesheets().add(lightTheme);
@@ -135,63 +127,82 @@ public class DetailsWindow {
         updateCurrency();
     }
 
-    private void toggleView() {
+    private void toggleView() { //alternar la vista entre detalles y gráfico
         BorderPane mainLayout = (BorderPane) stage.getScene().getRoot();
         if (mainLayout.getCenter() == detallesLayout) {
-            // Mostrar gráfico
             mainLayout.setCenter(graficoLayout);
             btnShowChart.setText(resources.getString("details.details"));
         } else {
-            // Mostrar detalles
             mainLayout.setCenter(detallesLayout);
             btnShowChart.setText(resources.getString("details.showCart"));
         }
     }
 
     private void initializeLineChart() {
-        // Configurar los ejes
+        //configurar los ejes
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel(resources.getString("details.date")); // Etiqueta del eje X
+        xAxis.setLabel(resources.getString("details.date")); //etiqueta eje X
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel(resources.getString("details.capital")); // Etiqueta del eje Y
+        yAxis.setLabel(resources.getString("details.capital")); //etiqueta eje Y
 
-        // Crear el LineChart
+        //confg. gráfico
         lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle(resources.getString("details.capitalProgress")); // Título del gráfico
+        lineChart.setTitle(resources.getString("details.capitalProgress"));
         lineChart.setMaxWidth(Double.MAX_VALUE);
         lineChart.setMaxHeight(Double.MAX_VALUE);
 
-        // Crear la serie de datos
         series = new XYChart.Series<>();
-        series.setName(resources.getString("details.dailyTotal")); // Nombre de la serie
+        series.setName(resources.getString("details.dailyTotal"));
 
-        // Añadir la serie al gráfico
+        //añadimos serie de datos al gráfico
         lineChart.getData().add(series);
 
-        // Cargar los datos en el gráfico
         loadChartData();
 
-        // Añadir el gráfico al layout del gráfico
         graficoLayout.getChildren().add(lineChart);
-        VBox.setVgrow(lineChart, Priority.ALWAYS); // Permitir que el LineChart se expanda
+        VBox.setVgrow(lineChart, Priority.ALWAYS);
+    }
+
+    private TreeMap<LocalDate, Double> calculateDailyBalances() { //calcular el balance diario
+        TreeMap<LocalDate, Double> dailyBalances = new TreeMap<>();
+        double runningTotal = 0.0;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (MainBankWindow.Transaction transaction : transactionsList) {
+            String timestamp = transaction.getTimestamp();
+            String dateString = timestamp.substring(9);
+            LocalDate date = LocalDate.parse(dateString, formatter);
+
+            double amount = transaction.getAmountInEuros();
+            if (transaction.getType().equals("+")) {
+                runningTotal += amount;
+            } else if (transaction.getType().equals("-")) {
+                runningTotal -= amount;
+            }
+            dailyBalances.put(date, runningTotal);
+        }
+
+        return dailyBalances;
     }
 
     private void loadChartData() {
         series.getData().clear();
-        // Obtener los totales diarios desde GraphicsManager
-        var dailyTotals = graphicsManager.getDailyTotals();
-        for (var entry : dailyTotals.entrySet()) {
-            String date = entry.getKey().toString(); // Convertir LocalDate a String
-            Double total = entry.getValue();
-            series.getData().add(new XYChart.Data<>(date, total));
+        TreeMap<LocalDate, Double> dailyBalances = calculateDailyBalances();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (Map.Entry<LocalDate, Double> entry : dailyBalances.entrySet()) {
+            String date = entry.getKey().format(formatter);
+            Double balance = entry.getValue() * CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
+            series.getData().add(new XYChart.Data<>(date, balance));
         }
     }
 
     public void updateCurrency() {
         updateDecimalFormat();
         updateDetailsArea();
-        updateChartData(); // Actualizar los datos del gráfico cuando cambie la divisa
+        updateChartData();
     }
 
     private void updateDecimalFormat() {
@@ -204,7 +215,7 @@ public class DetailsWindow {
     private void updateDetailsArea() {
         areaDetalles.clear();
 
-        String header = String.format("%-12s %-20s %-10s %-12s %-15s\n",
+        String header = String.format("%-12s %-20s %-10s %-12s %-8s\n",
                 resources.getString("details.amount"),
                 resources.getString("details.concept"),
                 resources.getString("details.time"),
@@ -233,13 +244,13 @@ public class DetailsWindow {
                 runningTotal -= amountInSelectedCurrency;
             }
 
-            String totalFormateado = df.format(runningTotal) + " " + currencySymbol;
+            String totalFormateado = df.format(runningTotal);
 
             String hora = timestamp.substring(0, 8);
             String fecha = timestamp.substring(9);
 
-            String linea = String.format("%-12s %-20s %-10s %-12s %-15s\n",
-                    tipo + formattedAmount, concept, hora, fecha, totalFormateado);
+            String linea = String.format("%-12s %-20s %-10s %-12s %-8s %-1s\n", //lo que me puto ha cosatado alinearlo bien no tiene sentido
+                    tipo + formattedAmount, concept, hora, fecha, totalFormateado,currencySymbol);
 
             areaDetalles.appendText(linea);
         }

@@ -4,16 +4,18 @@
 .root {
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-size: 12px;
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: #f4f4f4; /* Fondo ligeramente gris para suavizar el blanco */
 }
 
 /* Estilos para botones */
 .button {
-    -fx-background-color: lightgray;
-    -fx-text-fill: #000000;
-    -fx-border-width: 0;
-    -fx-background-radius: 5px;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+     -fx-font-size: 12px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-padding: 8px 16px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
     -fx-cursor: hand;
@@ -58,9 +60,7 @@
     -fx-background-radius: 4px;
     -fx-padding: 6px 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 1, 0, 0, 1);
-    -fx-cursor: hand;
-    -fx-font-weight: bold;
-    -fx-transition: background-color 0.3s, text-fill 0.3s;
+    -fx-transition: border-color 0.3s, background-color 0.3s;
 }
 
 .custom-text-field:hover {
@@ -71,12 +71,6 @@
     -fx-border-color: #0066cc;
     -fx-background-color: #ffffff;
     -fx-effect: dropshadow(three-pass-box, rgba(0,102,204,0.2), 4, 0, 0, 2);
-}
-
-/* Estilos para fuentes personalizadas si los usas */
-.custom-font {
-    -fx-font-family: "Courier New";
-    -fx-font-size: 12px;
 }
 
 /* Eliminar barra de desplazamiento horizontal (solo visualmente) */
