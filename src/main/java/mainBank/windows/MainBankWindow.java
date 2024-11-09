@@ -39,11 +39,13 @@ public class MainBankWindow {
     private String lightTheme, darkTheme;
     private double cantidad;
     private Stage detallesStage, ajustesStage, primaryStage;
-    private Label labelRegistros, labelTotal;
+    private Label labelRegistros, labelTotal, labelHistorial, labelFechaHora;
     private TextField textFieldCantidad, textFieldConcepto;
     private Button botonIngreso, botonGasto, botonUndo, botonDetalles;
     private MenuItem menu1, menu2, menu3;
     private TextArea historialArea, fechaHoraArea;
+    private StackPane stackPaneHistorial, stackPaneFechaHora;
+
 
     public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
@@ -132,8 +134,20 @@ public class MainBankWindow {
     }
 
     private void initTextAreas() {
-        historialArea = createTextArea("         HISTORIAL\n-----------------------------\n", 250, 320);
+        labelHistorial = new Label(resources.getString("details.historial"));
+        labelHistorial.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+        labelHistorial.getStyleClass().add("custom-label1");
+        labelHistorial.setPrefSize(250, 32);
+        labelFechaHora = new Label(resources.getString("details.fecha"));
+        labelFechaHora.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+        labelFechaHora.getStyleClass().add("custom-label1");
+        labelFechaHora.setPrefSize(160,32);
+        historialArea = createTextArea("", 250, 320);
         fechaHoraArea = createTextArea("\n\n", 160, 320);
+        stackPaneHistorial = new StackPane(historialArea, labelHistorial);
+        StackPane.setAlignment(labelHistorial, Pos.TOP_CENTER);
+        stackPaneFechaHora = new StackPane(fechaHoraArea, labelFechaHora);
+        StackPane.setAlignment(labelFechaHora, Pos.TOP_CENTER);
     }
 
     private void applyStyles() {
@@ -160,7 +174,7 @@ public class MainBankWindow {
         HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
         hboxBotones.setAlignment(Pos.CENTER_LEFT);
 
-        HBox hboxHistorial = new HBox(createSpacer(), historialArea, fechaHoraArea, createSpacer());
+        HBox hboxHistorial = new HBox(createSpacer(), stackPaneHistorial, stackPaneFechaHora, createSpacer());
         hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
         HBox hboxTotal = new HBox(labelTotal);
@@ -256,7 +270,7 @@ public class MainBankWindow {
     }
 
     private void updateTransactionList() {
-        StringBuilder historialContent = new StringBuilder("           HISTORIAL\n-------------------------------\n");
+        StringBuilder historialContent = new StringBuilder();
         StringBuilder fechaHoraContent = new StringBuilder("\n\n");
         double exchangeRate = CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
         totalInicial = 0.0;
@@ -347,6 +361,8 @@ public class MainBankWindow {
         menu1.setText(resources.getString("main.config"));
         menu2.setText(resources.getString("main.account"));
         menu3.setText(resources.getString("main.help"));
+        labelHistorial.setText(resources.getString("details.historial"));
+        labelFechaHora.setText(resources.getString("details.fecha"));
         updateTotalLabel();
     }
 
@@ -431,5 +447,4 @@ public class MainBankWindow {
             return timestamp;
         }
     }
-
 }

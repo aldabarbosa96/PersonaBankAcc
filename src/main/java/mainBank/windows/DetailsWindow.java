@@ -6,7 +6,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -20,8 +19,6 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.Map;
@@ -51,7 +48,6 @@ public class DetailsWindow {
         this.stage = new Stage();
         this.resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
 
-        //guardamos la lista de transacciones
         ArrayList<String[]> transactionsData = dbmanager.getUserTransactions(userId);
 
         for (String[] transactionData : transactionsData) {
@@ -69,6 +65,11 @@ public class DetailsWindow {
         //listener para cambio de divisa
         CurrencyManager.currentCurrencyProperty().addListener((observable, oldValue, newValue) -> {
             updateCurrency();
+        });
+
+        //listener para cambio de idioma
+        LanguageManager.localeProperty().addListener((observable, oldValue, newValue) -> {
+            updateTexts();
         });
     }
 
@@ -94,10 +95,10 @@ public class DetailsWindow {
         graficoLayout = new VBox();
         graficoLayout.setPadding(new Insets(20));
 
-        //usamos borderPane para crear dos layouts
+        //usamos BorderPane para crear dos layouts
         BorderPane mainLayout = new BorderPane();
         mainLayout.setPadding(new Insets(20));
-        mainLayout.setCenter(detallesLayout); //mostramos detalles por defecto
+        mainLayout.setCenter(detallesLayout); // mostramos detalles por defecto
         BorderPane.setMargin(btnShowChart, new Insets(10, 0, 0, 0));
         mainLayout.setBottom(btnShowChart);
 
@@ -123,9 +124,10 @@ public class DetailsWindow {
 
         initializeLineChart();
         updateCurrency();
+        updateTexts();
     }
 
-    private void toggleView() { //alternar la vista entre detalles y gráfico
+    private void toggleView() {
         BorderPane mainLayout = (BorderPane) stage.getScene().getRoot();
         if (mainLayout.getCenter() == detallesLayout) {
             mainLayout.setCenter(graficoLayout);
@@ -143,7 +145,7 @@ public class DetailsWindow {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel(resources.getString("details.capital"));
 
-        //confg. gráfico
+        //conf. gráfico
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle(resources.getString("details.capitalProgress"));
         lineChart.setMaxWidth(Double.MAX_VALUE);
@@ -152,16 +154,14 @@ public class DetailsWindow {
         series = new XYChart.Series<>();
         series.setName(resources.getString("details.dailyTotal"));
 
-
-        lineChart.getData().add(series); //añadimos serie de datos al gráfico
-
+        lineChart.getData().add(series);
         loadChartData();
 
         graficoLayout.getChildren().add(lineChart);
         VBox.setVgrow(lineChart, Priority.ALWAYS);
     }
 
-    private TreeMap<LocalDate, Double> calculateDailyBalances() { //calcular el balance diario
+    private TreeMap<LocalDate, Double> calculateDailyBalances() { // calcular el balance diario
         TreeMap<LocalDate, Double> dailyBalances = new TreeMap<>();
         double runningTotal = 0.0;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -246,8 +246,8 @@ public class DetailsWindow {
             String hora = timestamp.substring(0, 8);
             String fecha = timestamp.substring(9);
 
-            String linea = String.format("%-12s %-20s %-10s %-12s %-8s %-1s\n", //lo que me puto ha cosatado alinearlo bien no tiene sentido
-                    tipo + formattedAmount, concept, hora, fecha, totalFormateado,currencySymbol);
+            String linea = String.format("%-12s %-20s %-10s %-12s %-8s %s\n",
+                    tipo + formattedAmount, concept, hora, fecha, totalFormateado, currencySymbol);
 
             areaDetalles.appendText(linea);
         }
@@ -255,6 +255,26 @@ public class DetailsWindow {
 
     private void updateChartData() {
         loadChartData();
+    }
+
+    public void updateTexts() {
+        resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
+
+        stage.setTitle(resources.getString("details.title"));
+
+        btnShowChart.setText(stage.getScene().getRoot() instanceof BorderPane ? ((BorderPane) stage.getScene().getRoot()).getCenter() == detallesLayout ?
+                        resources.getString("details.showCart") :
+                        resources.getString("details.details") :
+                        resources.getString("details.showCart"));
+
+        lineChart.setTitle(resources.getString("details.capitalProgress"));
+        ((CategoryAxis) lineChart.getXAxis()).setLabel(resources.getString("details.date"));
+        ((NumberAxis) lineChart.getYAxis()).setLabel(resources.getString("details.capital"));
+
+        series.setName(resources.getString("details.dailyTotal"));
+
+        updateDetailsArea();
+        updateChartData();
     }
 
     public Stage getStage() {
