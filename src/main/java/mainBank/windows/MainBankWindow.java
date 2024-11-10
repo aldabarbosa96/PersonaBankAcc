@@ -145,9 +145,10 @@ public class MainBankWindow {
         historialArea = createTextArea("", 250, 320);
         fechaHoraArea = createTextArea("\n\n", 160, 320);
         stackPaneHistorial = new StackPane(historialArea, labelHistorial);
-        StackPane.setAlignment(labelHistorial, Pos.TOP_CENTER);
         stackPaneFechaHora = new StackPane(fechaHoraArea, labelFechaHora);
         StackPane.setAlignment(labelFechaHora, Pos.TOP_CENTER);
+        StackPane.setAlignment(labelHistorial, Pos.TOP_CENTER);
+
     }
 
     private void applyStyles() {
@@ -226,12 +227,15 @@ public class MainBankWindow {
             double amountInEuros = cantidad / CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
             String concepto = textFieldConcepto.getText();
             String timestamp = obtenerTimestamp();
+            String currencySymbol = CurrencyManager.getCurrencySymbol(CurrencyManager.getCurrentCurrency());
             transactionsList.add(new Transaction(tipo, amountInEuros, concepto, timestamp));
             dbmanager.insertTransaction(userId, tipo, amountInEuros, timestamp, concepto);
-            labelRegistros.setText(resources.getString("main.records1") + ":  " + tipo + cantidad);
+            labelRegistros.setText(resources.getString("main.records1") + ":  " + tipo + dfTransaction.format(cantidad) + " " + currencySymbol);
             textFieldCantidad.clear();
             textFieldConcepto.clear();
             updateCurrency();
+
+            textFieldCantidad.requestFocus();
         } catch (NumberFormatException ex) {
             labelRegistros.setText(resources.getString("main.error"));
         }
@@ -270,7 +274,7 @@ public class MainBankWindow {
     }
 
     private void updateTransactionList() {
-        StringBuilder historialContent = new StringBuilder();
+        StringBuilder historialContent = new StringBuilder("\n\n");
         StringBuilder fechaHoraContent = new StringBuilder("\n\n");
         double exchangeRate = CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
         totalInicial = 0.0;
