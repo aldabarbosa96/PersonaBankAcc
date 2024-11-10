@@ -8,9 +8,13 @@ Características
     Registro de ingresos y gastos: Permite registrar transacciones con cantidad y concepto.
     Historial de transacciones: Muestra un historial detallado con fecha y hora y el total en cada 
     período.
-    Función de deshacer: Permite eliminar la última transacción registrada.
-    Función de cambiar tema: Permite alternar entre tema claro y oscuro.
-    Interfaz gráfica de usuario (GUI): Desarrollada con JavaFX para una experiencia interactiva.
+    Representación gráfica: muestra un gráfico lineal de los registros en base al tiempo y al total en ese período.
+    Función deshacer: Permite eliminar la última transacción registrada.
+    Función cambiar tema: Permite alternar entre tema claro y oscuro.
+    Función cambiar de divisa: Permite escoger la divisa (EUR,USD,GBP).
+    Función cambiar de idioma: Permite escoger el idioma preferido (Español, Català, English).
+    Interfaz gráfica de usuario (GUI): Desarrollada con JavaFX y diseñada con CSS para una experiencia interactiva y atractiva.
+    
 
 Requisitos
 
@@ -58,6 +62,9 @@ Uso
 
     Deshacer última transacción
         Haz clic en el botón "Deshacer" para eliminar la última transacción registrada.
+
+    Submenú Ajustes
+        Configura tus preferencias de idioma, divisa o revisa la guía de ayuda para el usuario.
 
     Cerrar la aplicación
         Al cerrar la aplicación, todas las transacciones se guardan automáticamente en la base de datos local.
