@@ -40,7 +40,7 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
         </dependency>
-        <!-- JFreeChart Dependencies (para generar gráficos en un futuro)-->
+        <!-- JFreeChart Dependencies (para generar gráficos)-->
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart-fx</artifactId>
