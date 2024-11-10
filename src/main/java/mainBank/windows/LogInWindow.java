@@ -64,7 +64,9 @@ public class LogInWindow extends Application {
 
             boolean success = dbmanager.insertUser(username, password);
             if (success) {
-                showMessage(resources.getString("login.success"), resources.getString("login.successMessage"));
+                String successMessageTemplate = resources.getString("login.successRegister");
+                String successMessage = MessageFormat.format(successMessageTemplate, username);
+                showMessage(resources.getString("login.success"), successMessage);
             } else {
                 if (!dbmanager.userIsValid(username)) {
                     showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
