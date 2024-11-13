@@ -84,7 +84,7 @@ public class AccountSubWindow {
         changePassword.setMaxWidth(150);
 
         TextField textFieldUsername = new TextField(getUserName(userID));
-        TextField textFieldPassword = new TextField(getPassword(userID));
+        TextField textFieldPassword = new TextField(getPasswordforShow(userID));
         textFieldUsername.setMaxWidth(125);
         textFieldPassword.setMaxWidth(125);
         textFieldUsername.setEditable(false);
@@ -92,12 +92,10 @@ public class AccountSubWindow {
         textFieldUsername.setFocusTraversable(false);
         textFieldPassword.setFocusTraversable(false);
 
-        textFieldUsername.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
-        textFieldPassword.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
         textFieldUsername.getStyleClass().add("custom-text-field");
         textFieldPassword.getStyleClass().add("custom-text-field");
-        usernameLabel.getStyleClass().add("custom-label");
-        passwordLabel.getStyleClass().add("custom-label");
+        usernameLabel.getStyleClass().add("custom-label2");
+        passwordLabel.getStyleClass().add("custom-label2");
 
         vBox.getChildren().addAll(usernameLabel, textFieldUsername, passwordLabel, textFieldPassword, changeUsername, changePassword);
 
@@ -106,7 +104,7 @@ public class AccountSubWindow {
 
         VBox.setMargin(passwordLabel, new Insets(10, 0, 25, 0));
         VBox.setMargin(textFieldPassword, new Insets(0, 0, 5, 0));
-        VBox.setMargin(changeUsername, new Insets(35, 0, 10, 0));
+        VBox.setMargin(changeUsername, new Insets(50, 0, 10, 0));
 
         toggleView();
     }
@@ -127,6 +125,11 @@ public class AccountSubWindow {
         Button saveButton = new Button(resources.getString("account.save"));
         Button cancelButton = new Button(resources.getString("account.cancel"));
 
+        newUsernameField.getStyleClass().addAll("custom-text-field");
+        newUsernameField1.getStyleClass().addAll("custom-text-field");
+        newUsernameLabel.getStyleClass().addAll("custom-label2");
+        newUsernameLabel1.getStyleClass().addAll("custom-label2");
+
         newUsernameField.setMaxWidth(200);
         newUsernameField1.setMaxWidth(200);
         saveButton.setMaxWidth(150);
@@ -138,7 +141,14 @@ public class AccountSubWindow {
         VBox.setMargin(newUsernameField1, new Insets(0, 0, 10, 0));
         VBox.setMargin(saveButton, new Insets(32));
 
-        saveButton.setOnAction(event -> setMainView());
+        saveButton.setOnAction(event -> {
+            String newUsername = newUsernameField.getText();
+            String confirmUsername = newUsernameField1.getText();
+            saveNewUsername(newUsername, confirmUsername);
+            setMainView();
+        });
+
+
         cancelButton.setOnAction(event -> setMainView());
 
         vBox.getChildren().addAll(newUsernameLabel, newUsernameField, newUsernameLabel1, newUsernameField1, saveButton, cancelButton);
@@ -156,6 +166,13 @@ public class AccountSubWindow {
         Button saveButton = new Button(resources.getString("account.save"));
         Button cancelButton = new Button(resources.getString("account.cancel"));
 
+        oldPasswordField.getStyleClass().addAll("custom-text-field");
+        newPasswordField.getStyleClass().addAll("custom-text-field");
+        confirmNewPasswordField.getStyleClass().addAll("custom-text-field");
+        oldPasswordLabel.getStyleClass().addAll("custom-label2");
+        newPasswordLabel.getStyleClass().addAll("custom-label2");
+        confirmNewPasswordLabel.getStyleClass().addAll("custom-label2");
+
         oldPasswordField.setMaxWidth(200);
         newPasswordField.setMaxWidth(200);
         confirmNewPasswordField.setMaxWidth(200);
@@ -167,10 +184,16 @@ public class AccountSubWindow {
         VBox.setMargin(newPasswordField, new Insets(2));
         VBox.setMargin(confirmNewPasswordLabel, new Insets(8));
         VBox.setMargin(confirmNewPasswordField, new Insets(2));
-        VBox.setMargin(saveButton, new Insets(15));
+        VBox.setMargin(saveButton, new Insets(13));
 
 
-        saveButton.setOnAction(event -> setMainView());
+        saveButton.setOnAction(event -> {
+            String currentPassword = oldPasswordField.getText();
+            String newPassword = newPasswordField.getText();
+            String confirmPassword = confirmNewPasswordField.getText();
+            saveNewPassword(currentPassword, newPassword, confirmPassword);
+            setMainView();
+        });
         cancelButton.setOnAction(event -> setMainView());
 
         vBox.getChildren().addAll(oldPasswordLabel, oldPasswordField, newPasswordLabel, newPasswordField, confirmNewPasswordLabel, confirmNewPasswordField, saveButton, cancelButton);
@@ -192,6 +215,11 @@ public class AccountSubWindow {
         return username;
     }
 
+    private String getPasswordforShow(int userID) {
+        String password = getPassword(userID);
+        return "*".repeat(password.length());
+    }
+
     private String getPassword(int userID) {
         String sqlPassword = "SELECT password FROM users WHERE id = ?";
         String password = "";
@@ -205,7 +233,98 @@ public class AccountSubWindow {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return "*".repeat(password.length());
+        return password;
+    }
+
+    public void saveNewUsername(String newUsername, String confirmUsername) {
+        if (newUsername.isEmpty() || confirmUsername.isEmpty()) {
+            System.out.println("Error: campo/s de texto vacío/s");
+            showError(resources.getString("login.error"), resources.getString("account.userError1"));
+            return;
+        }
+        if (!newUsername.equals(confirmUsername)) {
+            System.out.println("Error: confirmación de usuario incorrecta");
+            showError(resources.getString("login.error"),resources.getString("account.userError2"));
+            return;
+        }
+
+        String currentUsername = getUserName(userID);
+        if (newUsername.equals(currentUsername)) {
+            System.out.println("Error: el nuevo nombre de usuario es igual al actual.");
+            showError(resources.getString("login.error"), resources.getString("account.userError3"));
+            return;
+        }
+
+        String sqlCheckUsername = "SELECT COUNT(*) FROM users WHERE username = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCheckUsername)) {
+            statement.setString(1, newUsername);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next() && resultSet.getInt(1) > 0) {
+                System.out.println("Error: el nombre de usuario ya existe.");
+                showError(resources.getString("login.error"), resources.getString("account.userError4"));
+                return;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al comprobar el nombre de usuario: " + e.getMessage());
+            return;
+        }
+
+        String sqlUpdateUsername = "UPDATE users SET username = ? WHERE id = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(sqlUpdateUsername)) {
+            updateStatement.setString(1, newUsername);
+            updateStatement.setInt(2, userID);
+            updateStatement.executeUpdate();
+            System.out.println("Nombre de usuario actualizado con éxito.");
+            showMessage(resources.getString("login.success"), resources.getString("account.userUpdated"));
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el nombre de usuario: " + e.getMessage());
+        }
+    }
+
+
+    public void saveNewPassword(String currentPassword, String newPassword, String confirmPassword) {
+        if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            System.out.println("Error: campo/s de texto vacío/s");
+            showError(resources.getString("login.error"), resources.getString("account.userError1"));
+            return;
+        }
+        String actualPassword = getPassword(userID); //si no funciona debería revisar como se gestionan los userID en los métodos getPassword y getPasswordforShow
+        if (!currentPassword.equals(actualPassword)) {
+            System.out.println("Error: la contraseña actual es incorrecta.");
+            showError(resources.getString("login.error"), resources.getString("account.passwordError1"));
+            return;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            System.out.println("Error: la confirmación de la nueva contraseña no coincide.");
+            showError(resources.getString("login.error"), resources.getString("account.passwordError2"));
+            return;
+        }
+        String sqlUpdatePassword = "UPDATE users SET password = ? WHERE id = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(sqlUpdatePassword)) {
+            updateStatement.setString(1, newPassword);
+            updateStatement.setInt(2, userID);
+            updateStatement.executeUpdate();
+            System.out.println("Contraseña actualizada con éxito.");
+            showMessage(resources.getString("login.success"), resources.getString("account.passwordUpdated"));
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar la contraseña: " + e.getMessage());
+        }
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void showMessage(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public Stage getStage() {

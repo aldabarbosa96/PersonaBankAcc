@@ -53,7 +53,12 @@
     -fx-background-radius: 4px;
     -fx-border-radius: 4px;
 }
-
+.custom-label2 {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Courier New';
+    -fx-font-size: 12px;
+}
 
 .custom-text-area {
     -fx-background-color: rgba(60, 63, 65, 0.9);

@@ -42,6 +42,7 @@
 .custom-label {
     -fx-text-fill: #333333;
     -fx-font-weight: bold;
+
 }
 .custom-label1 {
     -fx-background-color: white;
@@ -51,7 +52,12 @@
     -fx-background-radius: 4px;
     -fx-border-radius: 4px;
 }
-
+.custom-label2 {
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Courier New';
+    -fx-font-size: 12px;
+}
 
 /* Estilos para áreas de texto personalizadas */
 .custom-text-area {
