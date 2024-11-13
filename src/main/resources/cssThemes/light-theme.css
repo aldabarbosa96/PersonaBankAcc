@@ -97,3 +97,48 @@
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
 }
+
+/* Submenú Ajustes*/
+.context-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 8px;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0.0, 0, 1);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-border-radius: 4px;
+}
+
+.menu-item .label {
+    -fx-text-fill: #333333;
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #d3d3d3;
+    -fx-border-radius: 4px;
+}
+
+.menu-item:hover .label {
+    -fx-text-fill: #000000;
+}
+
+.menu-item:focused {
+    -fx-background-color: #e0e0e0;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #000000;
+}
+
+.menu-item .label {
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 4px;
+}

@@ -393,9 +393,13 @@ public class MainBankWindow {
         botonAjustes.setGraphic(createImageView("/images/settings.png", 20, 20));
 
         ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getStyleClass().add("context-menu");
         menu1 = new MenuItem(resources.getString("main.config"));
         menu2 = new MenuItem(resources.getString("main.account"));
         menu3 = new MenuItem(resources.getString("main.help"));
+        menu1.getStyleClass().add("context-menu-item");
+        menu2.getStyleClass().add("context-menu-item");
+        menu3.getStyleClass().add("context-menu-item");
         contextMenu.getItems().addAll(menu1, menu2, menu3);
         botonAjustes.setOnAction(e -> toggleContextMenu(contextMenu, botonAjustes));
 
@@ -405,7 +409,7 @@ public class MainBankWindow {
         return botonAjustes;
     }
 
-    private Region createSpacer() {//separador para mejor gestión de la disposición de los elementos
+    private Region createSpacer() {//separador para mejorar disposición de los elementos
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         return spacer;

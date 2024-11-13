@@ -43,7 +43,7 @@ public class LogInWindow extends Application {
 
         VBox buttonBox = new VBox(8, loginButton, registerButton);
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(25, 0, 0, 0)); // Separación adicional desde los campos de texto
+        buttonBox.setPadding(new Insets(25, 0, 0, 0));
 
         VBox vbox = new VBox(25, usernameBox, passwordBox, buttonBox);
         vbox.setPadding(new Insets(40));
