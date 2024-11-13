@@ -312,7 +312,7 @@ public class AccountSubWindow {
         }
     }
 
-    private void showError(String title, String message) {
+    private void showError(String title, String message) {//en un futuro debería crear una clase que gestione los mensajes pop up
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);

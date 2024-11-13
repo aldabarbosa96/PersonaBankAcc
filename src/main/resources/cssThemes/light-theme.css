@@ -54,9 +54,6 @@
 }
 .custom-label2 {
     -fx-text-fill: #333333;
-    -fx-font-weight: bold;
-    -fx-font-family: 'Courier New';
-    -fx-font-size: 12px;
 }
 
 /* Estilos para áreas de texto personalizadas */
@@ -68,6 +65,7 @@
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
     -fx-padding: 5px 2px 10px 2px;
+    -fx-font-family: "Open Sans";
 }
 
 

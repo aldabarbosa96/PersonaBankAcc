@@ -55,9 +55,6 @@
 }
 .custom-label2 {
     -fx-text-fill: #e0e0e0;
-    -fx-font-weight: bold;
-    -fx-font-family: 'Courier New';
-    -fx-font-size: 12px;
 }
 
 .custom-text-area {

@@ -2,6 +2,7 @@ package mainBank.windows;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -31,11 +32,23 @@ public class LogInWindow extends Application {
 
         Button loginButton = new Button(resources.getString("login.loginButton"));
         Button registerButton = new Button(resources.getString("login.registerButton"));
-        loginButton.setMinWidth(90);
-        registerButton.setMinWidth(90);
+        loginButton.setPrefWidth(90);
+        registerButton.setPrefWidth(90);
 
-        VBox vbox = new VBox(10, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, registerButton);
-        vbox.setPadding(new Insets(20));
+        VBox usernameBox = new VBox(4, usernameLabel, usernameField);
+        usernameBox.setAlignment(Pos.TOP_LEFT);
+
+        VBox passwordBox = new VBox(4, passwordLabel, passwordField);
+        passwordBox.setAlignment(Pos.TOP_LEFT);
+
+        VBox buttonBox = new VBox(8, loginButton, registerButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(25, 0, 0, 0)); // Separación adicional desde los campos de texto
+
+        VBox vbox = new VBox(25, usernameBox, passwordBox, buttonBox);
+        vbox.setPadding(new Insets(40));
+        vbox.setAlignment(Pos.CENTER);
+
 
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
@@ -76,8 +89,9 @@ public class LogInWindow extends Application {
             }
         });
 
-        Scene scene = new Scene(vbox, 300, 220);
+        Scene scene = new Scene(vbox, 300, 330);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.setTitle(resources.getString("main.title"));
         stage.show();
 
