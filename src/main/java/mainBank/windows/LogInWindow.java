@@ -25,15 +25,19 @@ public class LogInWindow extends Application {
         ResourceBundle resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
 
         Label usernameLabel = new Label(resources.getString("login.username"));
+        usernameLabel.getStyleClass().add("custom-label");
         TextField usernameField = new TextField();
+        usernameField.getStyleClass().add("custom-text-field");
 
         Label passwordLabel = new Label(resources.getString("login.password"));
+        passwordLabel.getStyleClass().add("custom-label");
         PasswordField passwordField = new PasswordField();
+        passwordField.getStyleClass().add("custom-text-field");
 
         Button loginButton = new Button(resources.getString("login.loginButton"));
         Button registerButton = new Button(resources.getString("login.registerButton"));
-        loginButton.setPrefWidth(90);
-        registerButton.setPrefWidth(90);
+        loginButton.setPrefWidth(110);
+        registerButton.setPrefWidth(110);
 
         VBox usernameBox = new VBox(4, usernameLabel, usernameField);
         usernameBox.setAlignment(Pos.TOP_LEFT);
@@ -90,6 +94,7 @@ public class LogInWindow extends Application {
         });
 
         Scene scene = new Scene(vbox, 300, 330);
+        scene.getStylesheets().add(getClass().getResource("/cssThemes/light-theme.css").toExternalForm()); // Carga la hoja de estilos
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle(resources.getString("main.title"));
