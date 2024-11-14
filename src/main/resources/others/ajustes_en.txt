@@ -1,36 +1,39 @@
-Brief User Guide
+=============================================
+               USER GUIDE
+            Personal Bank Account
+=============================================
 
-Personal Bank Account offers you comprehensive control over all your transactions, both physical and digital, allowing complete monitoring of your overall capital.
+Welcome to **Personal Bank Account**, your comprehensive tool for managing financial transactions. Our application allows you to record, view, and analyze all your transactions—both income and expenses—in an organized and personalized way.
 
-How It Works
+MAIN FEATURES
 
-1. Register a Transaction
-Amount: Enter the amount you wish to record.
-Concept (optional): Add a description to better identify the transaction.
-Transaction Type: Select whether the operation is an income or an expense.
+1. **Transaction Registration**
+**Amount**: Enter the transaction amount. Both integer and decimal values are accepted.
+**Concept (optional)**: Add a brief description to better identify the transaction in the history.
+**Transaction Type**: Select whether the transaction is *income* or *expense*, allowing clear tracking of your finances.
 
-2. View the History
-All your transactions are stored in the history, where you can see the date and time of each one.
+2. **View Transaction History**
+The transaction history stores each record in detail, showing the date and time. Access the history to review past transactions and verify your financial flow.
 
-3. Manage Transactions
-Undo Last Transaction: If you make a mistake, use the "Undo" button to revert the last action taken.
-History Details: For a more detailed view of your transactions, press the "Details" button.
+3. **Transaction Management**
+**Undo Last Transaction**: If an incorrect transaction is made, use the "Undo" button to reverse the last action quickly and safely.
+**History Details**: Access a detailed view of each individual transaction, including all income and expense data.
 
-4. Interface Customization
-Light/Dark Theme: Easily switch between light and dark themes by clicking on the "moon" or "sun" button according to your preference.
+4. **Interface Customization**
+**Light/Dark Theme**: Adjust the appearance of the application to your preferences or lighting conditions by switching between the light and dark themes using the "moon" or "sun" icon.
 
-5. Settings Menu
-Access the Settings Menu to manage different aspects of the application. This menu contains the following sub-sections:
-Settings: Adjust the application's preferences according to your needs.
-Account: Manage your account information, such as personal data and security options.
-Help: Access support resources and this user guide to resolve any questions.
+5. **Settings Menu**
+Access the Settings Menu to configure and personalize the application. It includes the following sections:
+**Settings**: Adjust general application preferences, such as language and notification options.
+**Account**: Manage your profile, update personal data, and adjust security settings, including your password.
+**Help**: Access this user guide and other support resources to resolve any questions.
 
-6. Details/Graph Window
-Access the Details tab to see the complete and detailed list of all transactions made. Includes the amount, description,
-date, time and the total in that period. It also offers the possibility of viewing the data comfortably in line graph format.
+6. **Details/Graph Window**
+In the Details tab, get a complete breakdown of your transactions with precise information: amount, description, date, time, and total balance for the selected period.
+Graphical visualization: Track your financial progress over time in a line graph to help analyze income and expense patterns.
 
-Support and Contact
+SUPPORT AND CONTACT
 
-If you find any errors or have any questions, please report them to: aldabarbosa1996@gmail.com
+If you have any questions, encounter an error, or need assistance, please contact us at: **aldabarbosa1996@gmail.com**
 
-Version: V-1.9.3-alpha
+Application Version: v-2.0.3-alpha

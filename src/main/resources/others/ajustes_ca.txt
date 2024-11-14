@@ -1,36 +1,39 @@
-Breu Guia d'Ús
+=============================================
+               GUIA DE L'USUARI
+            Personal Bank Account
+=============================================
 
-Personal Bank Account t'ofereix un control exhaustiu de totes les teves transaccions, tant físiques com digitals, permetent un monitoratge complet del teu capital global.
+Benvingut a **Personal Bank Account**, la teva eina integral per a la gestió de transaccions financeres. La nostra aplicació et permet registrar, visualitzar i analitzar totes les teves transaccions, tant ingressos com despeses, de manera organitzada i personalitzada.
 
-Com Funciona
+FUNCIONS PRINCIPALS
 
-1. Registrar una Transacció
-Quantitat: Introdueix l'import que desitges registrar.
-Concepte (opcional): Afegeix una descripció per identificar millor la transacció.
-Tipus de Transacció: Selecciona si l'operació és un ingrés o una despesa.
+1. **Registre de Transaccions**
+**Quantitat**: Introdueix l'import de la transacció. S'accepten valors enters i decimals.
+**Concepte (opcional)**: Afegeix una breu descripció per identificar millor la transacció a l'historial.
+**Tipus de Transacció**: Selecciona si l'operació és un *ingrés* o una *despesa*, permetent un seguiment clar de les teves finances.
 
-2. Visualitzar l'Historial
-Totes les teves transaccions s'emmagatzemen a l'historial, on podràs veure la data i l'hora de cadascuna.
+2. **Visualització de l'Historial**
+L'historial de transaccions emmagatzema cada registre de manera detallada, mostrant la data i hora. Accedeix a l'historial per consultar transaccions anteriors i verificar el teu flux financer.
 
-3. Gestionar Transaccions
-Desfer l'Última Transacció: Si comets un error, utilitza el botó "Desfer" per revertir l'última acció realitzada.
-Detalls de l'Historial: Per a una visió més detallada de les teves transaccions, prem el botó "Detalls".
+3. **Gestió de Transaccions**
+**Desfer Última Transacció**: Si es realitza una transacció incorrecta, utilitza el botó "Desfer" per revertir l'última operació de forma ràpida i segura.
+**Detalls de l'Historial**: Accedeix a una vista detallada de cada transacció individual, incloent totes les dades d'ingrés i despesa.
 
-4. Personalització de la Interfície
-Tema Clar/Fosc: Canvia entre el tema clar i fosc fàcilment fent clic al botó de la "lluna" o el "sol" segons la teva preferència.
+4. **Personalització de la Interfície**
+**Tema Clar/Fosc**: Adapta l'aparença de l'aplicació a les teves preferències o condicions de llum, alternant entre el tema clar i el tema fosc mitjançant la icona de "lluna" o "sol".
 
-5. Menú de Configuració
-Accedeix al Menú de Configuració per gestionar diferents aspectes de l'aplicació. Aquest menú conté els següents subapartats:
-Configuració: Ajusta les preferències de l'aplicació segons les teves necessitats.
-Compte: Gestiona la informació del teu compte, com ara dades personals i opcions de seguretat.
-Ajuda: Accedeix a recursos de suport i aquesta guia d'ús per resoldre qualsevol dubte.
+5. **Menú de Configuració**
+Accedeix al Menú de Configuració per personalitzar l'aplicació. Inclou les següents seccions:
+**Configuració**: Ajusta les preferències generals de l'aplicació, com l'idioma i les opcions de notificacions.
+**Compte**: Gestiona el teu perfil, actualitza dades personals i ajusta les opcions de seguretat, incloent-hi la contrasenya.
+**Ajuda**: Accedeix a aquesta guia de l'usuari i a altres recursos de suport per resoldre els teus dubtes.
 
-6. Finestra Detalls/Gràfic
-Accedeix a la pestanya Detalls per veure la llista completa i detallada de totes les transaccions realitzades. Inclou la suma, descripció,
-data, hora i el total en aquest període. A més, ofereix la possibilitat de visualitzar les dades còmodament en format de gràfic de línies.
+6. **Finestra de Detalls/Gràfic**
+A la pestanya Detalls, obtén un desglossament complet de les teves transaccions amb informació precisa: import, descripció, data, hora i saldo total del període consultat.
+Visualització gràfica: Observa la teva evolució financera en un gràfic de línies per analitzar patrons d'ingressos i despeses al llarg del temps.
 
-Suport i Contacte
+SUPORT I CONTACTE
 
-Si trobes algun error o tens alguna consulta, si us plau, reporta-ho a: aldabarbosa1996@gmail.com
+Si tens alguna consulta, detectes un error o necessites assistència, si us plau, contacta'ns a: **aldabarbosa1996@gmail.com**
 
-Versió: V-1.9.3-alpha
+Versió de l'aplicació: v-2.0.3-alpha

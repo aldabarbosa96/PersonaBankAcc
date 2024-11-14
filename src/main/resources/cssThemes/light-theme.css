@@ -1,13 +1,13 @@
 /* light-theme.css */
 
-/* Fuente base para toda la aplicación */
+/*mainLightTheme*/
 .root {
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-size: 12px;
     -fx-background-color: #f4f4f4;
 }
 
-/* Estilos para botones */
+/*botones */
 .button {
     -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f8f8);
     -fx-text-fill: #333333;
@@ -38,7 +38,7 @@
     -fx-translate-y: 1px;
 }
 
-/* Estilos para etiquetas personalizadas */
+/*etiquetas*/
 .custom-label {
     -fx-text-fill: #333333;
     -fx-font-weight: bold;
@@ -56,7 +56,7 @@
     -fx-text-fill: #333333;
 }
 
-/* Estilos para áreas de texto personalizadas */
+/*áreas de texto*/
 .custom-text-area {
     -fx-control-inner-background: #ffffff;
     -fx-text-fill: #333333;
@@ -65,11 +65,10 @@
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
     -fx-padding: 5px 2px 10px 2px;
-    -fx-font-family: "Open Sans";
 }
 
 
-/* Estilos para campos de texto personalizados */
+/*campos de texto*/
 .custom-text-field {
     -fx-background-color: #ffffff;
     -fx-text-fill: #333333;
@@ -98,7 +97,7 @@
     -fx-vbar-policy: never;
 }
 
-/* Submenú Ajustes*/
+/*Submenú Ajustes*/
 .context-menu {
     -fx-background-color: #ffffff;
     -fx-border-color: #cccccc;
@@ -109,36 +108,76 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0.0, 0, 1);
 }
 
-.menu-item {
+.context-menu .menu-item {
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
 }
 
-.menu-item .label {
-    -fx-text-fill: #333333;
+.context-menu .menu-item .label {
+    -fx-text-fill: #999999;
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-size: 12px;
     -fx-padding: 5px 10px;
 }
 
-.menu-item:hover {
+.context-menu .menu-item:hover {
     -fx-background-color: #d3d3d3;
     -fx-border-radius: 4px;
 }
 
-.menu-item:hover .label {
+.context-menu .menu-item:hover .label {
     -fx-text-fill: #000000;
 }
 
-.menu-item:focused {
+.context-menu .menu-item:focused {
     -fx-background-color: #e0e0e0;
 }
 
-.menu-item:focused .label {
+.context-menu .menu-item:focused .label {
     -fx-text-fill: #000000;
 }
 
-.menu-item .label {
-    -fx-padding: 5px 10px;
+.context-menu .menu-item .label {
+    -fx-padding: 4px 6px;
     -fx-background-radius: 4px;
+}
+
+/*ComboBox */
+.combo-box-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 6px;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0.0, 0, 1),
+                innershadow(three-pass-box, rgba(255,255,255,0.8), 1, 0.0, 0, 1);
+}
+
+.combo-box-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.combo-box-popup > .list-view {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 0);
+}
+
+.combo-box .list-cell, .combo-box .button-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #000000;
+}
+
+/*texto en el ComboBox */
+.combo-box .label {
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px 10px;
 }

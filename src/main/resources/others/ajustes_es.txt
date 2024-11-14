@@ -1,35 +1,39 @@
-Breve Guía de Uso
+=============================================
+               GUÍA DE USUARIO
+            Personal Bank Account
+=============================================
 
-Personal Bank Account te ofrece un control exhaustivo de todas tus transacciones, tanto físicas como digitales, permitiendo un monitoreo completo de tu capital global.
-Cómo Funciona
+Bienvenido a **Personal Bank Account**, tu herramienta integral para la gestión de transacciones financieras. Nuestra aplicación te permite registrar, visualizar y analizar todas tus transacciones, tanto ingresos como gastos, de manera organizada y personalizada.
 
-1. Registrar una Transacción
-Cantidad: Introduce el monto que deseas registrar.
-Concepto (opcional): Añade una descripción para identificar mejor la transacción.
-Tipo de Transacción: Selecciona si la operación es un ingreso o un gasto.
+FUNCIONES PRINCIPALES
 
-2. Visualizar el Historial
-Todas tus transacciones se almacenan en el historial, donde podrás ver la fecha y hora de cada una.
+1. **Registro de Transacciones**
+**Cantidad**: Introduce el monto de la transacción. Acepta tanto valores enteros como decimales.
+**Concepto (opcional)**: Añade una breve descripción para identificar mejor la transacción en el historial.
+**Tipo de Transacción**: Selecciona si la operación es un *ingreso* o un *gasto*, permitiendo un monitoreo claro de tus finanzas.
 
-3. Gestionar Transacciones
-Deshacer Última Transacción: Si cometes un error, utiliza el botón "Deshacer" para revertir la última acción realizada.
-Detalles del Historial: Para una visión más detallada de tus transacciones, pulsa el botón "Detalles".
+2. **Visualización de Historial**
+El historial de transacciones almacena cada registro de manera detallada, mostrando fecha y hora. Accede al historial para consultar transacciones previas y verificar tu flujo financiero.
 
-4. Personalización de la Interfaz
-Tema Claro/Oscuro: Cambia entre el tema claro y oscuro fácilmente haciendo clic en el botón de la "luna" o el "sol" según tu preferencia.
+3. **Gestión de Transacciones**
+**Deshacer Última Transacción**: Si se realiza una transacción incorrecta, utiliza el botón "Deshacer" para revertir la última operación de forma rápida y segura.
+**Detalles del Historial**: Accede a una vista detallada de cada transacción individual, incluyendo todos los datos de ingreso y gasto.
 
-5. Menú de Ajustes
-Accede al Menú de Ajustes para gestionar diferentes aspectos de la aplicación. Este menú contiene los siguientes subapartados:
-Configuración: Ajusta las preferencias de la aplicación según tus necesidades.
-Cuenta: Gestiona la información de tu cuenta, como datos personales y opciones de seguridad.
-Ayuda: Accede a recursos de soporte y esta guía de uso para resolver cualquier duda.
+4. **Personalización de la Interfaz**
+**Tema Claro/Oscuro**: Adapta la apariencia de la aplicación a tus preferencias o condiciones de luz, alternando entre el tema claro y el tema oscuro mediante el icono de "luna" o "sol".
 
-6. Ventana Detalles/Gráfico
-Accede a la pestaña Detalles para ver la lista completa y detallada de todas las transacciones realizadas. Incluye el monto, descricpción,
-fecha, hora y el total en ese período. Además ofrece la posibilidad de visualizar los datos cómodamente en formato de gráfico de líneas.
+5. **Menú de Ajustes**
+Accede al Menú de Ajustes para configurar y personalizar la aplicación. Incluye los siguientes apartados:
+**Configuración**: Ajusta las preferencias generales de la aplicación, como idioma y opciones de notificaciones.
+**Cuenta**: Gestiona tu perfil, actualiza datos personales y ajusta las opciones de seguridad, incluyendo la contraseña.
+**Ayuda**: Accede a esta guía de usuario y otros recursos de soporte para resolver tus dudas.
 
-Soporte y Contacto
+6. **Ventana de Detalles/Gráfico**
+En la pestaña Detalles, obtén un desglose completo de tus transacciones con información precisa: monto, descripción, fecha, hora y balance total en el período consultado.
+Visualización gráfica: Observa tu evolución financiera en un gráfico de líneas que te ayudará a analizar patrones de ingresos y gastos a lo largo del tiempo.
 
-Si encuentras algún error o tienes alguna consulta, por favor, repórtalo a: aldabarbosa1996@gmail.com
+SOPORTE Y CONTACTO
 
-Versión: V-1.9.3-alpha
+Si tienes alguna consulta, detectas un error o necesitas asistencia, por favor, contáctanos en: **aldabarbosa1996@gmail.com**
+
+Versión de la aplicación: v-2.0.3-alpha

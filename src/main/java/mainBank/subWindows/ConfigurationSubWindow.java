@@ -37,10 +37,10 @@ public class ConfigurationSubWindow {
         //configuración selector de idioma
         languageLabel = new Label(resources.getString("config.language"));
         languageLabel.getStyleClass().add("custom-label");
-        languageLabel.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
         languageComboBox = new ComboBox<>();
-        languageComboBox.setMaxWidth(85);
+        languageComboBox.setMaxWidth(95);
         languageComboBox.getItems().addAll("es", "en", "ca");
+        languageComboBox.getStyleClass().add("combo-box-menu");
 
         languageComboBox.setCellFactory(lv -> new ListCell<String>() {
             @Override
@@ -78,11 +78,11 @@ public class ConfigurationSubWindow {
         //configuración selector divisa
         currencyLabel = new Label(resources.getString("config.currency"));
         currencyLabel.getStyleClass().add("custom-label");
-        currencyLabel.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
 
         currencyComboBox = new ComboBox<>();
-        currencyComboBox.setMaxWidth(85);
+        currencyComboBox.setMaxWidth(95);
         currencyComboBox.getItems().addAll("EUR", "USD", "GBP");
+        currencyComboBox.getStyleClass().add("combo-box-menu");
 
         currencyComboBox.setCellFactory(lv -> new ListCell<String>() {
             @Override

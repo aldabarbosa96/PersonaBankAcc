@@ -60,7 +60,7 @@
 .custom-text-area {
     -fx-background-color: rgba(60, 63, 65, 0.9);
     -fx-control-inner-background: rgba(60, 63, 65, 0.9);
-    -fx-text-fill: #e0e0e0;
+    -fx-text-fill: #F0F8FF;
     -fx-border-color: #666666;
     -fx-border-width: 1px;
     -fx-border-radius: 4px;
@@ -128,31 +128,70 @@
 }
 
 
-/* Submenú Ajustes*/
+/*ComboBox */
+.combo-box-menu {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #333333;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 6px;
+    -fx-padding: 3px;
+}
+
+.combo-box-popup {
+    -fx-background-color: #1a1a1a;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.combo-box-popup > .list-view {
+    -fx-background-color: #1a1a1a;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 0);
+}
+
+.combo-box .list-cell, .combo-box .button-cell {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #555555;
+    -fx-text-fill: #ffffff;
+}
+
+/*texto en el ComboBox */
+.combo-box .label {
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #e0e0e0;
+    -fx-padding: 5px 10px;
+}
+
+/*ContextMenu*/
 .context-menu {
     -fx-background-color: #3c3f41;
-    -fx-border-color: #555555;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #444444;
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-background-radius: 8px;
     -fx-padding: 3px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 4, 0.0, 0, 1);
 }
 
+/*items dentro del ContextMenu */
 .menu-item {
     -fx-background-color: transparent;
     -fx-border-radius: 4px;
 }
 
 .menu-item .label {
-    -fx-text-fill: #dcdcdc;
+    -fx-text-fill: #b0b0b0;
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-size: 12px;
     -fx-padding: 5px 10px;
 }
 
 .menu-item:hover {
-    -fx-background-color: #4a4a4a;
+    -fx-background-color: #555555;
     -fx-border-radius: 4px;
 }
 
@@ -167,8 +206,9 @@
 .menu-item:focused .label {
     -fx-text-fill: #ffffff;
 }
+
 .menu-item .label {
-    -fx-padding: 5px 10px;
+    -fx-padding: 4px 6px;
     -fx-background-radius: 4px;
 }
 
