@@ -20,7 +20,7 @@ El historial de transacciones almacena cada registro de manera detallada, mostra
 **Detalles del Historial**: Accede a una vista detallada de cada transacción individual, incluyendo todos los datos de ingreso y gasto.
 
 4. **Personalización de la Interfaz**
-**Tema Claro/Oscuro**: Adapta la apariencia de la aplicación a tus preferencias o condiciones de luz, alternando entre el tema claro y el tema oscuro mediante el icono de "luna" o "sol".
+**Tema Claro/Oscuro**: Adapta la apariencia de la aplicación a tus preferencias o condiciones de luz, alternando entre el tema claro (estilo retro) y el tema oscuro (estilo moderno industrial) mediante el icono de "luna" o "sol".
 
 5. **Menú de Ajustes**
 Accede al Menú de Ajustes para configurar y personalizar la aplicación. Incluye los siguientes apartados:

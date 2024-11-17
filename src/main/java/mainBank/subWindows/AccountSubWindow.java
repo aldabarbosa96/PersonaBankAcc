@@ -80,8 +80,8 @@ public class AccountSubWindow {
 
         changeUsername = new Button(resources.getString("account.changeUsername"));
         changePassword = new Button(resources.getString("account.changePassword"));
-        changeUsername.setMaxWidth(150);
-        changePassword.setMaxWidth(150);
+        changeUsername.setMaxWidth(166);
+        changePassword.setMaxWidth(166);
 
         TextField textFieldUsername = new TextField(getUserName(userID));
         TextField textFieldPassword = new TextField(getPasswordforShow(userID));

@@ -25,19 +25,21 @@ public class LogInWindow extends Application {
         ResourceBundle resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
 
         Label usernameLabel = new Label(resources.getString("login.username"));
-        usernameLabel.getStyleClass().add("custom-label");
+        usernameLabel.getStyleClass().add("login-label");
         TextField usernameField = new TextField();
-        usernameField.getStyleClass().add("custom-text-field");
+        usernameField.getStyleClass().add("login-text-field");
 
         Label passwordLabel = new Label(resources.getString("login.password"));
-        passwordLabel.getStyleClass().add("custom-label");
+        passwordLabel.getStyleClass().add("login-label");
         PasswordField passwordField = new PasswordField();
-        passwordField.getStyleClass().add("custom-text-field");
+        passwordField.getStyleClass().add("login-text-field");
 
         Button loginButton = new Button(resources.getString("login.loginButton"));
         Button registerButton = new Button(resources.getString("login.registerButton"));
-        loginButton.setPrefWidth(110);
-        registerButton.setPrefWidth(110);
+        loginButton.getStyleClass().add("login-button");
+        registerButton.getStyleClass().add("login-button");
+        loginButton.setPrefWidth(146);
+        registerButton.setPrefWidth(146);
 
         VBox usernameBox = new VBox(4, usernameLabel, usernameField);
         usernameBox.setAlignment(Pos.TOP_LEFT);
@@ -51,6 +53,7 @@ public class LogInWindow extends Application {
 
         VBox vbox = new VBox(25, usernameBox, passwordBox, buttonBox);
         vbox.setPadding(new Insets(40));
+        vbox.getStyleClass().add("login-vbox");
         vbox.setAlignment(Pos.CENTER);
 
 
@@ -94,7 +97,9 @@ public class LogInWindow extends Application {
         });
 
         Scene scene = new Scene(vbox, 300, 330);
-        scene.getStylesheets().add(getClass().getResource("/cssThemes/light-theme.css").toExternalForm()); // Carga la hoja de estilos
+        scene.getStylesheets().add(getClass().getResource("/cssThemes/light-theme.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/cssThemes/login-theme.css").toExternalForm());
+
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle(resources.getString("main.title"));

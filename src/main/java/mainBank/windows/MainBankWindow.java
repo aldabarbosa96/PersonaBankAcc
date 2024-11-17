@@ -186,6 +186,7 @@ public class MainBankWindow {
 
         VBox vbox = new VBox(20, hboxCantidadTema, hboxConceptoAjustes, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
         vbox.setPadding(new Insets(20));
+        vbox.getStyleClass().add("vbox-retro");
 
         return vbox;
     }

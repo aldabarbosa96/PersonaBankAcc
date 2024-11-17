@@ -65,7 +65,17 @@
     -fx-border-width: 1px;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
-    -fx-padding: 5px 2px 10px 2px;
+    -fx-padding: 40px 2px 15px 2px;
+}
+.custom-text-area2 {
+    -fx-background-color: rgba(60, 63, 65, 0.9);
+    -fx-control-inner-background: rgba(60, 63, 65, 0.9);
+    -fx-text-fill: #F0F8FF;
+    -fx-border-color: #666666;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 15px 2px 15px 2px;
 }
 
 /*textField*/

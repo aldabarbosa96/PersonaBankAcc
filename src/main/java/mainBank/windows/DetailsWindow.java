@@ -80,7 +80,7 @@ public class DetailsWindow {
 
         areaDetalles = new TextArea();
         areaDetalles.setEditable(false);
-        areaDetalles.getStyleClass().addAll("custom-text-area", "custom-font");
+        areaDetalles.getStyleClass().addAll("custom-text-area2", "custom-font");
         areaDetalles.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
 
         btnShowChart = new Button(resources.getString("details.showCart"));

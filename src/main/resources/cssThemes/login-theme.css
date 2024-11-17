@@ -1,0 +1,72 @@
+/* Fondo general de la ventana (claro retro) */
+.login-root {
+    -fx-background-color: #f4f4f4;
+}
+
+/* VBox estilo retro con borde claro */
+.login-vbox {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 3px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 20px;
+}
+
+/* Etiquetas de texto estilo retro */
+.login-label {
+    -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 14px;
+}
+
+/* Campos de texto estilo retro */
+.login-text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 6px 10px;
+}
+
+.login-text-field:hover {
+    -fx-border-color: #999999;
+}
+
+.login-text-field:focused {
+    -fx-border-color: #0066cc;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,102,204,0.2), 4, 0, 0, 2);
+}
+
+/* Botones estilo retro */
+.login-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 13px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #000000;
+    -fx-border-color: #999999;
+}
+
+.login-button:pressed {
+    -fx-background-color: #e6e6e6;
+    -fx-text-fill: #000000;
+}
+
+/* Fondo retro para la escena */
+.login-scene {
+    -fx-background-color: #f4f4f4;
+}

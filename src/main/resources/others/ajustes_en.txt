@@ -20,7 +20,7 @@ The transaction history stores each record in detail, showing the date and time.
 **History Details**: Access a detailed view of each individual transaction, including all income and expense data.
 
 4. **Interface Customization**
-**Light/Dark Theme**: Adjust the appearance of the application to your preferences or lighting conditions by switching between the light and dark themes using the "moon" or "sun" icon.
+**Light/Dark Theme**: Adjust the appearance of the application to your preferences or lighting conditions by switching between the light (retro style) and dark (industrial modern style) themes using the "moon" or "sun" icon.
 
 5. **Settings Menu**
 Access the Settings Menu to configure and personalize the application. It includes the following sections:

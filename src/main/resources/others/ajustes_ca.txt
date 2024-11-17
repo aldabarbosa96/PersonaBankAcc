@@ -20,7 +20,7 @@ L'historial de transaccions emmagatzema cada registre de manera detallada, mostr
 **Detalls de l'Historial**: Accedeix a una vista detallada de cada transacció individual, incloent totes les dades d'ingrés i despesa.
 
 4. **Personalització de la Interfície**
-**Tema Clar/Fosc**: Adapta l'aparença de l'aplicació a les teves preferències o condicions de llum, alternant entre el tema clar i el tema fosc mitjançant la icona de "lluna" o "sol".
+**Tema Clar/Fosc**: Adapta l'aparença de l'aplicació a les teves preferències o condicions de llum, alternant entre el tema clar (estil retro) i el tema fosc (estil modern industrial) mitjançant la icona de "lluna" o "sol".
 
 5. **Menú de Configuració**
 Accedeix al Menú de Configuració per personalitzar l'aplicació. Inclou les següents seccions:

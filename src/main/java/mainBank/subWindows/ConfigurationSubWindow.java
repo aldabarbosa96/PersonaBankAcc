@@ -38,7 +38,7 @@ public class ConfigurationSubWindow {
         languageLabel = new Label(resources.getString("config.language"));
         languageLabel.getStyleClass().add("custom-label");
         languageComboBox = new ComboBox<>();
-        languageComboBox.setMaxWidth(95);
+        languageComboBox.setMaxWidth(103);
         languageComboBox.getItems().addAll("es", "en", "ca");
         languageComboBox.getStyleClass().add("combo-box-menu");
 
@@ -80,7 +80,7 @@ public class ConfigurationSubWindow {
         currencyLabel.getStyleClass().add("custom-label");
 
         currencyComboBox = new ComboBox<>();
-        currencyComboBox.setMaxWidth(95);
+        currencyComboBox.setMaxWidth(103);
         currencyComboBox.getItems().addAll("EUR", "USD", "GBP");
         currencyComboBox.getStyleClass().add("combo-box-menu");
 
