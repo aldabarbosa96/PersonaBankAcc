@@ -28,7 +28,7 @@
     -fx-border-width: 2px;
     -fx-border-radius: 0px;
     -fx-background-radius: 0px;
-    -fx-padding: 6px 10px;
+    -fx-padding: 5px 5px;
 }
 
 .login-text-field:hover {
@@ -51,7 +51,7 @@
     -fx-border-width: 2px;
     -fx-border-radius: 0px;
     -fx-background-radius: 0px;
-    -fx-padding: 8px 16px;
+    -fx-padding: 6px 10px;
     -fx-cursor: hand;
 }
 

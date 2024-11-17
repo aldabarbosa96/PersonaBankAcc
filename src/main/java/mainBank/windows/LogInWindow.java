@@ -43,9 +43,11 @@ public class LogInWindow extends Application {
 
         VBox usernameBox = new VBox(4, usernameLabel, usernameField);
         usernameBox.setAlignment(Pos.TOP_LEFT);
+        usernameBox.setPadding(new Insets(0,20,0,20));
 
         VBox passwordBox = new VBox(4, passwordLabel, passwordField);
         passwordBox.setAlignment(Pos.TOP_LEFT);
+        passwordBox.setPadding(new Insets(0,20,0,20));
 
         VBox buttonBox = new VBox(8, loginButton, registerButton);
         buttonBox.setAlignment(Pos.CENTER);
@@ -96,7 +98,7 @@ public class LogInWindow extends Application {
             }
         });
 
-        Scene scene = new Scene(vbox, 300, 330);
+        Scene scene = new Scene(vbox, 300, 375);
         scene.getStylesheets().add(getClass().getResource("/cssThemes/light-theme.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/cssThemes/login-theme.css").toExternalForm());
 
