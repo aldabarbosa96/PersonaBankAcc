@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainBankWindow {
-    // Datos/Recursos
+    //datos/recursos
     private ArrayList<Transaction> transactionsList = new ArrayList<>();
     private DecimalFormat dfTotal, dfTransaction;
     private double totalInicial = 0.0;
@@ -34,16 +34,18 @@ public class MainBankWindow {
     private int userId;
     private ResourceBundle resources;
 
-    // Componentes GUI
+    //componenetes GUI
     private Scene scene;
     private String lightTheme, darkTheme;
     private double cantidad;
     private Stage detallesStage, ajustesStage, primaryStage;
-    private Label labelRegistros, labelTotal;
+    private Label labelRegistros, labelTotal, labelHistorial, labelFechaHora;
     private TextField textFieldCantidad, textFieldConcepto;
     private Button botonIngreso, botonGasto, botonUndo, botonDetalles;
     private MenuItem menu1, menu2, menu3;
     private TextArea historialArea, fechaHoraArea;
+    private StackPane stackPaneHistorial, stackPaneFechaHora;
+
 
     public MainBankWindow(DataBaseManager dbmanager, int userId) {
         this.dbmanager = dbmanager;
@@ -56,7 +58,8 @@ public class MainBankWindow {
         this.primaryStage = primaryStage;
         resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
 
-        // Inicialización de componentes
+        //inicialización componentes principales
+        configureThemes();
         initLabels();
         initTextFields();
         initButtonsAndMenus();
@@ -65,9 +68,8 @@ public class MainBankWindow {
         disableTextAreaInteraction(historialArea);
         disableTextAreaInteraction(fechaHoraArea);
         loadTransactions();
-        configureThemes();
 
-        // Configuración de la escena y eventos
+        //escena principal
         scene = new Scene(buildMainLayout(), 480, 620);
         applyCurrentTheme();
         primaryStage.setResizable(false);
@@ -76,7 +78,6 @@ public class MainBankWindow {
         primaryStage.show();
         primaryStage.setOnCloseRequest(this::handleCloseEvent);
 
-        // Actualizar interfaz y asignar manejadores
         updateCurrency();
         assignEventHandlers();
     }
@@ -133,8 +134,21 @@ public class MainBankWindow {
     }
 
     private void initTextAreas() {
-        historialArea = createTextArea("         HISTORIAL\n-----------------------------\n", 250, 320);
+        labelHistorial = new Label(resources.getString("details.historial"));
+        labelHistorial.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+        labelHistorial.getStyleClass().add("custom-label1");
+        labelHistorial.setPrefSize(250, 32);
+        labelFechaHora = new Label(resources.getString("details.fecha"));
+        labelFechaHora.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+        labelFechaHora.getStyleClass().add("custom-label1");
+        labelFechaHora.setPrefSize(160,32);
+        historialArea = createTextArea("", 250, 320);
         fechaHoraArea = createTextArea("\n\n", 160, 320);
+        stackPaneHistorial = new StackPane(historialArea, labelHistorial);
+        stackPaneFechaHora = new StackPane(fechaHoraArea, labelFechaHora);
+        StackPane.setAlignment(labelFechaHora, Pos.TOP_CENTER);
+        StackPane.setAlignment(labelHistorial, Pos.TOP_CENTER);
+
     }
 
     private void applyStyles() {
@@ -161,7 +175,7 @@ public class MainBankWindow {
         HBox hboxBotones = new HBox(10, botonIngreso, botonGasto);
         hboxBotones.setAlignment(Pos.CENTER_LEFT);
 
-        HBox hboxHistorial = new HBox(createSpacer(), historialArea, fechaHoraArea, createSpacer());
+        HBox hboxHistorial = new HBox(createSpacer(), stackPaneHistorial, stackPaneFechaHora, createSpacer());
         hboxHistorial.setAlignment(Pos.CENTER_LEFT);
 
         HBox hboxTotal = new HBox(labelTotal);
@@ -172,6 +186,7 @@ public class MainBankWindow {
 
         VBox vbox = new VBox(20, hboxCantidadTema, hboxConceptoAjustes, hboxBotones, labelRegistros, hboxHistorial, hboxTotal, hboxDeshacerDetalles);
         vbox.setPadding(new Insets(20));
+        vbox.getStyleClass().add("vbox-retro");
 
         return vbox;
     }
@@ -194,7 +209,7 @@ public class MainBankWindow {
         scene.getStylesheets().add(ThemeManager.getCurrentTheme().equals("light") ? lightTheme : darkTheme);
     }
 
-    private void handleCloseEvent(WindowEvent event) {
+    private void handleCloseEvent(WindowEvent event) {//cierra ambas ventanas si se cierra la principal
         if (detallesStage != null && detallesStage.isShowing()) detallesStage.close();
         if (ajustesStage != null && ajustesStage.isShowing()) ajustesStage.close();
     }
@@ -213,14 +228,17 @@ public class MainBankWindow {
             double amountInEuros = cantidad / CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
             String concepto = textFieldConcepto.getText();
             String timestamp = obtenerTimestamp();
+            String currencySymbol = CurrencyManager.getCurrencySymbol(CurrencyManager.getCurrentCurrency());
             transactionsList.add(new Transaction(tipo, amountInEuros, concepto, timestamp));
             dbmanager.insertTransaction(userId, tipo, amountInEuros, timestamp, concepto);
-            labelRegistros.setText(resources.getString("main.records1") + ":  " + tipo + cantidad);
+            labelRegistros.setText(resources.getString("main.records1") + ":  " + tipo + dfTransaction.format(cantidad) + " " + currencySymbol);
             textFieldCantidad.clear();
             textFieldConcepto.clear();
             updateCurrency();
+
+            textFieldCantidad.requestFocus();
         } catch (NumberFormatException ex) {
-            System.out.println("Error al parsear la cantidad: " + ex.getMessage());
+            labelRegistros.setText(resources.getString("main.error"));
         }
     }
 
@@ -257,7 +275,7 @@ public class MainBankWindow {
     }
 
     private void updateTransactionList() {
-        StringBuilder historialContent = new StringBuilder("         HISTORIAL\n-----------------------------\n");
+        StringBuilder historialContent = new StringBuilder("\n\n");
         StringBuilder fechaHoraContent = new StringBuilder("\n\n");
         double exchangeRate = CurrencyManager.getExchangeRate(CurrencyManager.getCurrentCurrency());
         totalInicial = 0.0;
@@ -319,7 +337,7 @@ public class MainBankWindow {
         }
     }
 
-    private void disableTextAreaInteraction(TextArea textArea) {
+    private void disableTextAreaInteraction(TextArea textArea) { //esto gestiona que el textArea no se pueda desplazar ni vertical ni horizontalmente
         Platform.runLater(() -> {
             ScrollPane scrollPane = (ScrollPane) textArea.lookup(".scroll-pane");
             if (scrollPane != null) {
@@ -348,10 +366,12 @@ public class MainBankWindow {
         menu1.setText(resources.getString("main.config"));
         menu2.setText(resources.getString("main.account"));
         menu3.setText(resources.getString("main.help"));
+        labelHistorial.setText(resources.getString("details.historial"));
+        labelFechaHora.setText(resources.getString("details.fecha"));
         updateTotalLabel();
     }
 
-    private ImageView createImageView(String path, int width, int height) {
+    private ImageView createImageView(String path, int width, int height) {//gestiona la importación de imágenes
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(path)));
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
@@ -374,9 +394,13 @@ public class MainBankWindow {
         botonAjustes.setGraphic(createImageView("/images/settings.png", 20, 20));
 
         ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getStyleClass().add("context-menu");
         menu1 = new MenuItem(resources.getString("main.config"));
         menu2 = new MenuItem(resources.getString("main.account"));
         menu3 = new MenuItem(resources.getString("main.help"));
+        menu1.getStyleClass().add("context-menu-item");
+        menu2.getStyleClass().add("context-menu-item");
+        menu3.getStyleClass().add("context-menu-item");
         contextMenu.getItems().addAll(menu1, menu2, menu3);
         botonAjustes.setOnAction(e -> toggleContextMenu(contextMenu, botonAjustes));
 
@@ -386,7 +410,7 @@ public class MainBankWindow {
         return botonAjustes;
     }
 
-    private Region createSpacer() {
+    private Region createSpacer() {//separador para mejorar disposición de los elementos
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         return spacer;
@@ -402,18 +426,34 @@ public class MainBankWindow {
         return textArea;
     }
 
-    // Clase interna Transaction
-    public class Transaction {
-        String type;
-        double amountInEuros;
-        String concept;
-        String timestamp;
+    //clase interna para gestionar las actualizaciones de las transacciones desde la clase principal
+    public static class Transaction {
+        private String type;
+        private double amountInEuros;
+        private String concept;
+        private String timestamp;
 
         public Transaction(String type, double amountInEuros, String concept, String timestamp) {
             this.type = type;
             this.amountInEuros = amountInEuros;
             this.concept = concept;
             this.timestamp = timestamp;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public double getAmountInEuros() {
+            return amountInEuros;
+        }
+
+        public String getConcept() {
+            return concept;
+        }
+
+        public String getTimestamp() {
+            return timestamp;
         }
     }
 }

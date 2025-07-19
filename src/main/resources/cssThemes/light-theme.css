@@ -1,45 +1,62 @@
 /* light-theme.css */
 
-/* Fuente base para toda la aplicación */
+/*mainLightTheme*/
 .root {
-    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-family: "Courier New", monospace;
     -fx-font-size: 12px;
-    -fx-background-color: #f4f4f4; /* Fondo ligeramente gris para suavizar el blanco */
+    -fx-background-color: #f4f4f4;
 }
 
-/* Estilos para botones */
+/*botones */
 .button {
     -fx-background-color: #ffffff;
     -fx-text-fill: #333333;
-     -fx-font-size: 12px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
     -fx-border-color: #cccccc;
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
     -fx-padding: 8px 16px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
     -fx-cursor: hand;
     -fx-font-weight: bold;
-    -fx-transition: background-color 0.3s, text-fill 0.3s;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0.0, 0, 1);
 }
 
 .button:hover {
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #f8f8f8;
     -fx-text-fill: #000000;
+    -fx-border-color: #999999;
 }
 
 .button:pressed {
-    -fx-background-color: #d4d4d4;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-background-color: #e6e6e6;
+    -fx-border-color: #666666;
+    -fx-text-fill: #000000;
+
 }
 
-/* Estilos para etiquetas personalizadas */
+/*etiquetas*/
 .custom-label {
     -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
+    -fx-background-color: transparent;
+}
+.custom-label1 {
+    -fx-background-color: white;
+    -fx-padding: 3 10 4 10;-fx-alignment: center;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 3px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+.custom-label2 {
+    -fx-text-fill: #333333;
 }
 
-/* Estilos para áreas de texto personalizadas */
+/*áreas de texto*/
 .custom-text-area {
     -fx-control-inner-background: #ffffff;
     -fx-text-fill: #333333;
@@ -47,20 +64,28 @@
     -fx-border-width: 1px;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
-    -fx-padding: 8px 2px 10px 2px;
+    -fx-padding: 35px 2px 10px 2px;
+}
+.custom-text-area2 {
+    -fx-control-inner-background: #ffffff;
+    -fx-text-fill: #333333;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 16px 2px 10px 2px;
 }
 
-/* Estilos para campos de texto personalizados */
+/*campos de texto*/
 .custom-text-field {
     -fx-background-color: #ffffff;
     -fx-text-fill: #333333;
     -fx-border-color: #cccccc;
-    -fx-border-width: 1px;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
     -fx-padding: 6px 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 1, 0, 0, 1);
-    -fx-transition: border-color 0.3s, background-color 0.3s;
+    -fx-font-family: "Courier New", monospace;
 }
 
 .custom-text-field:hover {
@@ -72,11 +97,103 @@
     -fx-background-color: #ffffff;
     -fx-effect: dropshadow(three-pass-box, rgba(0,102,204,0.2), 4, 0, 0, 2);
 }
+.vbox-retro {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 20px;
+}
 
 /* Eliminar barra de desplazamiento horizontal (solo visualmente) */
 .text-area .scroll-pane {
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
+}
+
+/*Submenú Ajustes*/
+/* ContextMenu retro */
+.context-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0.0, 0, 1);
+}
+
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-border-radius: 0px;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: #333333;
+    -fx-padding: 4px 2px;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 0px;
+}
+
+.context-menu .menu-item:hover .label {
+    -fx-text-fill: #000000;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #e6e6e6;
+}
+
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: #000000;
+}
+
+/* ComboBox retro */
+.combo-box-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0.0, 0, 1);
+}
+
+.combo-box-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+
+.combo-box-popup > .list-view {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 0);
+}
+
+.combo-box .list-cell, .combo-box .button-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #000000;
+}
+
+.combo-box .label {
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px 10px;
 }
 
 

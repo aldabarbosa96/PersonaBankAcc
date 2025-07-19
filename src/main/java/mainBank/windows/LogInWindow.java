@@ -2,6 +2,7 @@ package mainBank.windows;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -24,18 +25,39 @@ public class LogInWindow extends Application {
         ResourceBundle resources = ResourceBundle.getBundle("i18n.Messages", LanguageManager.getLocale());
 
         Label usernameLabel = new Label(resources.getString("login.username"));
+        usernameLabel.getStyleClass().add("login-label");
         TextField usernameField = new TextField();
+        usernameField.getStyleClass().add("login-text-field");
 
         Label passwordLabel = new Label(resources.getString("login.password"));
+        passwordLabel.getStyleClass().add("login-label");
         PasswordField passwordField = new PasswordField();
+        passwordField.getStyleClass().add("login-text-field");
 
         Button loginButton = new Button(resources.getString("login.loginButton"));
         Button registerButton = new Button(resources.getString("login.registerButton"));
-        loginButton.setMinWidth(90);
-        registerButton.setMinWidth(90);
+        loginButton.getStyleClass().add("login-button");
+        registerButton.getStyleClass().add("login-button");
+        loginButton.setPrefWidth(146);
+        registerButton.setPrefWidth(146);
 
-        VBox vbox = new VBox(10, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, registerButton);
-        vbox.setPadding(new Insets(20));
+        VBox usernameBox = new VBox(4, usernameLabel, usernameField);
+        usernameBox.setAlignment(Pos.TOP_LEFT);
+        usernameBox.setPadding(new Insets(0,20,0,20));
+
+        VBox passwordBox = new VBox(4, passwordLabel, passwordField);
+        passwordBox.setAlignment(Pos.TOP_LEFT);
+        passwordBox.setPadding(new Insets(0,20,0,20));
+
+        VBox buttonBox = new VBox(8, loginButton, registerButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(25, 0, 0, 0));
+
+        VBox vbox = new VBox(25, usernameBox, passwordBox, buttonBox);
+        vbox.setPadding(new Insets(40));
+        vbox.getStyleClass().add("login-vbox");
+        vbox.setAlignment(Pos.CENTER);
+
 
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
@@ -64,7 +86,9 @@ public class LogInWindow extends Application {
 
             boolean success = dbmanager.insertUser(username, password);
             if (success) {
-                showMessage(resources.getString("login.success"), resources.getString("register.successMessage"));
+                String successMessageTemplate = resources.getString("login.successRegister");
+                String successMessage = MessageFormat.format(successMessageTemplate, username);
+                showMessage(resources.getString("login.success"), successMessage);
             } else {
                 if (!dbmanager.userIsValid(username)) {
                     showError(resources.getString("login.error"), resources.getString("login.errorMessage"));
@@ -74,8 +98,12 @@ public class LogInWindow extends Application {
             }
         });
 
-        Scene scene = new Scene(vbox, 300, 220);
+        Scene scene = new Scene(vbox, 300, 375);
+        scene.getStylesheets().add(getClass().getResource("/cssThemes/light-theme.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/cssThemes/login-theme.css").toExternalForm());
+
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.setTitle(resources.getString("main.title"));
         stage.show();
 

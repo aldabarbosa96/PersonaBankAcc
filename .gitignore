@@ -4,6 +4,7 @@ out/
 !**/src/test/**/out/
 /target
 src/main/resources/others/futureImplementations.txt
+custom-runtime
 
 ### Eclipse ###
 .apt_generated

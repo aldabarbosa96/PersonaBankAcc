@@ -11,7 +11,8 @@ public class CurrencyManager {
     private static Map<String, Double> exchangeRates = new HashMap<>();
 
     static {
-        //se deberá ir actualizando según la varición de la moneda
+        //se deberá ir actualizando según la varición de la moneda por ahora
+        //implementar api que gestione las actualizaciones en tiempo real en un futuro
         exchangeRates.put("EUR", 1.0);
         exchangeRates.put("USD", 1.09);
         exchangeRates.put("GBP", 0.84);
